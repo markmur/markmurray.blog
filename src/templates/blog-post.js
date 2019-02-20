@@ -5,6 +5,7 @@ import Helmet from 'react-helmet'
 import { graphql, Link } from 'gatsby'
 import Layout from '../components/Layout'
 import Content, { HTMLContent } from '../components/Content'
+import { Title } from '../styles'
 
 export const BlogPostTemplate = ({
   content,
@@ -16,18 +17,18 @@ export const BlogPostTemplate = ({
 }) => {
   const PostContent = contentComponent || Content
 
+  console.log({ content })
+
   return (
     <section className="section">
       {helmet || ''}
       <div className="container content">
         <div className="columns">
           <div className="column is-10 is-offset-1">
-            <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
-              {title}
-            </h1>
+            <Title>{title}</Title>
             <p>{description}</p>
             <PostContent content={content} />
-            {tags && tags.length ? (
+            {tags && tags.length > 0 ? (
               <div style={{ marginTop: `4rem` }}>
                 <h4>Tags</h4>
                 <ul className="taglist">
@@ -64,11 +65,12 @@ const BlogPost = ({ data }) => {
         contentComponent={HTMLContent}
         description={post.frontmatter.description}
         helmet={
-          <Helmet
-            titleTemplate="%s | Blog"
-          >
+          <Helmet titleTemplate="%s | Blog">
             <title>{`${post.frontmatter.title}`}</title>
-            <meta name="description" content={`${post.frontmatter.description}`} />
+            <meta
+              name="description"
+              content={`${post.frontmatter.description}`}
+            />
           </Helmet>
         }
         tags={post.frontmatter.tags}
