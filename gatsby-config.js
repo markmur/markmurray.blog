@@ -7,7 +7,11 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-google-fonts',
       options: {
-        fonts: ['Merriweather:400,700,900'],
+        fonts: [
+          'Merriweather:400,700,900',
+          'Source Code Pro:400,500',
+          'PT Serif:700',
+        ],
       },
     },
     'gatsby-plugin-react-helmet',

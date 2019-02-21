@@ -3,13 +3,13 @@ templateKey: 'blog-post'
 title: View tracking with React
 date: 2019-02-20
 description: >-
-  We’re proud to announce that we’ll be offering a small batch of Jamaica Blue
-  Mountain coffee beans in our store next week.
+  Leveraging the native IntersectionObserver API to track views and impressions
+  in a react application.
 tags:
-  - jamaica
-  - green beans
-  - flavor
-  - tasting
+  - JavaScript
+  - React
+  - IntersectionObserver
+  - View Tracking
 ---
 
 We expect the shipment of a limited quantity of green beans next Monday. We’ll

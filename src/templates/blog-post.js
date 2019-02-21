@@ -4,10 +4,18 @@ import { kebabCase } from 'lodash'
 import Helmet from 'react-helmet'
 import { graphql, Link } from 'gatsby'
 import Layout from '../components/Layout'
-import Content, { HTMLContent } from '../components/Content'
-import { Title } from '../styles'
+import { HTMLContent } from '../components/Content'
+import {
+  PostTitle,
+  Description,
+  Container,
+  LineBreak,
+  Content,
+  Timestamp,
+} from '../styles'
 
 export const BlogPostTemplate = ({
+  date,
   content,
   contentComponent,
   description,
@@ -15,34 +23,34 @@ export const BlogPostTemplate = ({
   title,
   helmet,
 }) => {
-  const PostContent = contentComponent || Content
-
-  console.log({ content })
+  const PostContent = contentComponent
 
   return (
-    <section className="section">
+    <section>
       {helmet || ''}
-      <div className="container content">
-        <div className="columns">
-          <div className="column is-10 is-offset-1">
-            <Title>{title}</Title>
-            <p>{description}</p>
-            <PostContent content={content} />
-            {tags && tags.length > 0 ? (
-              <div style={{ marginTop: `4rem` }}>
-                <h4>Tags</h4>
-                <ul className="taglist">
-                  {tags.map(tag => (
-                    <li key={tag + `tag`}>
-                      <Link to={`/tags/${kebabCase(tag)}/`}>{tag}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
+      <Content>
+        <Container>
+          <PostTitle>{title}</PostTitle>
+          <Description>{description}</Description>
+          <Timestamp>{date}</Timestamp>
+          <LineBreak mt={2} mb="3em" />
+
+          <PostContent content={content} />
+
+          {tags && tags.length > 0 ? (
+            <div>
+              <h4>Tags</h4>
+              <ul>
+                {tags.map(tag => (
+                  <li key={tag + `tag`}>
+                    <Link to={`/tags/${kebabCase(tag)}/`}>{tag}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </Container>
+      </Content>
     </section>
   )
 }

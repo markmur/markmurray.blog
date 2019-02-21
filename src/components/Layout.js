@@ -3,7 +3,7 @@ import Helmet from 'react-helmet'
 import { StaticQuery, graphql } from 'gatsby'
 
 import Navbar from './Navbar'
-import './all.sass'
+import './all.scss'
 
 const TemplateWrapper = ({ children }) => (
   <StaticQuery
@@ -58,7 +58,7 @@ const TemplateWrapper = ({ children }) => (
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
         <Navbar />
-        <div>{children}</div>
+        <div style={{ height: '100%' }}>{children}</div>
       </div>
     )}
   />

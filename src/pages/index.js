@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
+import { PageHeading, Container, Content } from '../styles'
 import Layout from '../components/Layout'
 import Post from '../components/post'
 
@@ -11,20 +12,16 @@ export default class IndexPage extends React.Component {
 
     const posts = edges.map(({ node }) => node)
 
-    console.log({ posts })
-
     return (
       <Layout>
-        <section className="section">
-          <div className="container">
-            <div className="content">
-              <h1 className="has-text-weight-bold is-size-2">Latest Posts</h1>
-            </div>
-            {posts.map(post => (
-              <Post key={post.id} post={post} />
-            ))}
-          </div>
-        </section>
+        <Content>
+          <Container>
+            <PageHeading>Latest Posts</PageHeading>
+          </Container>
+          {posts.map(post => (
+            <Post key={post.id} post={post} />
+          ))}
+        </Content>
       </Layout>
     )
   }

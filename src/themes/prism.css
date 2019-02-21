@@ -1,0 +1,147 @@
+:root {
+  --char: #d8dee9;
+  --comment: #999999;
+  --keyword: #c5a5c5;
+  --lineHighlight: #14161a;
+  --primitive: #5a9bcf;
+  --string: #8dc891;
+  --variable: #d7deea;
+  --boolean: #ff8b50;
+  --punctuation: #5fb3b3;
+  --tag: #fc929e;
+  --function: #79b6f2;
+  --className: #fac863;
+  --method: #6699cc;
+  --operator: #fc929e;
+}
+
+code[class*='language-'],
+pre[class*='language-'] {
+  color: white;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  font-family: Menlo, Monaco, Consolas, 'Courier New', Courier, monospace;
+  font-size: 14px;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*='language-'] {
+  padding: 1.5em;
+  margin: 0.5em 0;
+  overflow: auto;
+  border-radius: 8px;
+}
+
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+  background: rgb(40, 44, 52);
+}
+
+/* Inline code */
+:not(pre) > code[class*='language-'] {
+  padding: 3px 5px;
+  border-radius: 2px;
+  background: antiquewhite;
+  font-family: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New',
+    Courier, monospace;
+  text-shadow: none;
+  color: black;
+}
+
+.token.comment,
+.token.prolog,
+.token.block-comment,
+.token.doctype,
+.token.cdata {
+  color: var(--comment);
+}
+
+.token.property,
+.token.number,
+.token.function-name,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--primitive);
+}
+
+.token.boolean {
+  color: var(--boolean);
+}
+
+.token.tag {
+  color: var(--tag);
+}
+
+.token.string {
+  color: var(--string);
+}
+
+.token.punctuation {
+  color: var(--punctuation);
+}
+
+.token.selector,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: var(--char);
+}
+
+.token.function {
+  color: var(--function);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.token.variable {
+  color: var(--variable);
+}
+
+.token.attr-value {
+  color: var(--string);
+}
+
+.token.keyword {
+  color: var(--keyword);
+}
+
+.token.atrule,
+.token.class-name {
+  color: var(--className);
+}
+
+.token.important {
+  font-weight: 400;
+}
+
+.token.bold {
+  font-weight: 700;
+}
+
+.token.italic {
+  font-style: 'italic';
+}
+
+.token.entity {
+  cursor: 'help';
+}
+
+.namespace {
+  opacity: 0.7;
+}
