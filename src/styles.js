@@ -1,3 +1,4 @@
+import { Link } from 'gatsby'
 import styled from 'styled-components'
 import { fontSize, space, color } from 'styled-system'
 
@@ -16,10 +17,26 @@ export const Nav = styled.nav`
 
 export const Logo = styled.h2`
   ${LOGO_FONT};
-  color: rgb(93, 111, 126);
+  olor: #f5e6ea;
+  text-shadow: 2px 2px 0 rgb(216, 166, 166)
+  font-size: 2.75rem;
   margin: 0;
-  font-size: 1.75rem;
   letter-spacing: 0.75px;
+`
+
+export const Tag = styled(Link)`
+  padding: 3px 6px;
+  color: #c1355a;
+  background: rgba(217, 156, 174, 0.135);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-right: 8px;
+  border-radius: 3px;
+  letter-spacing: 0.25px;
+
+  &:hover {
+    rgba(217, 156, 174, 0.2)
+  }
 `
 
 export const Container = styled.div`
@@ -35,6 +52,8 @@ export const Content = styled.section`
   padding-top: 1em;
   height: 100%;
   padding-bottom: 5em;
+  position: relative;
+  z-index: 2;
 `
 
 export const PageHeading = styled.h1`
@@ -97,7 +116,7 @@ export const Paragraph = styled.p`
   font-size: 15px;
   line-height: 1.65;
   color: #444;
-  ${system};
+  ${space};
 `
 
 export const Description = styled(Paragraph)`

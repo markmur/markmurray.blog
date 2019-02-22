@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { kebabCase } from 'lodash'
 import Helmet from 'react-helmet'
-import { graphql, Link } from 'gatsby'
+import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import { HTMLContent } from '../components/Content'
 import {
+  Tag,
   PostTitle,
   Description,
   Container,
@@ -13,6 +14,19 @@ import {
   Content,
   Timestamp,
 } from '../styles'
+
+const Tags = ({ tags }) =>
+  tags &&
+  tags.length > 0 && (
+    <div>
+      <i>Filed under: </i>
+      {tags.map(tag => (
+        <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
+          {tag}
+        </Tag>
+      ))}
+    </div>
+  )
 
 export const BlogPostTemplate = ({
   date,
@@ -33,22 +47,11 @@ export const BlogPostTemplate = ({
           <PostTitle>{title}</PostTitle>
           <Description>{description}</Description>
           <Timestamp>{date}</Timestamp>
-          <LineBreak mt={2} mb="3em" />
+          <Tags tags={tags} />
+
+          <LineBreak mt="2.5em" mb="3em" />
 
           <PostContent content={content} />
-
-          {tags && tags.length > 0 ? (
-            <div>
-              <h4>Tags</h4>
-              <ul>
-                {tags.map(tag => (
-                  <li key={tag + `tag`}>
-                    <Link to={`/tags/${kebabCase(tag)}/`}>{tag}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
         </Container>
       </Content>
     </section>

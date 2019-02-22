@@ -6,10 +6,9 @@ description: >-
   Leveraging the native IntersectionObserver API to track views and impressions
   in a react application.
 tags:
-  - JavaScript
   - React
   - IntersectionObserver
-  - View Tracking
+  - Tracking
 ---
 
 We expect the shipment of a limited quantity of green beans next Monday. We’ll

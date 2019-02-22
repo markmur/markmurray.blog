@@ -59,6 +59,10 @@ const TemplateWrapper = ({ children }) => (
         </Helmet>
         <Navbar />
         <div style={{ height: '100%' }}>{children}</div>
+
+        <div id="blob-1" />
+        <div id="blob-2" />
+        <div id="blob-3" />
       </div>
     )}
   />
