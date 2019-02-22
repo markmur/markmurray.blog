@@ -4,6 +4,7 @@ module.exports = {
     description: 'Front End Developer @ Zalando, Dublin',
   },
   plugins: [
+    'gatsby-plugin-styled-components',
     {
       resolve: 'gatsby-plugin-google-fonts',
       options: {
@@ -16,7 +17,6 @@ module.exports = {
     },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sass',
-    'gatsby-plugin-styled-components',
     {
       // keep as first gatsby-source-filesystem plugin for gatsby image support
       resolve: 'gatsby-source-filesystem',
