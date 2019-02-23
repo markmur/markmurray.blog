@@ -5,8 +5,18 @@ import { fontSize, space } from 'styled-system'
 const LOGO_FONT = 'font-family: PT Serif, serif'
 const SERIF_FONT = 'font-family: Merriweather, serif'
 
+const isMobile = content => `
+  @media (max-width: 720px) {
+    ${content}
+  }
+`
+
 export const Nav = styled.nav`
   padding: 1.5em 0 1.35em;
+
+  ${isMobile(`
+    padding: 1.25em 0;
+  `)}
 `
 
 export const Logo = styled.h2`
@@ -37,6 +47,10 @@ export const Container = styled.div`
   max-width: 800px;
   margin: auto;
   padding: 0 2em;
+
+  ${isMobile(`
+    padding: 0 1em;
+  `)}
 `
 
 export const Content = styled.section`
@@ -47,6 +61,12 @@ export const Content = styled.section`
   padding-top: 1em;
   height: 100%;
   padding-bottom: 15em;
+
+  ${isMobile(`
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 1em;
+  `)}
 `
 
 export const PageHeading = styled.h1`
@@ -76,11 +96,16 @@ export const PostTitle = styled(Title)`
   margin-top: 2em;
   line-height: 1.35;
   letter-spacing: 0.2px;
+
+  ${isMobile(`
+    font-size: 2rem;
+    margin-top: 1em;
+  `)}
 `
 
 export const LineBreak = styled.div`
   width: 80px;
-  border: 0.5px solid mediumaquamarine;
+  border: 0.5px solid lightsalmon;
   margin-bottom: 2em;
   ${space};
 `

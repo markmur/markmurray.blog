@@ -1,9 +1,8 @@
 ---
 templateKey: blog-post
-title: Writing a Chrome extension to remove dark patterns from booking.com
+title: Killing UX dark patterns with chrome extensions
 date: 2019-02-23
-description: >-
-  Booking.caaaaaalm
+description: Writing a Chrome extension to remove dark patterns from booking.com
 tags:
   - Chrome extensions
 ---
