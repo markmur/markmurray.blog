@@ -3,7 +3,12 @@ import Helmet from 'react-helmet'
 import { StaticQuery, graphql } from 'gatsby'
 
 import Navbar from './Navbar'
-import './all.scss'
+
+// Global styles
+import '../styles.css'
+
+// Prism code highlighting styles
+import '../themes/prism.css'
 
 const TemplateWrapper = ({ children }) => (
   <StaticQuery
@@ -57,12 +62,10 @@ const TemplateWrapper = ({ children }) => (
           <meta property="og:url" content="/" />
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
-        <Navbar />
-        <div style={{ height: '100%' }}>{children}</div>
 
-        <div id="blob-1" />
-        <div id="blob-2" />
-        <div id="blob-3" />
+        <Navbar />
+
+        <div>{children}</div>
       </div>
     )}
   />

@@ -1,6 +1,7 @@
 ---
-templateKey: 'blog-post'
-title: View tracking with React
+templateKey: blog-post
+title:
+  Tracking views and impressions with React and the IntersectionObserver API
 date: 2019-02-20
 description: >-
   Leveraging the native IntersectionObserver API to track views and impressions

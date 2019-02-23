@@ -1,12 +1,6 @@
 import { Link } from 'gatsby'
 import styled from 'styled-components'
-import { fontSize, space, color } from 'styled-system'
-
-const system = `
-  ${fontSize};
-  ${space};
-  ${color}
-`
+import { fontSize, space } from 'styled-system'
 
 const LOGO_FONT = 'font-family: PT Serif, serif'
 const SERIF_FONT = 'font-family: Merriweather, serif'
@@ -17,8 +11,8 @@ export const Nav = styled.nav`
 
 export const Logo = styled.h2`
   ${LOGO_FONT};
-  olor: #f5e6ea;
-  text-shadow: 2px 2px 0 rgb(216, 166, 166)
+  color: #f8f1f4;
+  text-shadow: 2px 2px 0 rgb(216, 166, 166);
   font-size: 2.75rem;
   margin: 0;
   letter-spacing: 0.75px;
@@ -35,7 +29,7 @@ export const Tag = styled(Link)`
   letter-spacing: 0.25px;
 
   &:hover {
-    rgba(217, 156, 174, 0.2)
+    background: rgba(217, 156, 174, 0.2);
   }
 `
 
@@ -43,17 +37,16 @@ export const Container = styled.div`
   max-width: 800px;
   margin: auto;
   padding: 0 2em;
-  ${system};
 `
 
 export const Content = styled.section`
+  position: relative;
+  z-index: 2;
   margin: 1em 3em 4em;
   background: #fffcf8;
   padding-top: 1em;
   height: 100%;
-  padding-bottom: 5em;
-  position: relative;
-  z-index: 2;
+  padding-bottom: 15em;
 `
 
 export const PageHeading = styled.h1`
@@ -64,7 +57,6 @@ export const PageHeading = styled.h1`
   color: rgba(217, 156, 174, 0.4);
   margin-top: 1em;
   margin-bottom: 0.35em;
-  ${system};
 `
 
 export const Title = styled.h1`
@@ -98,13 +90,11 @@ export const Timestamp = styled.p`
   font-size: 15px;
   color: #aaa;
   margin-bottom: 1.5em;
-  ${system};
 `
 
 export const Post = styled.article`
   border-bottom: 1px solid #eaeaea;
   padding: 3em 0;
-  ${system};
 
   &:hover {
     background: rgba(255, 255, 255, 0.6);
@@ -137,6 +127,4 @@ export const BlogPost = styled.article`
     --x-height-multiplier: 0.375;
     --baseline-multiplier: 0.17;
   }
-
-  ${system};
 `
