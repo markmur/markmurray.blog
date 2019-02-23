@@ -29,6 +29,7 @@ const Tags = ({ tags }) =>
   )
 
 export const BlogPostTemplate = ({
+  id,
   title,
   description,
   content,
@@ -46,6 +47,14 @@ export const BlogPostTemplate = ({
         <LineBreak mt="2.5em" mb="3em" />
 
         <HTMLContent content={content} />
+
+        <DiscussionEmbed
+          shortname="mark-murray"
+          config={{
+            identifier: id,
+            title,
+          }}
+        />
       </Container>
     </Content>
   )
@@ -63,19 +72,12 @@ const BlogPost = ({ data }) => {
       </Helmet>
 
       <BlogPostTemplate
+        id={post.id}
         title={title}
         description={description}
         content={post.html}
         tags={tags}
         date={date}
-      />
-
-      <DiscussionEmbed
-        shortname="mark-murray"
-        config={{
-          identifier: post.id,
-          title,
-        }}
       />
     </Layout>
   )
