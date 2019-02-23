@@ -65,6 +65,7 @@ export const Content = styled.section`
   ${isMobile(`
     margin-left: 0;
     margin-right: 0;
+    margin-bottom: 0;
     padding-top: 1em;
   `)}
 `
@@ -77,6 +78,12 @@ export const PageHeading = styled.h1`
   color: rgba(217, 156, 174, 0.4);
   margin-top: 1em;
   margin-bottom: 0.35em;
+
+  ${isMobile(`
+    font-size: 2.5rem;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+  `)}
 `
 
 export const Title = styled.h1`
@@ -88,6 +95,11 @@ export const Title = styled.h1`
   margin-top: 0;
   margin-bottom: 12px;
   ${fontSize};
+
+  ${isMobile(`
+    font-weight: 800;
+    font-size: 1.65rem;
+  `)}
 `
 
 export const PostTitle = styled(Title)`
@@ -98,7 +110,6 @@ export const PostTitle = styled(Title)`
   letter-spacing: 0.2px;
 
   ${isMobile(`
-    font-size: 2rem;
     margin-top: 1em;
   `)}
 `
@@ -124,6 +135,14 @@ export const Post = styled.article`
   &:hover {
     background: rgba(255, 255, 255, 0.6);
   }
+
+  ${isMobile(`
+    padding-top: 2em;
+
+    &:first-of-type {
+      border-top: 1px solid #eaeaea;
+    }
+  `)}
 `
 
 export const Paragraph = styled.p`
@@ -140,6 +159,10 @@ export const Description = styled(Paragraph)`
   font-size: 1.05rem;
   margin-bottom: 2em;
   ${space};
+
+  ${isMobile(`
+    margin-bottom: 1em;
+  `)}
 `
 
 export const BlogPost = styled.article`
