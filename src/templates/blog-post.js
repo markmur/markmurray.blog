@@ -71,7 +71,7 @@ const BlogPost = ({ data }) => {
       />
 
       <DiscussionEmbed
-        shortname="mark.murray"
+        shortname="mark-murray"
         config={{
           identifier: post.id,
           title,
