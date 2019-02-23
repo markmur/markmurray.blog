@@ -143,6 +143,9 @@ export const Description = styled(Paragraph)`
 `
 
 export const BlogPost = styled.article`
+  margin-bottom: 2em;
+  border-bottom: 1px solid #eee;
+
   p {
     ${SERIF_FONT};
     font-size: 16px;
