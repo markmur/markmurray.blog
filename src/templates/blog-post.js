@@ -1,4 +1,5 @@
 import React from 'react'
+import { DiscussionEmbed } from 'disqus-react'
 import { kebabCase } from 'lodash'
 import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
@@ -67,6 +68,14 @@ const BlogPost = ({ data }) => {
         content={post.html}
         tags={tags}
         date={date}
+      />
+
+      <DiscussionEmbed
+        shortname="mark.murray"
+        config={{
+          identifier: post.id,
+          title,
+        }}
       />
     </Layout>
   )
