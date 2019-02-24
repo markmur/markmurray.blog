@@ -10,88 +10,107 @@ tags:
   - Authentication
 ---
 
-Add dependencies with `yarn`
+Start by installing the required dependencies.
 
-```jsx
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: { something: 'something' },
-    }
-  }
-
-  render() {
-    return (
-      <Provider value={this.state.value}>
-        <Toolbar />
-      </Provider>
-    )
-  }
-}
+```sh
+yarn add express passport body-parser express-session passport-twitter
 ```
 
-This week we’ll **take** a look at all the steps required to make astonishing
-coffee with a Chemex at home. The Chemex Coffeemaker is a manual, pour-over
-style glass-container coffeemaker that Peter Schlumbohm invented in 1941, and
-which continues to be manufactured by the Chemex Corporation in Chicopee,
-Massachusetts.
-
-In 1958, designers at the
-[Illinois Institute of Technology](https://www.spacefarm.digital) said that the
-Chemex Coffeemaker is _"one of the best-designed products of modern times"_, and
-so is included in the collection of the Museum of Modern Art in New York City.
+Then create a simple Express server.
 
 ```js
-const path = require('path')
 const express = require('express')
-const passport = require('passport')
-const Twitter = require('passport-twitter').Strategy
 
 const app = express()
 
-app.get('/auth/twitter', passport.authenticate('twitter'))
+app.use(express.static(path.join(__dirname, 'build')))
 
-app.get(
-  '/auth/twitter/callback',
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/')
-  },
-)
-
-app.get('/', authenticated, (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
-app.listen(process.env.PORT || 8080)
+const { PORT = 8080 } = process.env
+
+app.listen(PORT, error => {
+  if (error) throw error
+
+  console.log(`Listening on port ${PORT}`)
+})
 ```
 
-## The little secrets of Chemex brewing
+Next add `body-parser` to allow sending and receiving data in JSON form.
 
-The Chemex Coffeemaker consists of an hourglass-shaped glass flask with a
-conical funnel-like neck (rather than the cylindrical neck of an Erlenmeyer
-flask) and uses proprietary filters, made of bonded paper (thicker-gauge paper
-than the standard paper filters for a drip-method coffeemaker) that removes most
-of the coffee oils, brewing coffee with a taste that is different than coffee
-brewed in other coffee-making systems; also, the thicker paper of the Chemex
-coffee filters may assist in removing cafestol, a cholesterol-containing
-compound found in coffee oils. Here’s three important tips newbies forget about:
+```js
+const express = require('express')
+// highlight-start
+const bodyParser = require('body-parser')
+// highlight-end
 
-1. Always buy dedicated Chemex filters.
-2. Use a scale, don’t try to eyeball it.
-3. Never skip preheating the glass.
-4. Timing is key, don’t forget the clock.
+const app = express()
 
-The most visually distinctive feature of the Chemex is the heatproof wooden
-collar around the neck, allowing it to be handled and poured when full of hot
-water. This is turned, then split in two to allow it to fit around the glass
-neck. The two pieces are held loosely in place by a tied leather thong. The
-pieces are not tied tightly and can still move slightly, retained by the shape
-of the conical glass.
+// highlight-start
+app.use(bodyParser.json())
+// highlight-end
+```
 
-For a design piece that became popular post-war at a time of Modernism and
-precision manufacture, this juxtaposition of natural wood and the organic nature
-of a hand-tied knot with the laboratory nature of glassware was a distinctive
-feature of its appearance.
+Next add session support.
+
+```js
+const express = require('express')
+const bodyParser = require('body-parser')
+// highlight-start
+const session = require('express-session')
+// highlight-end
+
+const app = express()
+
+app.use(bodyParser.json())
+
+// highlight-start
+app.use(
+  session({
+    secret: 'you-should-probably-change-this',
+    resave: false,
+    saveUninitialized: true,
+  }),
+)
+// highlight-end
+```
+
+And now lets integrate Passport.
+
+```js
+const express = require('express')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+// highlight-start
+const passport = require('passport')
+const TwitterStrategy = require('passport-twitter').Strategy
+
+passport.use(
+  new Twitter(
+    {
+      consumerKey: process.env.TWITTER_KEY,
+      consumerSecret: process.env.TWITTER_SECRET,
+      callbackURL: `http://localhost:${port}/auth/twitter/callback`,
+    },
+    (token, tokenSecret, profile, cb) => {
+      return cb(null, profile)
+    },
+  ),
+)
+
+passport.serializeUser((user, done) => done(null, user))
+passport.deserializeUser((user, done) => done(null, user))
+// highlight-end
+
+const app = express()
+
+app.use(bodyParser.json())
+app.use(express.static(path.join(__dirname, 'build')))
+
+// highlight-start
+app.use(passport.initialize())
+app.use(passport.session())
+// highlight-end
+```
