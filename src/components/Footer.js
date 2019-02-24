@@ -8,7 +8,7 @@ const Footer = styled(props => (
 ))`
   text-align: center;
   color: #666;
-  padding: 2em 0 3em;
+  padding: 4em 0;
 `
 
 export default Footer

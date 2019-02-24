@@ -21,7 +21,7 @@ export const Nav = styled.nav`
 
 export const Logo = styled.h2`
   ${LOGO_FONT};
-  color: #f8f1f4;
+  color: var(--primary);
   text-shadow: 2px 2px 0 rgb(216, 166, 166);
   font-size: 2.75rem;
   margin: 0;
@@ -56,11 +56,11 @@ export const Container = styled.div`
 export const Content = styled.section`
   position: relative;
   z-index: 2;
-  margin: 1em 3em 4em;
+  margin: 1em 3em 0;
   background: #fffcf8;
   padding-top: 1em;
   height: 100%;
-  padding-bottom: 15em;
+  ${space};
 
   ${isMobile(`
     margin-left: 0;
@@ -75,7 +75,7 @@ export const PageHeading = styled.h1`
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: rgba(217, 156, 174, 0.4);
+  color: var(--primary);
   margin-top: 1em;
   margin-bottom: 0.35em;
 
@@ -166,9 +166,6 @@ export const Description = styled(Paragraph)`
 `
 
 export const BlogPost = styled.article`
-  margin-bottom: 2em;
-  border-bottom: 1px solid #eee;
-
   p {
     ${SERIF_FONT};
     font-size: 16px;
@@ -178,4 +175,10 @@ export const BlogPost = styled.article`
     --x-height-multiplier: 0.375;
     --baseline-multiplier: 0.17;
   }
+`
+
+export const Comments = styled.div`
+  padding: 3em 0;
+  border-top: 1px solid #eee;
+  margin-top: 3em;
 `

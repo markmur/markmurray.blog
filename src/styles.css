@@ -1,3 +1,7 @@
+:root {
+  --primary: rgb(247, 235, 238);
+}
+
 html,
 body {
   margin: 0;
@@ -12,7 +16,7 @@ body {
 }
 
 body {
-  background: rgba(217, 156, 174, 0.135);
+  background: var(--primary);
 }
 
 *,

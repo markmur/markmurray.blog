@@ -15,6 +15,13 @@
   --operator: #fc929e;
 }
 
+.gatsby-highlight-code-line {
+  display: block;
+  margin: 0 -2em;
+  padding: 0 2em;
+  background: #1c252bdb;
+}
+
 code[class*='language-'],
 pre[class*='language-'] {
   color: white;

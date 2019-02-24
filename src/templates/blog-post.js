@@ -14,6 +14,7 @@ import {
   LineBreak,
   Content,
   Timestamp,
+  Comments,
 } from '../styles'
 
 const Tags = ({ tags }) =>
@@ -35,9 +36,12 @@ export const BlogPostTemplate = ({
   content,
   tags,
   date,
+  postContent = HTMLContent,
+  showComments = true,
 }) => {
+  const PostContent = postContent
   return (
-    <Content>
+    <Content pb={4}>
       <Container>
         <PostTitle>{title}</PostTitle>
         <Description>{description}</Description>
@@ -46,15 +50,19 @@ export const BlogPostTemplate = ({
 
         <LineBreak mt="2.5em" mb="3em" />
 
-        <HTMLContent content={content} />
+        <PostContent content={content} />
 
-        <DiscussionEmbed
-          shortname="mark-murray"
-          config={{
-            identifier: id,
-            title,
-          }}
-        />
+        {showComments && (
+          <Comments>
+            <DiscussionEmbed
+              shortname="mark-murray"
+              config={{
+                identifier: id,
+                title,
+              }}
+            />
+          </Comments>
+        )}
       </Container>
     </Content>
   )

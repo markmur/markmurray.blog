@@ -9,7 +9,9 @@ export const HTMLContent = ({ content, className }) => (
 )
 
 const Content = ({ content, className }) => (
-  <div className={className}>{content}</div>
+  <div style={{ padding: '2em' }} className={className}>
+    {content}
+  </div>
 )
 
 export default Content
