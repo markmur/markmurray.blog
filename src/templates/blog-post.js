@@ -18,8 +18,7 @@ import {
 } from '../styles'
 
 const Tags = ({ tags }) =>
-  tags &&
-  tags.length > 0 && (
+  tags && tags.length > 0 ? (
     <div>
       {tags.map(tag => (
         <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
@@ -27,7 +26,7 @@ const Tags = ({ tags }) =>
         </Tag>
       ))}
     </div>
-  )
+  ) : null
 
 export const BlogPostTemplate = ({
   id,
