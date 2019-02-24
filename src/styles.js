@@ -90,8 +90,7 @@ export const Title = styled.h1`
   color: black;
   font-size: 1.75rem;
   line-height: 1.45;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-weight: 800;
   margin-top: 0;
   margin-bottom: 12px;
   ${fontSize};
