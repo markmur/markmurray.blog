@@ -1,14 +1,16 @@
 ---
 templateKey: blog-post
 title: The easiest way to create a new React application
-date: 2019-02-24
 description: Ditching create-react-app in favour of Parcel
+date: 2019-02-24T00:00:00.000Z
 tags:
   - React
   - Parcel
-label:
-  - Beginner friendly
 ---
+
+`create-react-app` is still a great choice for many applications and getting
+started is very easy. However, I would argue that using Parcel is even easier to
+manage.
 
 A beginner guide to creating a React app would be incomplete without mentioning
 [Create React App](https://github.com/facebook/create-react-app) - which is
