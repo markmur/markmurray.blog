@@ -19,7 +19,7 @@
   display: block;
   margin: 0 -2em;
   padding: 0 2em;
-  background: #1c252bdb;
+  background: var(--lineHighlight);
 }
 
 code[class*='language-'],
@@ -46,15 +46,15 @@ pre[class*='language-'] {
 }
 
 /* Code blocks */
-pre[class*='language-'] {
-  padding: 1.5em;
-  margin: 0.5em 0;
+pre {
+  padding: 1.25em;
+  margin: 0.5em 0 3em;
   overflow: auto;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 :not(pre) > code[class*='language-'],
-pre[class*='language-'] {
+pre {
   background: rgb(40, 44, 52);
 }
 
@@ -62,7 +62,7 @@ pre[class*='language-'] {
 :not(pre) > code[class*='language-'] {
   padding: 3px 5px;
   border-radius: 2px;
-  background: antiquewhite;
+  background: rgba(133, 180, 255, 0.2);
   font-family: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New',
     Courier, monospace;
   text-shadow: none;

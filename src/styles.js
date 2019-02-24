@@ -166,10 +166,13 @@ export const Description = styled(Paragraph)`
 `
 
 export const BlogPost = styled.article`
-  p {
+  p,
+  ul,
+  ol,
+  li {
     ${SERIF_FONT};
     font-size: 16px;
-    line-height: 1.58;
+    line-height: 1.88;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.8);
     --x-height-multiplier: 0.375;
