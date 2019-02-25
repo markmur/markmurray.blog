@@ -31,20 +31,23 @@ a {
   text-decoration: inherit;
 }
 
-p > a {
+p > a,
+li > a {
   padding: 2px;
   color: #0087ff;
   font-weight: 600;
   border-bottom: 1px solid #eee;
 }
 
-p > a:hover {
+p > a:hover,
+li > a:hover {
   border-bottom: 1px solid #0087ff;
 }
 
 blockquote {
   background: #f4f4f7;
-  padding: 1em 2em;
+  padding: 0.5em 2em;
   margin: 0;
+  margin-bottom: 2em;
   border-left: 2em solid #eeedf3;
 }

@@ -8,16 +8,12 @@ tags:
   - Parcel
 ---
 
-`create-react-app` is still a great choice for many applications and getting
-started is very easy. However, I would argue that using Parcel is even easier to
-manage.
-
-A beginner guide to creating a React app would be incomplete without mentioning
-[Create React App](https://github.com/facebook/create-react-app) - which is
-still a great choice for many applications. However, over time as your app gets
-more complex, you might find yourself needing to `eject` from
-[Create React App](https://github.com/facebook/create-react-app) and might find
-yourself having to manage a relatively large build config on your own.
+A beginner's guide to creating a React app would be incomplete without
+mentioning [Create React App](https://github.com/facebook/create-react-app) -
+which is still a great choice for many applications. However, over time as your
+app gets more complex, you might find yourself needing to `eject` from
+[Create React App](https://github.com/facebook/create-react-app) and having to
+manage a relatively large build configuration on your own.
 
 With [Parcel](https://parceljs.org/), there's no configuration needed - which
 greatly reduces the learning curve and removes the headaches often associated
@@ -35,7 +31,10 @@ npm install --global yarn
 ```
 
 Once you've installed [Yarn](https://yarnpkg.com), create a new directory for
-your project and initialise a new node project.
+your project and initialise a new node project. The output of the `yarn init`
+command will be a `package.json` file at the root of your project, which will
+contain important information about the project like the `name`, `version`,
+`license`, `dependencies` etc.
 
 ```sh
 # Create a directory for your project
@@ -61,9 +60,12 @@ alternative to [Webpack](https://webpack.js.org) (which `create-react-app` uses
 under the hood but abstracts from users), which is used to build your
 application - and by "build", it means:
 
-1. Package your application code into 1 or many `.js` files.
-2. Extract any css your application might be using.
-3. "Tree-shake" unused code
+1. Compile any proposed future JavaScript syntax (for support in all browsers)
+   See [Babel](https://babeljs.io/)
+1. Package your application code into one or many `.js` files (chunks).
+1. Extract any css your application might be using to common `.css` file(s)
+1. "Tree-shake" (eliminate) unused code
+1. Remove comments, minify and uglify the code
 
 ```sh
 yarn add --dev parcel-bundler
