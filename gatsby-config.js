@@ -4,6 +4,13 @@ module.exports = {
     description: 'Front End Developer @ Zalando, Dublin',
   },
   plugins: [
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: 'UA-76403737-3',
+        exclude: ['/admin/**'],
+      },
+    },
     'gatsby-plugin-styled-components',
     'gatsby-plugin-react-helmet',
     {
