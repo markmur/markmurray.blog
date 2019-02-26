@@ -54,9 +54,12 @@ const Head = ({ site }) => (
 )
 
 const Content = ({ site, children }) => {
-  const [theme, setTheme, themeName] = useTheme(
-    localStorage.getItem('theme') || 'light',
-  )
+  const defaultTheme =
+    typeof localStorage === 'undefined'
+      ? 'light'
+      : localStorage.getItem('theme')
+
+  const [theme, setTheme, themeName] = useTheme(defaultTheme)
 
   return (
     <div>
