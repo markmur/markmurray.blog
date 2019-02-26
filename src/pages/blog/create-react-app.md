@@ -1,19 +1,15 @@
 ---
 templateKey: blog-post
-title: The easiest way to create a new React app
-description: Swapping out create-react-app for Parcel
+title: The easiest way to create a new React application
+description: Ditching create-react-app in favour of Parcel
 date: 2019-02-24T00:00:00.000Z
 tags:
   - React
   - Parcel
 ---
-
 A beginner's guide to creating a React app would be incomplete without
 mentioning [Create React App](https://github.com/facebook/create-react-app) -
-which is still a great choice for many applications. However, over time as your
-app gets more complex, you might find yourself needing to `eject` from
-[Create React App](https://github.com/facebook/create-react-app) and having to
-manage a relatively large build configuration on your own.
+which is still a great choice for many applications. [Create React App](https://github.com/facebook/create-react-app) is a great solution because it abstracts a complex [Webpack](https://webpack.js.org) configuration which you can manage if you choose to `eject` at a later stage.
 
 With [Parcel](https://parceljs.org/), there's no configuration needed - which
 greatly reduces the learning curve and removes the headaches often associated
@@ -62,10 +58,10 @@ application - and by "build", it means:
 
 1. Compile any proposed future JavaScript syntax (for support in all browsers)
    See [Babel](https://babeljs.io/)
-1. Package your application code into one or many `.js` files (chunks).
-1. Extract any css your application might be using to common `.css` file(s)
-1. "Tree-shake" (eliminate) unused code
-1. Remove comments, minify and uglify the code
+2. Package your application code into one or many `.js` files (chunks).
+3. Extract any css your application might be using to common `.css` file(s)
+4. "Tree-shake" (eliminate) unused code
+5. Remove comments, minify and uglify the code
 
 ```sh
 yarn add --dev parcel-bundler
@@ -147,7 +143,7 @@ yarn start
 ```
 
 The app should then be available at
-[http://localhost:1234](http://localhost:1234).
+<http://localhost:1234>.
 
 To deploy a production-ready version of your app, run `yarn build` - one of the
 scripts we listed in the `package.json` file above. Once complete, you should
