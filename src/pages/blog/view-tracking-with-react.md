@@ -1,11 +1,12 @@
 ---
 templateKey: blog-post
-title:
-  Tracking Views and Impressions with the IntersectionObserver API in a React app
-date: 2019-02-20
+title: >-
+  Tracking Views and Impressions with the IntersectionObserver API in a React
+  app
 description: >-
   Leveraging the native IntersectionObserver API to track views and impressions
   in a react application.
+date: 2019-02-26T00:00:00.000Z
 tags:
   - React
   - IntersectionObserver
