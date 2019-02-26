@@ -27,7 +27,6 @@ const Post = ({ post }) => (
   <StyledPost>
     <Container>
       <Title>
-        {console.log(post.fields.slug)}
         <Link to={post.fields.slug}>{post.frontmatter.title}</Link>
       </Title>
       <Timestamp>{post.frontmatter.date}</Timestamp>
