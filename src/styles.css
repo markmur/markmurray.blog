@@ -31,8 +31,18 @@ a {
   text-decoration: inherit;
 }
 
+hr {
+  display: block;
+  border: none;
+  height: 1px;
+  background: rgb(223, 224, 238);
+  margin: 4em 30%;
+  outline: none;
+}
+
 p > a,
-li > a {
+li > a,
+strong > a {
   padding: 2px;
   color: #0087ff;
   font-weight: 600;
@@ -40,7 +50,8 @@ li > a {
 }
 
 p > a:hover,
-li > a:hover {
+li > a:hover,
+strong > a:hover {
   border-bottom: 1px solid #0087ff;
 }
 
