@@ -4,6 +4,7 @@ module.exports = {
     description: 'Front End Developer @ Zalando, Dublin',
   },
   plugins: [
+    'gatsby-plugin-offline',
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
