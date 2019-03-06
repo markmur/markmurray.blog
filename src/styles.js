@@ -35,6 +35,16 @@ export const Flex = styled.div`
   display: flex;
 `
 
+export const GlobalBorder = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  border: 10px solid black;
+`
+
 export const Bullet = styled(props => <span {...props}>&bull;</span>)`
   color: ${theme('bullet')};
   margin: 0 10px;
