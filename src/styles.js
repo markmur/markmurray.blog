@@ -41,7 +41,7 @@ export const GlobalBorder = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 10;
+  z-index: -1;
   border: 10px solid black;
 `
 
