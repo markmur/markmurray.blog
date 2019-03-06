@@ -18,6 +18,12 @@ const isMobile = content => `
   }
 `
 
+const notMobile = content => `
+  @media (min-width: 720px) {
+    ${content}
+  }
+`
+
 const transition = css`
   transition: color 150ms, background 150ms;
   will-change: color, background;
@@ -33,6 +39,10 @@ export const Nav = styled.nav`
 
 export const Flex = styled.div`
   display: flex;
+`
+
+export const Box = styled.div`
+  ${space};
 `
 
 export const GlobalBorder = styled.div`
@@ -261,6 +271,50 @@ export const Comments = styled.div`
   border-top: 1px solid ${theme('hrColor')};
   border-bottom: 1px solid ${theme('hrColor')};
   margin-top: 3em;
+`
+
+export const Footer = styled.footer`
+  position: relative;
+  text-align: center;
+  color: #666;
+  padding: 4em 0;
+  margin-bottom: 2em;
+
+  ${notMobile(`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      border: 2px solid black;
+      left: 0;
+      right: 0;
+      top: 50%;
+    }
+  `)}
+
+  a {
+    color: black;
+    font-size: 1.5em;
+    margin-left: 1em;
+    margin-top: 1px;
+    vertical-align: -webkit-baseline-middle;
+
+    ${isMobile(`
+      margin-top: 1em;
+    `)}
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+
+  strong {
+    color: black;
+  }
 `
 
 export const GlobalStyles = createGlobalStyle`
