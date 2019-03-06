@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { kebabCase } from 'lodash'
 import {
+  Bullet,
   Post as StyledPost,
   Title,
   Timestamp,
@@ -27,9 +28,17 @@ const Post = ({ post }) => (
   <StyledPost>
     <Container>
       <Title>
-        <Link to={post.fields.slug}>{post.frontmatter.title}</Link>
+        <Link to={post.fields.slug}>
+          <span dangerouslySetInnerHTML={{ __html: post.frontmatter.title }} />
+        </Link>
       </Title>
-      <Timestamp>{post.frontmatter.date}</Timestamp>
+
+      <Timestamp>
+        {post.frontmatter.date}
+        <Bullet />
+        {post.fields.readingTime.text}
+      </Timestamp>
+
       <LineBreak />
       <Paragraph mb={4}>{post.frontmatter.description}</Paragraph>
       <Tags tags={post.frontmatter.tags} />

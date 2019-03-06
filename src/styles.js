@@ -1,9 +1,13 @@
+import React from 'react'
 import { Link } from 'gatsby'
 import styled, { css, createGlobalStyle } from 'styled-components'
 import { fontSize, space } from 'styled-system'
 
-const LOGO_FONT = 'font-family: PT Serif, serif'
-const SERIF_FONT = 'font-family: Merriweather, serif'
+// const LOGO_FONT = 'PT Serif, serif'
+const font = family => `font-family: ${family}`
+
+const LOGO_FONT = font('Reenie Beanie')
+const SERIF_FONT = font('Merriweather, serif')
 
 const theme = (key, fallback) => props =>
   props.theme[key] || (fallback || 'initial')
@@ -27,20 +31,41 @@ export const Nav = styled.nav`
   `)}
 `
 
+export const Flex = styled.div`
+  display: flex;
+`
+
+export const Bullet = styled(props => <span {...props}>&bull;</span>)`
+  color: ${theme('bullet')};
+  margin: 0 10px;
+`
+
+export const Toolbar = styled.div`
+  background: black;
+  width: 80px;
+`
+
 export const Logo = styled.h2`
   ${LOGO_FONT};
-  color: ${theme('background')};
-  text-shadow: 2px 2px 0 ${theme('primary')};
-  font-size: 2.75rem;
+  color: ${theme('logoColor', theme('color'))};
+  font-size: 3rem;
   margin: 0;
   letter-spacing: 0.75px;
+  font-weight: light;
   ${transition};
+
+  &:hover {
+    color: ${theme('logoHoverColor')};
+  }
 `
 
 export const Tag = styled(Link)`
-  padding: 3px 6px;
+  padding: 5px 12px;
   color: ${theme('tagColor')};
   background: ${theme('tagBackground')};
+  background: var(--inline-code-background);
+  font-family: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New',
+    Courier, monospace;
   font-weight: 500;
   font-size: 0.9rem;
   margin-right: 8px;
@@ -59,7 +84,7 @@ export const Container = styled.div`
   padding: 0 2em;
 
   ${isMobile(`
-    padding: 0 1em;
+    padding: 0 1.5em;
   `)}
 `
 
@@ -69,7 +94,6 @@ export const Content = styled.section`
   margin: 1em 3em 0;
   background: ${theme('contentBackground')};
   padding-top: 1em;
-  height: 100%;
   ${space};
   ${transition};
 
@@ -91,9 +115,10 @@ export const PageHeading = styled.h1`
   margin-bottom: 0.35em;
 
   ${isMobile(`
-    font-size: 2.5rem;
+    font-size: 3.25rem;
     margin-top: 0.5em;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
+    letter-spacing: 0;
   `)}
 `
 
@@ -111,6 +136,24 @@ export const Title = styled.h1`
     font-weight: 800;
     font-size: 1.65rem;
   `)}
+
+  strong {
+    position: relative;
+    font-weight: 800;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      bottom: -1px;
+      right: -3px;
+      left: -3px;
+      background: #3996ff;
+      opacity: 0.2;
+      z-index: -1;
+      transform: rotate(-1deg);
+    }
+  }
 `
 
 export const PostTitle = styled(Title)`
@@ -127,23 +170,26 @@ export const PostTitle = styled(Title)`
   `)};
 `
 
-export const LineBreak = styled.div`
-  width: 80px;
-  border: 0.5px solid ${theme('primary')};
+export const LineBreak = styled.div.attrs({
+  className: 'LineBreak',
+})`
+  width: ${p => (p.width ? `${p.width}px` : '80px')};
+  border: 2px solid ${theme('primary')};
   margin-bottom: 2em;
   ${space};
+  transition: width 250ms ease-out;
 `
 
 export const Timestamp = styled.p`
   font-weight: 500;
   font-size: 15px;
-  color: #aaa;
+  color: ${theme('descriptionColor')};
   margin-bottom: 1.5em;
 `
 
 export const Post = styled.article`
   border-bottom: 1px solid ${theme('postBorderColor')};
-  padding: 3em 0;
+  padding: 4em 0;
 
   &:hover {
     background: ${theme('postHoverColor')};
@@ -197,6 +243,7 @@ export const BlogPost = styled.article`
 export const Comments = styled.div`
   padding: 3em 0;
   border-top: 1px solid ${theme('hrColor')};
+  border-bottom: 1px solid ${theme('hrColor')};
   margin-top: 3em;
 `
 
@@ -204,6 +251,25 @@ export const GlobalStyles = createGlobalStyle`
   :root {
     --background: ${theme('background')};
     --primary: ${theme('primary')};
+
+    // Prism styles
+    --char: #d8dee9;
+    --comment: #999999;
+    --keyword: #e89bda;
+    --lineHighlight: #343b4a;
+    --primitive: #5a9bcf;
+    --string: #9effa5;
+    --variable: #8f9fb9;
+    --boolean: #ff8b50;
+    --punctuation: #5fb3b3;
+    --tag: #fc929e;
+    --function: #79b6f2;
+    --className: #fac863;
+    --method: #6699cc;
+    --operator: #fc929e;
+    --code-background: ${theme('codeBackground', 'rgb(40, 44, 52)')};
+    --inline-code-background: rgba(133, 180, 255, 0.2);
+    --inline-code-color: ${theme('inlineCodeColor')};
   }
 
   ::selection {
@@ -244,7 +310,7 @@ export const GlobalStyles = createGlobalStyle`
   hr {
     display: block;
     border: none;
-    height: 1px;
+    height: ${theme('hrWidth', '1px')};
     background: ${theme('hrColor')};
     margin: 4em 30%;
     outline: none;
@@ -271,5 +337,9 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     margin-bottom: 2em;
     border-left: 2em solid ${theme('blockquoteBorder')};
+
+    ${isMobile(`
+      margin: 0 -2em 2em;
+    `)}
   }
 `

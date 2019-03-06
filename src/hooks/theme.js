@@ -1,6 +1,30 @@
 import { useState } from 'react'
 
+// #004b38 - nice mint green
+
 const themes = {
+  minimal: {
+    selection: 'rgba(133, 180, 255, 0.4)',
+    primary: 'black',
+    background: 'white',
+    color: 'black',
+    logoColor: 'black',
+    logoHoverColor: 'blue',
+    contentBackground: 'white',
+    titleColor: '#111',
+    descriptionColor: '#686882',
+    postBorderColor: '#eaeaea',
+    tagColor: 'black',
+    tagBackground: 'rgba(133, 180, 255, 0.2)',
+    tagHoverBackground: 'rgba(133, 180, 255, 0.4)',
+    blockquoteBackground: '#f4f4f7',
+    blockquoteBorder: '#eeedf3',
+    linkColor: '#0087ff',
+    linkBorder: '#eee',
+    hrColor: 'rgb(223, 224, 238)',
+    bullet: '#7b778e',
+    inlineCodeColor: 'black',
+  },
   light: {
     selection: 'rgb(247, 235, 238)',
     primary: '#e6bac5',
@@ -18,7 +42,10 @@ const themes = {
     blockquoteBorder: '#eeedf3',
     linkColor: '#0087ff',
     linkBorder: '#eee',
-    hrColor: 'rgb(223, 224, 238)',
+    hrColor: 'black',
+    hrWidth: '2px',
+    bullet: '#7b778e',
+    inlineCodeColor: 'black',
   },
   dark: {
     selection: 'rgb(247, 235, 238)',
@@ -37,13 +64,16 @@ const themes = {
     blockquoteBorder: '#1f2529',
     linkColor: '#58b3b2',
     linkBorder: '#1f2529',
-    hrColor: '#1f2529',
+    hrColor: '#394750',
+    bullet: 'white',
+    inlineCodeColor: 'white',
+    codeBackground: '#1f2529',
   },
 }
 
 const useTheme = defaultTheme => {
-  let themeName = defaultTheme
-  const [theme, setTheme] = useState(themes[defaultTheme] || {})
+  let themeName = defaultTheme || 'minimal'
+  const [theme, setTheme] = useState(themes[themeName] || {})
 
   function changeTheme(newTheme) {
     if (typeof window !== 'undefined' && 'localStorage' in window)

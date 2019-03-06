@@ -1,7 +1,7 @@
 ---
 templateKey: blog-post
-title: The easiest way to create a new React application
-description: Ditching create-react-app in favour of Parcel
+title: The easiest way to create a new React app
+description: Swapping out create-react-app for Parcel
 date: 2019-02-24T00:00:00.000Z
 tags:
   - React

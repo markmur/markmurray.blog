@@ -7,14 +7,15 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import { HTMLContent } from '../components/Content'
 import {
-  Tag,
-  PostTitle,
-  Description,
-  Container,
-  LineBreak,
-  Content,
-  Timestamp,
+  Bullet,
   Comments,
+  Container,
+  Content,
+  Description,
+  LineBreak,
+  PostTitle,
+  Tag,
+  Timestamp,
 } from '../styles'
 
 const Tags = ({ tags }) =>
@@ -35,6 +36,7 @@ export const BlogPostTemplate = ({
   content,
   tags,
   date,
+  readingTime,
   postContent = HTMLContent,
   showComments = true,
 }) => {
@@ -42,12 +44,18 @@ export const BlogPostTemplate = ({
   return (
     <Content pb={4}>
       <Container>
-        <PostTitle>{title}</PostTitle>
+        <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
         <Description>{description}</Description>
-        <Timestamp>{date}</Timestamp>
+
+        <Timestamp>
+          {date}
+          <Bullet />
+          {readingTime}
+        </Timestamp>
+
         <Tags tags={tags} />
 
-        <LineBreak mt="2.5em" mb="3em" />
+        <LineBreak mt="4em" mb="3em" />
 
         <PostContent content={content} />
 
@@ -85,6 +93,7 @@ const BlogPost = ({ data }) => {
         content={post.html}
         tags={tags}
         date={date}
+        readingTime={post.fields.readingTime.text}
       />
     </Layout>
   )
@@ -97,6 +106,11 @@ export const pageQuery = graphql`
     markdownRemark(id: { eq: $id }) {
       id
       html
+      fields {
+        readingTime {
+          text
+        }
+      }
       frontmatter {
         date(formatString: "MMMM DD, YYYY")
         title

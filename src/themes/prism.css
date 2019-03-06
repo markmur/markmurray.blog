@@ -1,20 +1,3 @@
-:root {
-  --char: #d8dee9;
-  --comment: #999999;
-  --keyword: #e89bda;
-  --lineHighlight: #14161a;
-  --primitive: #5a9bcf;
-  --string: #9effa5;
-  --variable: #8f9fb9;
-  --boolean: #ff8b50;
-  --punctuation: #5fb3b3;
-  --tag: #fc929e;
-  --function: #79b6f2;
-  --className: #fac863;
-  --method: #6699cc;
-  --operator: #fc929e;
-}
-
 .gatsby-highlight-code-line {
   display: block;
   margin: 0 -2em;
@@ -55,18 +38,18 @@ pre {
 
 :not(pre) > code[class*='language-'],
 pre {
-  background: rgb(40, 44, 52);
+  background: var(--code-background);
 }
 
 /* Inline code */
 :not(pre) > code[class*='language-'] {
   padding: 3px 5px;
   border-radius: 2px;
-  background: rgba(133, 180, 255, 0.2);
+  background: var(--inline-code-background);
   font-family: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New',
     Courier, monospace;
   text-shadow: none;
-  color: black;
+  color: var(--inline-code-color);
 }
 
 .token.comment,

@@ -4,6 +4,7 @@ module.exports = {
     description: 'Front End Developer @ Zalando, Dublin',
   },
   plugins: [
+    'gatsby-remark-reading-time',
     'gatsby-plugin-offline',
     {
       resolve: 'gatsby-plugin-google-analytics',
@@ -21,6 +22,7 @@ module.exports = {
           'Merriweather:400,700,900',
           'Source Code Pro:400,500',
           'PT Serif:700',
+          'Reenie Beanie',
         ],
       },
     },
