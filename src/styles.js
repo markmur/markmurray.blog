@@ -50,13 +50,15 @@ export const Logo = styled.h2`
   color: ${theme('logoColor', theme('color'))};
   font-size: 3rem;
   margin: 0;
+  display: inline;
   letter-spacing: 0.75px;
   font-weight: light;
   ${transition};
-
-  &:hover {
-    color: ${theme('logoHoverColor')};
-  }
+  color: transparent;
+  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80)
+    0% 0% / 100% no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
 `
 
 export const Tag = styled(Link)`
@@ -110,9 +112,13 @@ export const PageHeading = styled.h1`
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--primary);
+  color: transparent;
   margin-top: 1em;
   margin-bottom: 0.35em;
+  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80)
+    0% 0% / 100% no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
 
   ${isMobile(`
     font-size: 3.25rem;
