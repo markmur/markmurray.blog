@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 import { StaticQuery, graphql } from 'gatsby'
-import { GlobalStyles, GlobalBorder, Flex, Container } from '../styles'
+import { GlobalStyles, GlobalBorder, Container } from '../styles'
 import useTheme from '../hooks/theme'
 
 import Footer from './Footer'
@@ -66,17 +66,15 @@ const Content = ({ site, children }) => {
 
           <GlobalBorder />
 
-          <Flex>
-            <div style={{ flex: 1 }}>
-              <Navbar theme={themeName} onThemeChange={setTheme} />
+          <div>
+            <Navbar theme={themeName} onThemeChange={setTheme} />
 
-              {children}
+            {children}
 
-              <Container>
-                <Footer />
-              </Container>
-            </div>
-          </Flex>
+            <Container>
+              <Footer />
+            </Container>
+          </div>
         </div>
       </ThemeProvider>
     </div>
