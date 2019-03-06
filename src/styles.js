@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import styled, { css, createGlobalStyle } from 'styled-components'
-import { fontSize, space } from 'styled-system'
+import { fontSize, space, bgColor } from 'styled-system'
 
 // const LOGO_FONT = 'PT Serif, serif'
 const font = family => `font-family: ${family}`
@@ -43,6 +43,7 @@ export const Flex = styled.div`
 
 export const Box = styled.div`
   ${space};
+  ${bgColor};
 `
 
 export const GlobalBorder = styled.div`
