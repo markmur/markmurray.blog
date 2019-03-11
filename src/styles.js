@@ -68,15 +68,6 @@ export const GlobalBorder = () => (
   <>
     <Border abs style={{ top: 0, left: 0, right: 0 }} />
     <Border style={{ top: 0, bottom: 0, height: '100vh' }} />
-    <Border
-      abs
-      style={{
-        top:
-          typeof document === 'undefined' ? 0 : document.body.offsetHeight + 12,
-        left: 0,
-        right: 0,
-      }}
-    />
     <Border style={{ top: 0, right: 0, height: '100vh' }} />
   </>
 )
