@@ -31,7 +31,7 @@ const transition = css`
 `
 
 export const Nav = styled.nav`
-  padding: 1.75em 0 1.35em;
+  padding: 2.25em 0 1.35em;
 
   ${isMobile(`
     padding: 1.25em 0;
