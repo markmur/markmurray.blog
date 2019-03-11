@@ -28,7 +28,6 @@ const Tags = ({ tags }) =>
 const Post = ({ post }) => (
   <StyledPost>
     <Container>
-      {console.log(post)}
       {post.frontmatter.pinned && <Pinned />}
 
       <Title>

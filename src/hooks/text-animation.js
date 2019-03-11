@@ -1,5 +1,7 @@
-const preloadImages = images =>
-  Promise.all(
+const preloadImages = images => {
+  if (typeof window === 'undefined') return Promise.resolve()
+
+  return Promise.all(
     images.map(
       image =>
         new Promise(resolve => {
@@ -10,6 +12,7 @@ const preloadImages = images =>
         }),
     ),
   )
+}
 
 const images = [
   'https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80',

@@ -23,9 +23,8 @@ const BlogPostPreview = ({ entry, widgetFor }) => (
       content={widgetFor('body')}
       tags={entry.getIn(['data', 'tags'])}
       showComments={false}
-      postContent={({ content, ...rest }) => (
+      postContent={({ content }) => (
         <Content>
-          {console.log({ content, rest })}
           <BlogPost>{content}</BlogPost>
         </Content>
       )}
