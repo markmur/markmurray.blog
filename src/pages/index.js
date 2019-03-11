@@ -29,7 +29,10 @@ export default class IndexPage extends React.Component {
 export const pageQuery = graphql`
   query IndexQuery {
     allMarkdownRemark(
-      sort: { order: DESC, fields: [frontmatter___date] }
+      sort: {
+        fields: [frontmatter___pinned, frontmatter___date]
+        order: [ASC, DESC]
+      }
       filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
     ) {
       edges {
@@ -46,6 +49,7 @@ export const pageQuery = graphql`
             tags
             templateKey
             description
+            pinned
             date(formatString: "MMMM DD, YYYY")
           }
         }

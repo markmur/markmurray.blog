@@ -1,3 +1,16 @@
+const preloadImages = images =>
+  Promise.all(
+    images.map(
+      image =>
+        new Promise(resolve => {
+          const img = new Image()
+          img.addEventListener('load', resolve)
+          img.addEventListener('error', resolve)
+          img.src = image
+        }),
+    ),
+  )
+
 const images = [
   'https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80',
   'https://images.unsplash.com/photo-1417533366444-43834ad6b3bb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1654&q=80',
@@ -9,6 +22,8 @@ const images = [
 const useLogoAnimation = () => {
   let count = 0
   let interval
+
+  preloadImages(images)
 
   const start = event => {
     event.persist()

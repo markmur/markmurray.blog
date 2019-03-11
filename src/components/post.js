@@ -7,6 +7,7 @@ import {
   Title,
   Timestamp,
   Paragraph,
+  Pinned,
   Container,
   LineBreak,
   Tag,
@@ -27,6 +28,9 @@ const Tags = ({ tags }) =>
 const Post = ({ post }) => (
   <StyledPost>
     <Container>
+      {console.log(post)}
+      {post.frontmatter.pinned && <Pinned />}
+
       <Title>
         <Link to={post.fields.slug}>
           <span dangerouslySetInnerHTML={{ __html: post.frontmatter.title }} />

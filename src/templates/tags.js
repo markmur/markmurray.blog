@@ -15,6 +15,8 @@ class TagRoute extends React.Component {
     const { title } = site.siteMetadata
     const { totalCount } = allMarkdownRemark
 
+    console.log('tags route?')
+
     return (
       <Layout>
         <section>

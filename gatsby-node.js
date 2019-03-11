@@ -78,10 +78,19 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 
   if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode })
+
+    // Create `slug` field
     createNodeField({
-      name: `slug`,
+      name: 'slug',
       node,
       value,
+    })
+
+    // Create `pinned` field
+    createNodeField({
+      name: 'pinned',
+      node,
+      value: Boolean(get(node, 'frontmatter.pinned', false)),
     })
   }
 }

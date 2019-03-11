@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import { EntypoPin } from 'react-entypo-icons'
 import styled, { css, createGlobalStyle } from 'styled-components'
 import { fontSize, space, bgColor } from 'styled-system'
 
@@ -30,7 +31,7 @@ const transition = css`
 `
 
 export const Nav = styled.nav`
-  padding: 1.5em 0 1.35em;
+  padding: 1.75em 0 1.35em;
 
   ${isMobile(`
     padding: 1.25em 0;
@@ -46,15 +47,38 @@ export const Box = styled.div`
   ${bgColor};
 `
 
-export const GlobalBorder = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  border: 10px solid black;
+export const Pinned = props => (
+  <Timestamp {...props}>
+    <EntypoPin style={{ marginTop: 2, marginRight: 5 }} /> Pinned post
+  </Timestamp>
+)
+
+const borderWidth = 10
+
+const Border = styled.div`
+  position: ${p => (p.abs ? 'absolute' : 'fixed')};
+  z-index: 100;
+  ${notMobile(`
+    border: ${borderWidth}px solid rgba(0, 0, 0, 0.95);
+  `)}
+  ${space};
 `
+
+export const GlobalBorder = () => (
+  <>
+    <Border abs style={{ top: 0, left: 0, right: 0 }} />
+    <Border style={{ top: 0, bottom: 0, height: '100vh' }} />
+    <Border
+      abs
+      style={{
+        top: document.body.offsetHeight + 12,
+        left: 0,
+        right: 0,
+      }}
+    />
+    <Border style={{ top: 0, right: 0, height: '100vh' }} />
+  </>
+)
 
 export const Bullet = styled(props => <span {...props}>&bull;</span>)`
   color: ${theme('bullet')};
@@ -69,7 +93,7 @@ export const Toolbar = styled.div`
 export const Logo = styled.h2`
   ${LOGO_FONT};
   color: ${theme('logoColor', theme('color'))};
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin: 0;
   display: inline;
   letter-spacing: 0.75px;
@@ -142,7 +166,7 @@ export const PageHeading = styled.h1`
   -webkit-background-clip: text;
 
   ${isMobile(`
-    font-size: 3.25rem;
+    font-size: 3rem;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     letter-spacing: 0;
