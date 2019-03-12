@@ -21,12 +21,12 @@ const img = key =>
   `https://images.unsplash.com/${key}?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&w=${imageWidth}&q=${imageQuality}&fit=crop`
 
 const images = [
-  img('photo-1494031021996-ac2eb738d846'),
-  img(`photo-1417533366444-43834ad6b3bb`),
-  img(`photo-1445331552301-94139f242587`),
-  img(`photo-1500402448245-d49c5229c564`),
-  img(`photo-1494189726046-a896ab4fb94a`),
-]
+  'photo-1494031021996-ac2eb738d846',
+  `photo-1417533366444-43834ad6b3bb`,
+  `photo-1445331552301-94139f242587`,
+  `photo-1500402448245-d49c5229c564`,
+  `photo-1494189726046-a896ab4fb94a`,
+].map(img)
 
 const useLogoAnimation = () => {
   let count = 0
