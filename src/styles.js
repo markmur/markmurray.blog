@@ -427,6 +427,7 @@ export const GlobalStyles = createGlobalStyle`
 
     ${isMobile(`
       margin: 0 -2em 2em;
+      padding: 0.5em 1em;
     `)}
   }
 `

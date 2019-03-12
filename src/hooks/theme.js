@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 // #004b38 - nice mint green
 
-const themes = {
+export const themes = {
   minimal: {
     selection: 'rgba(133, 180, 255, 0.4)',
     primary: 'black',
