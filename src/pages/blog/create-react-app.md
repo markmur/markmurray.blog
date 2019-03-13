@@ -1,17 +1,16 @@
 ---
 templateKey: blog-post
-title: The easiest way to create a new React application
-description: Ditching create-react-app in favour of Parcel
+title: Swapping create-react-app for Parcel
+description: Forget about managing webpack configs entirely
 date: 2019-02-24T00:00:00.000Z
+pinned: true
 tags:
   - React
   - Parcel
 ---
-A beginner's guide to creating a React app would be incomplete without
-mentioning [Create React App](https://github.com/facebook/create-react-app) -
-which is still a great choice for many applications. [Create React App](https://github.com/facebook/create-react-app) is a great solution because it abstracts a complex [Webpack](https://webpack.js.org) configuration which you can manage if you choose to `eject` at a later stage.
+Let me start by saying that [Create React App](https://github.com/facebook/create-react-app) is still a great choice for many applications and may be more suited for complex projects. [Create React App](https://github.com/facebook/create-react-app) is a great solution because it abstracts a complex [Webpack](https://webpack.js.org) configuration which you can choose to manage if you choose to `eject` at a later stage.
 
-With [Parcel](https://parceljs.org/), there's no configuration needed - which
+With [Parcel](https://parceljs.org/) however, there's no configuration needed - which
 greatly reduces the learning curve and removes the headaches often associated
 with managing [Webpack](https://webpack.js.org) configs.
 
