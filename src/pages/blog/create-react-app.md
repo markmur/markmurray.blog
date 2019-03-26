@@ -3,7 +3,7 @@ templateKey: blog-post
 title: Swapping create-react-app for Parcel
 description: Forget about managing webpack configs entirely
 date: 2019-02-24T00:00:00.000Z
-pinned: true
+pinned: false
 tags:
   - React
   - Parcel
