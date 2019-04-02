@@ -7,6 +7,7 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import { HTMLContent } from '../components/Content'
 import {
+  Flex,
   Bullet,
   Comments,
   Container,
@@ -20,13 +21,13 @@ import {
 
 const Tags = ({ tags }) =>
   tags && tags.length > 0 ? (
-    <div>
+    <Flex wrap>
       {tags.map(tag => (
         <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
           {tag}
         </Tag>
       ))}
-    </div>
+    </Flex>
   ) : null
 
 export const BlogPostTemplate = ({

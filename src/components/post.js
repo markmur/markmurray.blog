@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { kebabCase } from 'lodash'
 import {
+  Flex,
   Bullet,
   Post as StyledPost,
   Title,
@@ -16,13 +17,13 @@ import {
 const Tags = ({ tags }) =>
   tags &&
   tags.length > 0 && (
-    <div>
+    <Flex wrap>
       {tags.map(tag => (
         <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
           {tag}
         </Tag>
       ))}
-    </div>
+    </Flex>
   )
 
 const Post = ({ post }) => (

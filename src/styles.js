@@ -43,6 +43,7 @@ export const Flex = styled.div`
   flex-direction: ${p => (p.column ? 'column' : 'row')};
   justify-content: ${p => p.justifyContent || 'flex-start'};
   align-items: ${p => p.alignItems || 'center'};
+  flex-wrap: ${p => (p.wrap ? 'wrap' : 'nowrap')};
 `
 
 export const Box = styled.div`
@@ -126,6 +127,7 @@ export const Tag = styled(Link)`
   font-weight: 500;
   font-size: 0.9rem;
   margin-right: 8px;
+  margin-bottom: 10px;
   border-radius: 3px;
   letter-spacing: 0.25px;
   ${transition};
@@ -444,7 +446,7 @@ export const GlobalStyles = createGlobalStyle`
     border-left: 2em solid ${theme('blockquoteBorder')};
 
     ${isMobile(`
-      margin: 0 -2em 2em;
+      margin: 0 -1.5em 2em;
       padding: 0.5em 1em;
     `)}
   }
