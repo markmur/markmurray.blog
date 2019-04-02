@@ -23,16 +23,28 @@ const Head = ({ site }) => (
   <Helmet>
     <html lang="en" />
     <title>{site.siteMetadata.title}</title>
+    <meta name="title" content={site.siteMetadata.title} />
     <meta name="description" content={site.siteMetadata.description} />
 
-    <link rel="icon" type="image/png" href="/img/favicon.png" sizes="32x32" />
-
-    <meta name="theme-color" content="#fff" />
-
-    <meta property="og:type" content="business.business" />
+    {/* Facebook */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://markmurray.co/" />
     <meta property="og:title" content={site.siteMetadata.title} />
-    <meta property="og:url" content="/" />
-    <meta property="og:image" content="/img/og-image.jpg" />
+    <meta property="og:description" content={site.siteMetadata.description} />
+    <meta property="og:image" content="/img/meta.png" />
+
+    {/* Twitter */}
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://markmurray.co/" />
+    <meta property="twitter:title" content={site.siteMetadata.title} />
+    <meta
+      property="twitter:description"
+      content={site.siteMetadata.description}
+    />
+    <meta property="twitter:image" content="/img/meta.png" />
+
+    <link rel="icon" type="image/png" href="/img/favicon.png" sizes="32x32" />
+    <meta name="theme-color" content="#000" />
   </Helmet>
 )
 
