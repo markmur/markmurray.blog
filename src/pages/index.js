@@ -17,9 +17,11 @@ export default class IndexPage extends React.Component {
           <Container>
             <PageHeading>Latest Posts</PageHeading>
           </Container>
-          {posts.map(post => (
-            <Post key={post.id} post={post} />
-          ))}
+          {posts
+            .sort((a, b) => b.frontmatter.pinned - a.frontmatter.pinned)
+            .map(post => (
+              <Post key={post.id} post={post} />
+            ))}
         </Content>
       </Layout>
     )
@@ -29,10 +31,7 @@ export default class IndexPage extends React.Component {
 export const pageQuery = graphql`
   query IndexQuery {
     allMarkdownRemark(
-      sort: {
-        fields: [frontmatter___pinned, frontmatter___date]
-        order: [ASC, DESC]
-      }
+      sort: { fields: [frontmatter___date], order: [DESC] }
       filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
     ) {
       edges {
