@@ -4,7 +4,7 @@ import { PageHeading, Container, Content } from '../styles'
 import Layout from '../components/Layout'
 import Post from '../components/post'
 
-export default class IndexPage extends React.Component {
+export default class BlogPage extends React.Component {
   render() {
     const { data } = this.props
     const { edges } = data.allMarkdownRemark
@@ -12,7 +12,7 @@ export default class IndexPage extends React.Component {
     const posts = edges.map(({ node }) => node)
 
     return (
-      <Layout displayTagline>
+      <Layout>
         <Content>
           <Container>
             <PageHeading>Latest Posts</PageHeading>
@@ -27,7 +27,7 @@ export default class IndexPage extends React.Component {
 }
 
 export const pageQuery = graphql`
-  query IndexQuery {
+  query BlogQuery {
     allMarkdownRemark(
       sort: {
         fields: [frontmatter___pinned, frontmatter___date]

@@ -10,7 +10,6 @@ import '../../themes/prism.css'
 const DATE_FORMAT = 'MMMM DD, YYYY'
 
 const BlogPostPreview = ({ entry, widgetFor }) => {
-  console.log(entry.toJS())
   return (
     <ThemeProvider theme={themes.minimal}>
       <div>

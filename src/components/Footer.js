@@ -1,10 +1,15 @@
 import React from 'react'
-import { EntypoGithub, EntypoTwitter } from 'react-entypo-icons'
+import {
+  EntypoGithub,
+  EntypoTwitter,
+  EntypoInstagram,
+} from 'react-entypo-icons'
 import { Footer, Box } from '../styles'
 
 const links = [
-  [EntypoGithub, 'https://github.com/markmur'],
-  [EntypoTwitter, 'https://twitter.com/mrkmur'],
+  [EntypoGithub, 'https://github.com/markmur', 'GitHub'],
+  [EntypoTwitter, 'https://twitter.com/mrkmur', 'Twitter'],
+  [EntypoInstagram, 'https://instagram.com/markmur', 'Instagram'],
 ]
 
 export default props => (
@@ -14,8 +19,8 @@ export default props => (
     </Box>
 
     <Box bg="white" mt={['3em', 0]} pl={[0, '2em']}>
-      {links.map(([Icon, link]) => (
-        <a key={link} href={link}>
+      {links.map(([Icon, link, name]) => (
+        <a key={link} aria-label={name} name={name} href={link}>
           <Icon />
         </a>
       ))}

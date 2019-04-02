@@ -25,14 +25,8 @@ const Head = ({ site }) => (
     <title>{site.siteMetadata.title}</title>
     <meta name="description" content={site.siteMetadata.description} />
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/img/apple-touch-icon.png"
-    />
     <link rel="icon" type="image/png" href="/img/favicon.png" sizes="32x32" />
 
-    <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#ff4400" />
     <meta name="theme-color" content="#fff" />
 
     <meta property="og:type" content="business.business" />
@@ -42,7 +36,7 @@ const Head = ({ site }) => (
   </Helmet>
 )
 
-const Content = ({ site, children }) => {
+const Content = ({ site, children, displayTagline = false }) => {
   const [theme, setTheme, themeName] = useTheme()
 
   return (
@@ -56,7 +50,11 @@ const Content = ({ site, children }) => {
           <GlobalBorder />
 
           <div>
-            <Navbar theme={themeName} onThemeChange={setTheme} />
+            <Navbar
+              displayTagline={displayTagline}
+              theme={themeName}
+              onThemeChange={setTheme}
+            />
 
             {children}
 
@@ -70,11 +68,15 @@ const Content = ({ site, children }) => {
   )
 }
 
-const Layout = ({ children }) => {
+const Layout = ({ children, ...props }) => {
   return (
     <StaticQuery
       query={query}
-      render={data => <Content {...data}>{children}</Content>}
+      render={data => (
+        <Content {...data} {...props}>
+          {children}
+        </Content>
+      )}
     />
   )
 }

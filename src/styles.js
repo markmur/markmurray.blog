@@ -40,6 +40,9 @@ export const Nav = styled.nav`
 
 export const Flex = styled.div`
   display: flex;
+  flex-direction: ${p => (p.column ? 'column' : 'row')};
+  justify-content: ${p => p.justifyContent || 'flex-start'};
+  align-items: ${p => p.alignItems || 'center'};
 `
 
 export const Box = styled.div`
@@ -55,6 +58,23 @@ export const Pinned = props => (
 
 const borderWidth = 10
 
+// const VerticalBorder = styled.div`
+//   position: absolute;
+//   z-index: 100;
+//   ${space};
+//   width: 20px;
+//   height: ${typeof document === 'undefined'
+//     ? '100%'
+//     : `${document.body.offsetHeight}px`};
+//   opacity: 1;
+//   top: 0;
+//   bottom: 0;
+
+//   ${notMobile(`
+//     background: linear-gradient(to bottom, black, blue);
+//   `)}
+// `
+
 const Border = styled.div`
   position: ${p => (p.abs ? 'absolute' : 'fixed')};
   z-index: 100;
@@ -67,8 +87,6 @@ const Border = styled.div`
 export const GlobalBorder = () => (
   <>
     <Border abs style={{ top: 0, left: 0, right: 0 }} />
-    <Border style={{ top: 0, bottom: 0, height: '100vh' }} />
-    <Border style={{ top: 0, right: 0, height: '100vh' }} />
   </>
 )
 
@@ -92,8 +110,8 @@ export const Logo = styled.h2`
   font-weight: light;
   ${transition};
   color: transparent;
-  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80)
-    0% 0% / 100% no-repeat;
+  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=50)
+    black 0% 0% / 100% no-repeat;
   background-clip: text;
   -webkit-background-clip: text;
 `
@@ -150,10 +168,10 @@ export const PageHeading = styled.h1`
   letter-spacing: 1px;
   text-transform: uppercase;
   color: transparent;
-  margin-top: 1em;
+  margin-top: 0.2em;
   margin-bottom: 0.35em;
   background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80)
-    0% 0% / 100% no-repeat;
+    black 0% 0% / 100% no-repeat;
   background-clip: text;
   -webkit-background-clip: text;
 
@@ -228,6 +246,7 @@ export const Timestamp = styled.p`
   font-size: 15px;
   color: ${theme('descriptionColor')};
   margin-bottom: 1.5em;
+  ${fontSize};
 `
 
 export const Post = styled.article`
@@ -295,7 +314,6 @@ export const Footer = styled.footer`
   text-align: center;
   color: #666;
   padding: 4em 0;
-  margin-bottom: 2em;
 
   ${notMobile(`
     display: flex;
