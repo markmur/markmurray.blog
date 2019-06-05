@@ -2,9 +2,10 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'styled-components'
 import { StaticQuery, graphql } from 'gatsby'
-import { GlobalStyles, GlobalBorder, Container } from '../styles'
+import { GlobalStyles, Container } from '../styles'
 import useTheme from '../hooks/theme'
 
+import BackgroundLines from './BackgroundLines'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
@@ -48,23 +49,24 @@ const Head = ({ site }) => (
   </Helmet>
 )
 
-const Content = ({ site, children, displayTagline = false }) => {
+const Content = ({ site, children, displayTagline = false, wide = false }) => {
   const [theme, setTheme, themeName] = useTheme()
 
   return (
     <div>
       <Head site={site} />
 
+      <BackgroundLines />
+
       <ThemeProvider theme={theme}>
         <div>
           <GlobalStyles />
 
-          <GlobalBorder />
-
           <div>
             <Navbar
-              displayTagline={displayTagline}
+              wide={wide}
               theme={themeName}
+              displayTagline={displayTagline}
               onThemeChange={setTheme}
             />
 

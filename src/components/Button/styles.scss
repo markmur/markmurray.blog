@@ -1,0 +1,41 @@
+@import '../../styles/mixins.scss';
+
+.button {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background: $primary;
+  color: white;
+  text-align: right;
+  text-transform: uppercase;
+  box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 1em;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  padding: 0.75em 1.75em;
+  padding-right: 0;
+  cursor: pointer;
+  max-width: 300px;
+  transition: padding 200ms, background 200ms;
+
+  @include xs-device {
+    max-width: 100%;
+  }
+
+  &:hover {
+    padding-left: 2em;
+    background: darken($primary, 7.5%);
+
+    svg {
+      margin-right: 2em;
+    }
+  }
+
+  svg {
+    fill: darken(white, 10%);
+    margin-left: auto;
+    margin-right: 1.5em;
+    width: 16px;
+    transition: margin 200ms;
+  }
+}

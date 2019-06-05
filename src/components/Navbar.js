@@ -1,22 +1,24 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import { Flex, Container, Logo, Nav, Timestamp } from '../styles'
-import useTextAnimation from '../hooks/text-animation'
 
-const Navbar = ({ displayTagline }) => {
+const Navbar = ({ displayTagline, wide = false }) => {
   return (
     <Nav role="navigation" aria-label="main-navigation">
-      <Container>
+      <Container wide={wide}>
         <Flex justifyContent="space-between">
           <div>
             <Link to="/">
-              <Logo {...useTextAnimation()}>mark.</Logo>
+              <Logo>mark.</Logo>
             </Link>
           </div>
 
-          {/* <Flex>
-            <Link to="/blog">Blog</Link>
-          </Flex> */}
+          <Flex>
+            <Link style={{ marginRight: 25 }} to="/">
+              Posts
+            </Link>
+            <Link to="/projects">Portfolio</Link>
+          </Flex>
         </Flex>
 
         {displayTagline && (
