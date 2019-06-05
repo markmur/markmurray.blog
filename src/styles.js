@@ -253,10 +253,7 @@ export const Timestamp = styled.p`
 export const Post = styled.article`
   border-bottom: 1px solid ${theme('postBorderColor')};
   padding: 4em 0;
-
-  &:hover {
-    background: ${theme('postHoverColor')};
-  }
+  background: white;
 
   ${isMobile(`
     padding-top: 2em;

@@ -5,6 +5,7 @@ import { StaticQuery, graphql } from 'gatsby'
 import { GlobalStyles, Container } from '../styles'
 import useTheme from '../hooks/theme'
 
+import BackgroundLines from './BackgroundLines'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
@@ -54,6 +55,8 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
   return (
     <div>
       <Head site={site} />
+
+      <BackgroundLines />
 
       <ThemeProvider theme={theme}>
         <div>
