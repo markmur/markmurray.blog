@@ -1,6 +1,9 @@
 {
   "name": "markmurray.blog",
   "description": "Mark Murray's Blog",
+  "repository": {
+    "url": "https://github.com/markmur/markmurray.blog"
+  },
   "version": "0.1.0",
   "author": "Mark Murray",
   "license": "MIT",
