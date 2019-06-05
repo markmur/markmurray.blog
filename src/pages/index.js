@@ -4,12 +4,14 @@ import { PageHeading, Container, Content } from '../styles'
 import Layout from '../components/Layout'
 import Post from '../components/post'
 
+const getNodes = entity => {
+  return entity.edges.map(({ node }) => node)
+}
+
 export default class IndexPage extends React.Component {
   render() {
     const { data } = this.props
-    const { edges } = data.allMarkdownRemark
-
-    const posts = edges.map(({ node }) => node)
+    const posts = getNodes(data.posts)
 
     return (
       <Layout displayTagline>
@@ -29,8 +31,8 @@ export default class IndexPage extends React.Component {
 }
 
 export const pageQuery = graphql`
-  query IndexQuery {
-    allMarkdownRemark(
+  {
+    posts: allMarkdownRemark(
       sort: { fields: [frontmatter___date], order: [DESC] }
       filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
     ) {

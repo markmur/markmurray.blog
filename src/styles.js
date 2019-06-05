@@ -138,7 +138,7 @@ export const Tag = styled(Link)`
 `
 
 export const Container = styled.div`
-  max-width: 800px;
+  max-width: ${p => (p.wide ? '1320px' : '800px')};
   margin: auto;
   padding: 0 2em;
 
@@ -151,7 +151,6 @@ export const Content = styled.section`
   position: relative;
   z-index: 2;
   margin: 1em 3em 0;
-  background: ${theme('contentBackground')};
   padding-top: 1em;
   ${space};
   ${transition};
@@ -171,7 +170,7 @@ export const PageHeading = styled.h1`
   text-transform: uppercase;
   color: transparent;
   margin-top: 0.2em;
-  margin-bottom: 0.35em;
+  margin-bottom: 0.15em;
   background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80)
     black 0% 0% / 100% no-repeat;
   background-clip: text;
