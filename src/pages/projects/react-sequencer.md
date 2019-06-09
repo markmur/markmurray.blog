@@ -2,7 +2,7 @@
 order: 6
 templateKey: project
 title: React Sequencer
-description: Step sequencer build with React and the Web Audio API.
+description: Step sequencer built with React and the Web Audio API.
 cta: Try it out
 url: https://sequencer-2dafa.firebaseapp.com/
 github_url: https://github.com/markmur/react-sequencer
