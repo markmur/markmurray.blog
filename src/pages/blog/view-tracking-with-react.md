@@ -1,4 +1,5 @@
 ---
+pinned: true
 templateKey: blog-post
 title: >-
   Tracking Views and Impressions with the <strong>IntersectionObserver
@@ -11,7 +12,6 @@ tags:
   - React
   - IntersectionObserver
   - Tracking
-pinned: true
 ---
 
 ## The Target Implementation

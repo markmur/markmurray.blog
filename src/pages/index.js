@@ -34,7 +34,9 @@ export const pageQuery = graphql`
   {
     posts: allMarkdownRemark(
       sort: { fields: [frontmatter___date], order: [DESC] }
-      filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
+      filter: {
+        frontmatter: { private: { ne: true }, templateKey: { eq: "blog-post" } }
+      }
     ) {
       edges {
         node {
@@ -51,6 +53,7 @@ export const pageQuery = graphql`
             templateKey
             description
             pinned
+            private
             date(formatString: "MMMM DD, YYYY")
           }
         }
