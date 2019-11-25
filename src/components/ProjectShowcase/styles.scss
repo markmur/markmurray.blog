@@ -39,6 +39,23 @@ $showcase-height: 50vh;
     }
   }
 
+  @include md-device {
+    display: flex;
+    flex-direction: column-reverse;
+    height: initial;
+    margin-bottom: 8em;
+
+    &--image {
+      top: inherit;
+      bottom: inherit;
+      position: relative;
+      display: block;
+      align-self: center;
+      width: 100%;
+      height: auto;
+    } 
+  }
+
   .xs-device-image {
     display: none;
 
@@ -54,6 +71,20 @@ $showcase-height: 50vh;
     flex-direction: column;
     z-index: 2;
     height: 100%;
+
+    @include md-device {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 100%;
+      height: initial;
+      margin-bottom: 2.5em;
+
+      a.button {
+        padding: 0.5em 1.25em;
+        height: inherit;
+      }
+    }
 
     @include devices(true) {
       max-width: 100%;

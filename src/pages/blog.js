@@ -33,7 +33,9 @@ export const pageQuery = graphql`
         fields: [frontmatter___pinned, frontmatter___date]
         order: [ASC, DESC]
       }
-      filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
+      filter: {
+        frontmatter: { templateKey: { eq: "blog-post" }, private: { ne: true } }
+      }
     ) {
       edges {
         node {

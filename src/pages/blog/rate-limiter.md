@@ -1,4 +1,5 @@
 ---
+private: true
 templateKey: blog-post
 pinned: true
 title: Building a rate limiter with Express
