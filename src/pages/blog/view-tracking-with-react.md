@@ -11,7 +11,6 @@ tags:
   - React
   - IntersectionObserver
   - Tracking
-pinned: true
 ---
 
 ## The Target Implementation
