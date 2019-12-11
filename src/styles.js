@@ -10,16 +10,16 @@ const font = family => `font-family: ${family}`
 const LOGO_FONT = font('Reenie Beanie')
 const SERIF_FONT = font('Merriweather, serif')
 
-const theme = (key, fallback) => props =>
+export const theme = (key, fallback) => props =>
   props.theme[key] || (fallback || 'initial')
 
-const isMobile = content => `
+export const isMobile = content => `t
   @media (max-width: 720px) {
     ${content}
   }
 `
 
-const notMobile = content => `
+export const notMobile = content => `
   @media (min-width: 720px) {
     ${content}
   }
@@ -59,23 +59,6 @@ export const Pinned = props => (
 
 const borderWidth = 10
 
-// const VerticalBorder = styled.div`
-//   position: absolute;
-//   z-index: 100;
-//   ${space};
-//   width: 20px;
-//   height: ${typeof document === 'undefined'
-//     ? '100%'
-//     : `${document.body.offsetHeight}px`};
-//   opacity: 1;
-//   top: 0;
-//   bottom: 0;
-
-//   ${notMobile(`
-//     background: linear-gradient(to bottom, black, blue);
-//   `)}
-// `
-
 const Border = styled.div`
   position: ${p => (p.abs ? 'absolute' : 'fixed')};
   z-index: 100;
@@ -110,11 +93,6 @@ export const Logo = styled.h2`
   letter-spacing: 0.75px;
   font-weight: light;
   ${transition};
-  color: transparent;
-  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=50)
-    black 0% 0% / 100% no-repeat;
-  background-clip: text;
-  -webkit-background-clip: text;
 `
 
 export const Tag = styled(Link)`
@@ -169,13 +147,9 @@ export const PageHeading = styled.h1`
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: transparent;
+  color: ${theme('headingColor')};
   margin-top: 0.2em;
   margin-bottom: 0.35em;
-  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80)
-    black 0% 0% / 100% no-repeat;
-  background-clip: text;
-  -webkit-background-clip: text;
 
   ${isMobile(`
     font-size: 3rem;
@@ -449,5 +423,15 @@ export const GlobalStyles = createGlobalStyle`
       margin: 0 -1.5em 2em;
       padding: 0.5em 1em;
     `)}
+  }
+`
+
+export const hideScrollbar = css`
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
   }
 `

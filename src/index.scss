@@ -1,0 +1,464 @@
+@mixin mobile {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin hideOnMobile {
+  @include mobile {
+    display: none;
+  }
+}
+
+@mixin hideOnDesktop {
+  @include desktop {
+    display: none;
+  }
+}
+
+@mixin hideScrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+:root {
+  --nav-height: 54px;
+  --card-width: 360px;
+
+  // Light theme
+  --background-dark: #202225;
+  --background: var(--background-dark);
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--background);
+  color: white;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+ul, ol, li {
+  list-style-type: none;
+  padding: 0;
+}
+
+.container {
+  max-width: 100%;
+  padding-left: 2em;
+  padding-right: 2em;
+  margin: auto;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  font-size: 18px;
+  height: var(--nav-height);
+  overflow: hidden;
+  border-bottom: 1px solid lighten(#202225, 5%);
+
+  h5 {
+    margin: 0;
+  }
+
+  menu {
+    display: flex;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+
+    .page-links {
+      @include hideOnMobile();
+      display: flex;
+    }
+
+    a {
+      display: block;
+      padding: 0 1.5em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+      font-size: 12px;
+      font-weight: 400;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+main {
+  display: flex;
+
+  @include mobile {
+    display: block;
+  }
+}
+
+.meta-container,
+.content-container {
+  height: calc(100vh - var(--nav-height));
+
+  @include mobile {
+    height: auto;
+    flex: 1;
+  }
+}
+
+.meta-container {
+  flex: 1;
+  padding: 3em 4em;
+
+  @include mobile {
+    padding: 0 2em 0;
+  }
+}
+
+.content-container {
+  flex: 2.5;
+  overflow: hidden;
+  padding: 3em 2em;
+  height: 100vh;
+
+  @include mobile {
+    height: auto;
+    overflow-y: visible;
+    overflow-x: auto;
+    max-width: 100vw;
+    padding-bottom: 4em;
+
+    @include hideScrollbar()
+  }
+}
+
+.vertical-align {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text-large {
+  font-size: 3rem;
+  margin: 0;
+  margin-top: 1em;
+}
+
+.text-xlarge {
+  font-size: 5rem;
+  margin: 0;
+  color: palevioletred;
+  position: relative;
+
+  @include mobile {
+    font-size: 4rem;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%; left: 50%;
+    transform: translateX(-50%);
+    height: 2px;
+    background: palevioletred;
+    width: 0;
+    transition: width 300ms ease-out;
+  }
+
+  @for $i from 0 through 10 {
+    &:nth-of-type(#{$i + 1}) {
+      color: lighten(palevioletred, $i * 10%);
+
+      &:hover {
+        color: lighten(palevioletred, 10%);
+      }
+    }
+  }
+}
+
+a,
+a:visited {
+  color: inherit;
+  text-decoration: inherit;
+  font-weight: bold;
+}
+
+p > a {
+  &:hover {
+    color: white;
+  }
+}
+
+.color-primary {
+  color: lighten(#202225, 40%);
+}
+
+.carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  transition: transform 600ms cubic-bezier(0.29, 0.83, 0.55, 0.95);
+}
+
+.carousel-buttons {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 2em;
+  cursor: pointer;
+  @include hideOnMobile()
+} 
+
+@keyframes fade-in {
+  from {
+    padding-right: 10em;
+    // flex: 0 0 0;
+    // transform: translateY(20%);
+  }
+
+  to {
+    padding-right: 1.5em;
+    // flex: 0 0 var(--card-width);
+    // transform: translateY(0);
+  }
+}
+
+.card {
+  flex: 0 0 var(--card-width);
+  // height: 30vh;
+  padding-right: 1.5em;
+  cursor: pointer;
+  transition: transform 200ms ease-in-out;
+  animation: fade-in 100ms;
+
+  // @for $i from 0 through 3 {
+  //   &:nth-child(#{($i + 1)}) {
+  //     animation-delay: #{($i * 150)}ms;
+  //   }
+  // }
+
+  img {
+    border-radius: 6px;
+    object-fit: cover;
+    height: 80vh;
+    margin-bottom: -3px;
+    transition: box-shadow 200ms ease-out;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+
+    img {
+      box-shadow: 0 12px 30px 6px rgba(darken(#202225, 5%), 0.75)
+    }
+  }
+  
+  .card-content {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px 0 rgba(darken(#202225, 10%), 0.5)
+  }
+
+  .card-overlay {
+    position: absolute;
+    z-index: 1;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(#202225, 0.3);
+  }
+
+  .card-text-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: absolute;
+    width: var(--card-width);
+    z-index: 2;
+    padding: 1em 2em 4em;
+
+    h2 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+footer {
+  font-size: 14px;
+  border-top: 1px solid lighten(#202225, 20%);
+  padding: 2em 0;
+
+  .icon {
+    padding-right: 1em;
+  }
+
+  svg {
+    &:hover path {
+      fill: white;
+    }
+
+    path {
+      fill: lighten(#202225, 40%);
+      transition: fill 150ms ease;
+    }
+  }
+
+  @include desktop {
+    margin-top: auto;
+  }
+
+  @include mobile {
+    margin-top: 2em;
+  }
+
+  .footer-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .carousel-actions {
+    @include hideOnMobile()
+  }
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .menu-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+
+    @include mobile {
+      flex-direction: column;
+    }
+
+    > * {
+      flex: 1;
+      padding: 2em 3em;
+
+      @include mobile {
+        padding-left: 2em;
+      }
+    }
+
+    > :first-child {
+      border-right: 1px solid lighten(#202225, 10%);
+      padding-right: 4em;
+      text-align: right;
+      margin-top: 1em;
+      color: lighten(#202225, 60%);
+
+      @include mobile {
+        text-align: left;
+      }
+
+      ul li a {
+        display: block;
+        padding: 0.5em 0;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+
+    > :nth-child(2) {
+      padding-left: 4em;
+
+      @include mobile {
+        padding-left: 2em;
+      }
+    }
+  }
+
+  .background {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 100vh;
+    width: 100%;
+    background: rgba(lighten(#202225, 10%), 0.975);
+    transition: height 200ms cubic-bezier(0.65, 0.05, 0, 0.4);
+    animation: animate-height 400ms forwards;
+  }
+
+  .close-icon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 1em;
+    width: 2em;
+    height: 2em;
+    z-index: 10;
+
+    path {
+      fill: lighten(#202225, 60%);
+    }
+
+    &:hover {
+      fill: #202225;
+    }
+  }
+}
+
+@keyframes animate-height {
+  from { top: 100vh }
+  to { top: 0 }
+}
+
+.menu-icon {
+  cursor: pointer;
+}

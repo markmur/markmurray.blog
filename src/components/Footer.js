@@ -14,11 +14,11 @@ const links = [
 
 export default props => (
   <Footer {...props}>
-    <Box bg="white" pr={[0, '2em']}>
+    <Box pr={[0, '2em']}>
       Copyright &copy; <strong>Mark Murray</strong>, {new Date().getFullYear()}
     </Box>
 
-    <Box bg="white" mt={['3em', 0]} pl={[0, '2em']}>
+    <Box mt={['3em', 0]} pl={[0, '2em']}>
       {links.map(([Icon, link, name]) => (
         <a key={link} aria-label={name} name={name} href={link}>
           <Icon />

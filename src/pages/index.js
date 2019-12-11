@@ -1,28 +1,77 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { PageHeading, Container, Content } from '../styles'
+
+// Components
+import MetaFooter from '../components/MetaFooter'
 import Layout from '../components/Layout'
-import Post from '../components/post'
+import SplitLayout from '../components/SplitLayout'
 
-export default class IndexPage extends React.Component {
+// Utils
+import { preloadImages } from '../utils/images'
+
+// Components
+import Trails from '../components/Trails'
+import Carousel from '../components/Carousel'
+import Card from '../components/Card'
+
+const images = [
+  'https://images.unsplash.com/photo-1561119331-236e3bcf921c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
+  'https://images.unsplash.com/photo-1560857895-1cbf2ab3647a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
+  'https://images.unsplash.com/photo-1560414239-dcdf7d8d0226?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=975&q=80',
+  'https://images.unsplash.com/photo-1561119331-236e3bcf921c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
+  'https://images.unsplash.com/photo-1560857895-1cbf2ab3647a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
+  'https://images.unsplash.com/photo-1560414239-dcdf7d8d0226?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=975&q=80',
+]
+
+class IndexPage extends React.Component {
+  state = {
+    imagesLoaded: false,
+  }
+
+  async componentDidMount() {
+    await preloadImages(images.slice(0, 2))
+
+    setTimeout(() => {
+      this.setState({ imagesLoaded: true })
+    }, 500)
+  }
+
+  carouselRef = React.createRef()
+
+  handleCarouselAction = action => {
+    if (this.carouselRef && this.carouselRef.current) {
+      return this.carouselRef.current[action]
+    }
+  }
+
   render() {
-    const { data } = this.props
-    const { edges } = data.allMarkdownRemark
-
-    const posts = edges.map(({ node }) => node)
-
     return (
-      <Layout displayTagline>
-        <Content>
-          <Container>
-            <PageHeading>Latest Posts</PageHeading>
-          </Container>
-          {posts
-            .sort((a, b) => b.frontmatter.pinned - a.frontmatter.pinned)
-            .map(post => (
-              <Post key={post.id} post={post} />
-            ))}
-        </Content>
+      <Layout footer={false}>
+        <SplitLayout>
+          {({ Meta, Content }) => (
+            <React.Fragment>
+              <Meta>
+                <Trails text={['Front', 'End', 'Developer']} />
+
+                <p className="color-primary">
+                  Currently working for{' '}
+                  <a href="https://zalando.com">Zalando</a> in Dublin, Ireland.
+                </p>
+
+                <MetaFooter
+                  onNavigateNext={this.handleCarouselAction('handleNext')}
+                  onNavigatePrev={this.handleCarouselAction('handlePrev')}
+                />
+              </Meta>
+              <Content>
+                <Carousel ref={this.carouselRef}>
+                  {this.state.imagesLoaded &&
+                    images.map(image => <Card src={image} />)}
+                </Carousel>
+              </Content>
+            </React.Fragment>
+          )}
+        </SplitLayout>
       </Layout>
     )
   }
@@ -30,29 +79,12 @@ export default class IndexPage extends React.Component {
 
 export const pageQuery = graphql`
   query IndexQuery {
-    allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: [DESC] }
-      filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
-    ) {
-      edges {
-        node {
-          id
-          fields {
-            slug
-            readingTime {
-              text
-            }
-          }
-          frontmatter {
-            title
-            tags
-            templateKey
-            description
-            pinned
-            date(formatString: "MMMM DD, YYYY")
-          }
-        }
+    site {
+      siteMetadata {
+        url
       }
     }
   }
 `
+
+export default IndexPage

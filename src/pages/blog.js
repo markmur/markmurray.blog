@@ -1,10 +1,10 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { PageHeading, Container, Content } from '../styles'
+import { Content } from '../styles'
 import Layout from '../components/Layout'
-import Post from '../components/post'
+import Post from '../components/Post'
 
-export default class BlogPage extends React.Component {
+export default class IndexPage extends React.Component {
   render() {
     const { data } = this.props
     const { edges } = data.allMarkdownRemark
@@ -12,14 +12,13 @@ export default class BlogPage extends React.Component {
     const posts = edges.map(({ node }) => node)
 
     return (
-      <Layout>
+      <Layout displayTagline>
         <Content>
-          <Container>
-            <PageHeading>Latest Posts</PageHeading>
-          </Container>
-          {posts.map(post => (
-            <Post key={post.id} post={post} />
-          ))}
+          {posts
+            .sort((a, b) => b.frontmatter.pinned - a.frontmatter.pinned)
+            .map(post => (
+              <Post key={post.id} post={post} />
+            ))}
         </Content>
       </Layout>
     )
@@ -27,12 +26,9 @@ export default class BlogPage extends React.Component {
 }
 
 export const pageQuery = graphql`
-  query BlogQuery {
+  query BlogPostsQuery {
     allMarkdownRemark(
-      sort: {
-        fields: [frontmatter___pinned, frontmatter___date]
-        order: [ASC, DESC]
-      }
+      sort: { fields: [frontmatter___date], order: [DESC] }
       filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
     ) {
       edges {

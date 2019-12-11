@@ -2,8 +2,33 @@ module.exports = {
   siteMetadata: {
     title: 'Mark Murray',
     description: 'Front End Developer @ Zalando, Dublin',
+    url: 'https://markmurray.co',
+    themeColor: '#000',
+    menuLinks: [],
+    footerLinks: [
+      {
+        name: 'GitHub',
+        tooltip: 'GitHub /markmur',
+        href: 'https://github.com/markmur',
+        icon: 'github',
+      },
+      {
+        name: 'Twitter',
+        tooltip: 'Twitter @mrkmur',
+        href: 'https://twitter.com/mrkmur',
+        icon: 'twitter',
+      },
+      {
+        name: 'Instagram',
+        tooltip: 'Instagram @markmur',
+        href: 'https://instagram.com/mrkmur',
+        icon: 'instagram',
+      },
+    ],
   },
   plugins: [
+    'gatsby-plugin-sass',
+    'gatsby-plugin-react-svg',
     'gatsby-remark-reading-time',
     'gatsby-plugin-offline',
     {
@@ -37,7 +62,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        path: `${__dirname}/src/pages`,
+        path: `${__dirname}/src/content`,
         name: 'pages',
       },
     },
