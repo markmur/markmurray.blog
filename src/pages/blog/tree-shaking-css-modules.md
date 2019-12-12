@@ -336,6 +336,7 @@ classNames that aren't found.
               {
                 extractor: class {
                   static extract(content) {
+                    // See a note on this in the #addenum section below
                     return content.match(/\w+/g) || [];
                   }
                 },
@@ -371,6 +372,77 @@ e.exports = {
 ```
 
 Happy days!
+
+---
+
+## Addenum
+
+It should be noted here that while the extractor we're using in the `postcss-purgecss` plugin above should work in most cases, there are scenarios where it will not work as expected.
+
+The RegEx `/w+/g` will run over each `.js(x)` file in the app as specified by our glob, capturing every word each file and attempting to match each word against the stylesheet classes. This means that if you were to have a JavaScript file with a text node or variable with the same name as one of your classes then the styles for that classes would be included in the bundle.
+
+For example, let's say our stylesheet looks liks this:
+
+```
+// styles.scss
+.main {
+  margin: auto; 
+}
+
+.textAlignLeft {
+  text-align: left;
+}
+```
+
+and we have a simple React component that imports one of the classes:
+
+```jsx
+import React from 'react'
+
+import styles from './styles.scss'
+
+const App = () => {
+  return (
+    <div>This is the main component</div>
+  )
+}
+```
+
+Because the extractor matches every word of the file, it will recognise "**main**" in the text node of the component and subsequently load the `.main` class of our `styles.scss` file, despite the fact that we never called `styles.main` anywhere in our file.
+
+Another scenario where you might see issues is if you use [BEM](http://getbem.com/naming/) style class names with variable prefixes. For example, let's say we want to scope our component styles to the name of our app (this is not necessary since we're using CSS modules but let's explain for the point of argument):
+
+```scss
+.app {
+  background: blue;
+  
+  &__input {
+    padding: 1em;
+  }
+}
+```
+
+and use variable prefixes to define the classes:
+
+```
+import React from 'react'
+
+import styles from './styles.scss'
+
+const BASE_CLASS = 'app'
+
+const App = () => {
+  return (
+    <div>
+      <input className={`${BASE_CLASS}__input`} />
+    </div>
+  )
+}
+```
+
+The extractor will match the `BASE_CLASS` "app" string, but won't match `app__input`, and so our CSS file will contain the `.app {}` styles but _NOT_ the `.app__input {}` styles as the `purgecss` plugin will treat the styles as unused.
+
+The solution here is to ditch the prefixes and rely on the hashing of your class names to scope your styles, importing them by name.
 
 ---
 
