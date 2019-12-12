@@ -2,7 +2,7 @@
 templateKey: blog-post
 title: Tree shaking CSS Modules
 description:
-  Eliminating collisions with CSS Modules and cutting down bundle sizes by
+  Eliminate collisions with CSS Modules and cut down bundle sizes by
   purging unused styles.
 date: 2019-12-11T12:00:00.000Z
 pinned: true
@@ -383,7 +383,7 @@ The RegEx `/w+/g` will run over each `.js(x)` file in the app as specified by ou
 
 For example, let's say our stylesheet looks liks this:
 
-```
+```scss
 // styles.scss
 .main {
   margin: auto; 
@@ -424,7 +424,7 @@ Another scenario where you might see issues is if you use [BEM](http://getbem.co
 
 and use variable prefixes to define the classes:
 
-```
+```jsx
 import React from 'react'
 
 import styles from './styles.scss'
