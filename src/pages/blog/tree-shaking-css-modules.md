@@ -2,7 +2,7 @@
 templateKey: blog-post
 title: Tree shaking CSS Modules
 description:
-  Eliminating collisions with CSS Modules and cutting down our bundle sizes by
+  Eliminating collisions with CSS Modules and cutting down bundle sizes by
   purging unused styles.
 date: 2019-12-11T12:00:00.000Z
 pinned: true
@@ -15,9 +15,9 @@ tags:
 Looking for a TL;DR? [Go to the solution](#solution)
 
 Tree-shaking code as a front-end engineer is no trivial feat and, as a result,
-web applications typically send way too much unused styles to their clients. The
+web applications typically send way too much unused code to their clients. The
 aim of this blog post is to show you how to eliminate collisions in your
-stylesheets by using (CSS Modules)[https://github.com/css-modules/css-modules]
+stylesheets by using [CSS Modules](https://github.com/css-modules/css-modules)
 and to purge unused styles from your stylesheets.
 
 If you have a web app that bundles CSS files, your webpack might look something
@@ -115,6 +115,7 @@ const App = ({ children }) => {
 Following compilation, our bundle would look something like:
 
 ```js
+// main.js
 React.createElement('div', { className: 'margin' })
 ```
 
@@ -123,6 +124,7 @@ it will contain both `margin` and `padding` classes, despite the fact that we
 only imported one.
 
 ```css
+// main.css
 .margin {
   margin: 6px;
 }
@@ -133,7 +135,7 @@ only imported one.
 
 In this scenario, you might say it's not a big deal because we're only importing
 a single extraneous class. But in a real life scenario, your CSS files would
-most likely look at lot bigger.
+most likely be a lot bigger.
 
 Let's say we're using SASS to generate margin class helpers for our app. The
 helper file might look something like this:
@@ -159,12 +161,12 @@ $directions: left, right, top, bottom;
 
 @each $key, $value in $sizes {
   .margin_#{$key} {
-    margin: map-get($sizes, $key);
+    margin: $value;
   }
 
   @each $direction in $directions {
     .margin#{capitalize($direction)}_#{$key} {
-      margin-#{$direction}: map-get($sizes, $key);
+      margin-#{$direction}: $value;
     }
   }
 }
@@ -180,8 +182,8 @@ increased load times.
 
 ## Collisions
 
-On top of this, by _not_ using (CSS
-Modules)[https://github.com/css-modules/css-modules] here, all of our classes
+On top of this, by _not_ using [CSS
+Modules](https://github.com/css-modules/css-modules) here, all of our classes
 will be loaded exactly as-is in the file.
 
 ```css
@@ -235,7 +237,7 @@ would look like:
 
 ...plus 23 other class names.
 
-If we look at our JavaScript bundle now, we'll find that a hashmap has been
+If we look at our JavaScript bundle now, we'll also find that a hashmap has been
 added to the bundle which maps each class name to its respective hash:
 
 ```js
@@ -245,9 +247,7 @@ e.exports={
   // ...plus 23 more pairs
 ```
 
-This solves the problem of collisions for our styles, but now, not only do we
-have an excessive number of classes in our stylesheet, we also have an
-unnecessary map of unused classes in our JavaScript bundle.
+So while we've solved the problem of collisions for our styles, we still have an excessive number of classes in our stylesheet _and_ we have an unnecessary map of unused classes in our _JavaScript_ bundle.
 
 We can cut down the overall size of the stylesheet slightly by reducing the
 length of the hash for each class by controlling the size of the classname hash
@@ -374,5 +374,5 @@ Happy days!
 
 ---
 
-_Want to see the code in action? View the_ (example code
-here)[https://github.com/markmur/webpack-css-tree-shaking-example]
+_Want to see the code in action? View the_ [example code
+here](https://github.com/markmur/webpack-css-tree-shaking-example)
