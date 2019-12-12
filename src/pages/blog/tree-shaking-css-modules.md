@@ -434,7 +434,7 @@ const BASE_CLASS = 'app'
 const App = () => {
   return (
     <div>
-      <input className={`${BASE_CLASS}__input`} />
+      <input className={styles[`${BASE_CLASS}__input`]} />
     </div>
   )
 }
