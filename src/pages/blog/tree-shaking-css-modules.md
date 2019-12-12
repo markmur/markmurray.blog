@@ -374,5 +374,5 @@ Happy days!
 
 ---
 
-_Want to see the code in action? View the (example code
-here)[https://github.com/markmur/webpack-css-tree-shaking-example]_
+_Want to see the code in action? View the_ (example code
+here)[https://github.com/markmur/webpack-css-tree-shaking-example]
