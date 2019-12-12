@@ -84,7 +84,7 @@ const BlogPost = ({ data }) => {
     <Layout>
       <Helmet titleTemplate="%s">
         <title>{title}</title>
-        <meta name="description" content={`${description}`} />
+        <meta name="description" content={description} />
       </Helmet>
 
       <BlogPostTemplate
