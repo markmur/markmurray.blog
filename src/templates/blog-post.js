@@ -85,6 +85,7 @@ const BlogPost = ({ data }) => {
       <Helmet titleTemplate="%s">
         <title>{title}</title>
         <meta name="description" content={description} />
+        <meta name="image" content="https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80" />
       </Helmet>
 
       <BlogPostTemplate
