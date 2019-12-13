@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: 'Mark Murray',
+    url: 'https://markmurray.co',
     description: 'Front End Developer @ Zalando, Dublin',
   },
   plugins: [

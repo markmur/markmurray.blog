@@ -78,14 +78,31 @@ export const BlogPostTemplate = ({
 
 const BlogPost = ({ data }) => {
   const { markdownRemark: post } = data
-  const { title, description, tags, date } = post.frontmatter
+  const domain = data.site.siteMetadata.url
+
+  const { slug } = post.fields
+  const { title, description, tags, date, image } = post.frontmatter
+  const url = `${domain}${slug}`
 
   return (
     <Layout>
       <Helmet titleTemplate="%s">
         <title>{title}</title>
         <meta name="description" content={description} />
-        <meta name="image" content="https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={url} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+
+        {image && <meta property="og:image" content={image} />}
+        {image && <meta property="twitter:image" content={image} />}
+        {image && <meta property="image" content={image} />}
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={url} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
       </Helmet>
 
       <BlogPostTemplate
@@ -105,10 +122,16 @@ export default BlogPost
 
 export const pageQuery = graphql`
   query BlogPostByID($id: String!) {
+    site {
+      siteMetadata {
+        url
+      }
+    }
     markdownRemark(id: { eq: $id }) {
       id
       html
       fields {
+        slug
         readingTime {
           text
         }
@@ -119,6 +142,7 @@ export const pageQuery = graphql`
         description
         tags
         pinned
+        image
       }
     }
   }

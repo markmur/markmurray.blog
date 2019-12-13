@@ -6,6 +6,7 @@ description:
   purging unused styles.
 date: 2019-12-11T12:00:00.000Z
 pinned: true
+image: https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80
 tags:
   - Webpack
   - CSS Modules
