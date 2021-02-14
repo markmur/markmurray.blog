@@ -9,11 +9,13 @@ const ProjectShowcase = ({ project }) => {
   return (
     <div className="ProjectShowcase">
       {project.image_url && (
-        <img
-          alt={project.title}
-          src={project.image_url}
-          className="ProjectShowcase--image"
-        />
+        <a rel="noopener noreferer" href={project.url}>
+          <img
+            alt={project.title}
+            src={project.image_url}
+            className="ProjectShowcase--image"
+          />
+        </a>
       )}
       <div className="content">
         <div className="ProjectShowcase--info">
@@ -22,16 +24,18 @@ const ProjectShowcase = ({ project }) => {
         </div>
 
         {project.image_url && (
-          <img
-            alt={project.title}
-            className="xs-device-image"
-            src={project.image_url}
-            style={{
-              marginTop: '1em',
-              marginBottom: '1em',
-              borderRadius: '4px',
-            }}
-          />
+          <a rel="noopener noreferer" href={project.url}>
+            <img
+              alt={project.title}
+              className="xs-device-image"
+              src={project.image_url}
+              style={{
+                marginTop: '1em',
+                marginBottom: '1em',
+                borderRadius: '4px',
+              }}
+            />
+          </a>
         )}
 
         <div className="margin-top-auto">

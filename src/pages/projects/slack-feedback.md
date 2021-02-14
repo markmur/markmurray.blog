@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 2
 templateKey: project
 title: Slack Feedback
 description:
