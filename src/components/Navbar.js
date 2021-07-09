@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import { Flex, Container, Logo, Nav, Timestamp } from '../styles'
 import { useShoppingCart } from 'use-shopping-cart'
+import { FiShoppingBag } from 'react-icons/fi'
+import { Flex, Container, Logo, Nav, Timestamp } from '../styles'
 
-const Navbar = ({ displayTagline, wide = false }) => {
+const Navbar = ({ displayTagline, wide = false, onCartClick }) => {
   const { cartCount } = useShoppingCart()
 
   return (
@@ -23,8 +24,12 @@ const Navbar = ({ displayTagline, wide = false }) => {
             <Link style={{ marginRight: 25 }} to="/projects">
               Portfolio
             </Link>
-            <Link to="/photography">Photography</Link>
-            <strong>Cart: {cartCount}</strong>
+            <Link style={{ marginRight: 25 }} to="/photography">
+              Photography
+            </Link>
+            <a style={{ cursor: 'pointer' }} onClick={onCartClick}>
+              <FiShoppingBag verticalAlign="bottom" /> ({cartCount})
+            </a>
           </Flex>
         </Flex>
 

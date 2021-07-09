@@ -2,14 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { EntypoPin } from 'react-entypo-icons'
 import styled, { css, createGlobalStyle } from 'styled-components'
-import {
-  fontSize,
-  space,
-  bgColor,
-  textAlign,
-  maxWidth,
-  flexbox,
-} from 'styled-system'
+import { fontSize, space, color, textAlign, maxWidth } from 'styled-system'
 
 // const LOGO_FONT = 'PT Serif, serif'
 const font = family => `font-family: ${family}`
@@ -18,7 +11,7 @@ const LOGO_FONT = font('Reenie Beanie')
 const SERIF_FONT = font('Merriweather, serif')
 
 const theme = (key, fallback) => props =>
-  props.theme[key] || (fallback || 'initial')
+  props.theme[key] || fallback || 'initial'
 
 const isMobile = content => `
   @media (max-width: 720px) {
@@ -63,9 +56,9 @@ export const Flex = styled.div`
 
 export const Box = styled.div`
   ${space};
-  ${bgColor};
   ${maxWidth};
   ${textAlign};
+  ${color};
   ${p => (p.flex ? `flex: ${p.flex};` : '')}
 `
 
@@ -106,13 +99,20 @@ export const Button = styled.button`
   transition: all 150ms ease;
   cursor: pointer;
 
+  ${p => p.expand && `width: 100%`};
+
+  :disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   &:hover {
     background: white;
     color: black;
   }
 
   ${p =>
-    p.primary &&
+    p.tag &&
     `
     color: black;
     border: none;
@@ -122,6 +122,21 @@ export const Button = styled.button`
     &:hover {
       background: black;
       color: white;
+    }
+  `}
+
+  ${p =>
+    p.primary &&
+    `
+    color: white;
+    border: none;
+    background: black;
+    border-radius: 4px;
+
+    &:hover {
+      background: #333;
+      color: white;
+      border: none;
     }
   `}
 
@@ -551,6 +566,10 @@ export const GlobalStyles = createGlobalStyle`
     text-decoration: inherit;
   }
 
+  p {
+    line-height: 1.65;
+  }
+
   hr {
     display: block;
     border: none;
@@ -575,6 +594,15 @@ export const GlobalStyles = createGlobalStyle`
     border-bottom: 1px solid #0087ff;
   }
 
+  h6 {
+    margin: 0;
+  }
+
+  svg  {
+    vertical-align: text-bottom;
+    cursor: pointer;
+  }
+
   blockquote {
     background: ${theme('blockquoteBackground')};
     padding: 0.5em 2em;
@@ -587,4 +615,41 @@ export const GlobalStyles = createGlobalStyle`
       padding: 0.5em 1em;
     `)}
   }
+`
+
+export const Select = styled.select`
+  width: 100%;
+  padding: 1em;
+  font-size: 14px;
+  border: 1px solid;
+`
+
+export const Drawer = styled.div`
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  max-width: 400px;
+  width: 400px;
+  background: white;
+  height: 100vh;
+  z-index: 100;
+  transform: translateX(${p => (p.open ? '0%' : '100%')});
+  box-shadow: rgb(0 0 0 / 10%) -5px 0px 20px 0px;
+  transition: transform 200ms ease-in 0s;
+`
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 10;
+`
+
+export const ErrorMessage = styled.small`
+  color: red;
+  font-weight: bold;
 `

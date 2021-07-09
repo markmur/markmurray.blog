@@ -8,6 +8,7 @@ import useTheme from '../hooks/theme'
 import BackgroundLines from './BackgroundLines'
 import Footer from './Footer'
 import Navbar from './Navbar'
+import Cart from './Cart'
 
 const query = graphql`
   query HeadingQuery {
@@ -51,6 +52,7 @@ const Head = ({ site }) => (
 
 const Content = ({ site, children, displayTagline = false, wide = false }) => {
   const [theme, setTheme, themeName] = useTheme()
+  const [cartOpen, setCartState] = React.useState(false)
 
   return (
     <div>
@@ -68,7 +70,10 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
               theme={themeName}
               displayTagline={displayTagline}
               onThemeChange={setTheme}
+              onCartClick={() => setCartState(true)}
             />
+
+            <Cart open={cartOpen} onClose={() => setCartState(false)} />
 
             {children}
 

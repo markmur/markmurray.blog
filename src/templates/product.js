@@ -1,12 +1,31 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
+import { useShoppingCart } from 'use-shopping-cart'
 
 import Layout from '../components/Layout'
-import { Box, Flex, Content, Container } from '../styles'
+import { Box, Button, Flex, Content, Select } from '../styles'
+import { formatPrice } from '../utils/currency'
+import { toCartProduct } from '../utils/product.ts'
 
 function ProductTemplate(props) {
-  const { product, photo } = props
+  const { product, photo, prices } = props
+  const [addedToCart, setAddedToCart] = React.useState(false)
+  const [selectedPrice] = React.useState(prices[0])
+
+  const { addItem, cartDetails } = useShoppingCart()
+
+  const handleAddToCart = React.useCallback(() => {
+    // add to cart
+    addItem(toCartProduct(product, selectedPrice), 1)
+    // set loading state
+    setAddedToCart(true)
+
+    // set timeout for loading state
+    setTimeout(() => {
+      setAddedToCart(false)
+    }, 5 * 1000)
+  }, [])
 
   return (
     <div>
@@ -26,21 +45,49 @@ function ProductTemplate(props) {
           />
         </Box>
 
-        <Box py={2} px={5} flex="1 0 40%">
-          <h1>{product.product.name}</h1>
+        <Box py={2} px={[3, 4, 5]} flex="1 0 40%">
+          <Box mb={4}>
+            <h2>{product.name}</h2>
+          </Box>
           <p>{photo.description}</p>
 
-          <ul>
-            {(photo.tags || []).map(tag => (
-              <li key={tag}>{tag}</li>
-            ))}
-          </ul>
+          <Box my={4}>
+            <small>
+              <em>Taken with a</em>
+              <strong> {photo.camera}</strong>
+              {photo.lens && <strong>{photo.lens}</strong>}
+            </small>
+          </Box>
 
-          <div>
-            <em>Taken with</em>
-          </div>
-          <strong>{photo.camera}</strong>
-          {photo.lens && <strong>{photo.lens}</strong>}
+          <Select>
+            {prices.map(price => (
+              <option key={price.id}>
+                {formatPrice(price.unit_amount, price.currency)}
+              </option>
+            ))}
+          </Select>
+
+          <Box mt={2} mb={3}>
+            <Button
+              expand
+              primary
+              success={addedToCart}
+              disabled={addedToCart || selectedPrice.id in cartDetails}
+              onClick={handleAddToCart}
+            >
+              {addedToCart
+                ? 'Added!'
+                : selectedPrice.id in cartDetails
+                ? 'In your cart'
+                : 'Add to cart'}
+            </Button>
+          </Box>
+
+          <Box pt={2} textAlign="center">
+            <small>
+              Photos are printed on the highest quality Fuji Matt paper.
+            </small>
+          </Box>
         </Box>
       </Flex>
     </div>
@@ -48,17 +95,21 @@ function ProductTemplate(props) {
 }
 
 const Product = ({ data }) => {
-  const { product, photo } = data
+  const { product, photo, prices } = data
 
   return (
     <Layout wide displayTagline={false}>
       <Helmet titleTemplate="%s | Photography">
-        <title>{product.product.name}</title>
-        <meta name="description" content={`${product.product.description}`} />
+        <title>{product.name}</title>
+        <meta name="description" content={product.description} />
       </Helmet>
 
       <Content>
-        <ProductTemplate product={product} photo={photo.frontmatter} />
+        <ProductTemplate
+          product={product}
+          photo={photo.frontmatter}
+          prices={prices.edges.map(x => x.node)}
+        />
       </Content>
     </Layout>
   )
@@ -68,20 +119,25 @@ export default Product
 
 export const pageQuery = graphql`
   query ProductByID($id: String!) {
-    product: stripePrice(id: { eq: $id }) {
-      id
-      currency
-      unit_amount
-      product {
-        name
-        active
-        created
-        images
-        name
-        updated
+    prices: allStripePrice(filter: { product: { id: { eq: $id } } }) {
+      edges {
+        node {
+          id
+          currency
+          unit_amount
+        }
       }
     }
-    photo: markdownRemark(frontmatter: { stripe_id: { eq: $id } }) {
+    product: stripeProduct(id: { eq: $id }) {
+      id
+      name
+      active
+      created
+      images
+      name
+      updated
+    }
+    photo: markdownRemark(frontmatter: { stripe_product_id: { eq: $id } }) {
       frontmatter {
         title
         description

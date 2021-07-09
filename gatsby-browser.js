@@ -13,13 +13,13 @@ import getStripe from './src/utils/stripe'
 export const wrapPageElement = ({ element, props }) => {
   return (
     <CartProvider
+      billingAddressCollection
       mode="client-only"
       stripe={getStripe()}
       successUrl="https://markmurray.co"
       cancelUrl="https://markmurray.co"
       currency="EUR"
       allowedCountries={['US', 'GB', 'IE']}
-      billingAddressCollection={true}
       {...props}
     >
       {element}

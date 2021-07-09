@@ -4,10 +4,7 @@ import {
   Flex,
   Box,
   Button,
-  Content,
   Container,
-  ScrollContainer,
-  ScrollContainerBlock,
   Photo as StyledPhoto,
   PhotoInfo,
   PhotoOverlay,
@@ -116,9 +113,11 @@ function Photo(props) {
               </small>
             </Box>
 
-            {photo.stripe_id && (
+            {photo.stripe_product_id && (
               <Button>
-                <a href={`/photography/${photo.stripe_id}`}>Buy print</a>
+                <a href={`/photography/${photo.stripe_product_id}`}>
+                  Buy print
+                </a>
               </Button>
             )}
           </Flex>
@@ -140,13 +139,13 @@ export default class PhotographyPage extends React.Component {
 
   handleTagClick = tag => {
     if (this.state.selectedTag === tag) {
-      this.setState(state => ({
+      this.setState({
         selectedTag: null,
-      }))
+      })
     } else {
-      this.setState(state => ({
+      this.setState({
         selectedTag: tag,
-      }))
+      })
     }
   }
 
@@ -216,7 +215,7 @@ export default class PhotographyPage extends React.Component {
                   <Flex>
                     <Box mr={2}>
                       <Button
-                        primary
+                        tag
                         small
                         selected={this.state.selectedOrientation === 'portrait'}
                         onClick={() => this.handleOrientationClick('portrait')}
@@ -227,7 +226,7 @@ export default class PhotographyPage extends React.Component {
 
                     <Box mr={2}>
                       <Button
-                        primary
+                        tag
                         small
                         selected={
                           this.state.selectedOrientation === 'landscape'
@@ -245,10 +244,10 @@ export default class PhotographyPage extends React.Component {
                   <Flex>
                     {Object.entries(tags)
                       .sort()
-                      .map(([tag, count]) => (
-                        <Box mr={2}>
+                      .map(([tag]) => (
+                        <Box key={tag} mr={2}>
                           <Button
-                            primary
+                            tag
                             small
                             selected={this.state.selectedTag === tag}
                             onClick={() => this.handleTagClick(tag)}
@@ -267,7 +266,7 @@ export default class PhotographyPage extends React.Component {
             if (Array.isArray(item)) {
               return (
                 <Flex justifyContent="space-between">
-                  {item.map((photo, i) => (
+                  {item.map(photo => (
                     <Photo key={photo.id} photo={photo.frontmatter} />
                   ))}
                 </Flex>
@@ -298,7 +297,7 @@ export const pageQuery = graphql`
             slug
           }
           frontmatter {
-            stripe_id
+            stripe_product_id
             title
             tags
             templateKey

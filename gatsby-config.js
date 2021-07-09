@@ -99,11 +99,19 @@ module.exports = {
     {
       resolve: `gatsby-source-stripe`,
       options: {
-        objects: ['Product'],
+        objects: ['Product', 'Price'],
         secretKey: process.env.STRIPE_SECRET_KEY,
         downloadFiles: false,
       },
     },
+    // {
+    //   resolve: '@sentry/gatsby',
+    //   options: {
+    //     dsn: process.env.SENTRY_DSN,
+    //     sampleRate: 0.7,
+    //   },
+    // },
+    'gatsby-plugin-typescript',
     'gatsby-plugin-netlify', // make sure to keep it last in the array
   ],
 }
