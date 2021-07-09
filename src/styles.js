@@ -2,7 +2,14 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { EntypoPin } from 'react-entypo-icons'
 import styled, { css, createGlobalStyle } from 'styled-components'
-import { fontSize, space, bgColor } from 'styled-system'
+import {
+  fontSize,
+  space,
+  bgColor,
+  textAlign,
+  maxWidth,
+  flexbox,
+} from 'styled-system'
 
 // const LOGO_FONT = 'PT Serif, serif'
 const font = family => `font-family: ${family}`
@@ -31,6 +38,12 @@ const transition = css`
 `
 
 export const Nav = styled.nav`
+  // position: fixed;
+  // top: 0;
+  // width: 100%;
+  // z-index: 1000;
+  // background: rgba(245, 245, 247, 0.5);
+  // backdrop-filter: blur(30px) saturate(150%);
   padding: 2.25em 0 1.35em;
 
   ${isMobile(`
@@ -44,11 +57,16 @@ export const Flex = styled.div`
   justify-content: ${p => p.justifyContent || 'flex-start'};
   align-items: ${p => p.alignItems || 'center'};
   flex-wrap: ${p => (p.wrap ? 'wrap' : 'nowrap')};
+  ${p => (p.flex ? `flex: ${p.flex};` : '')}
+  ${space};
 `
 
 export const Box = styled.div`
   ${space};
   ${bgColor};
+  ${maxWidth};
+  ${textAlign};
+  ${p => (p.flex ? `flex: ${p.flex};` : '')}
 `
 
 export const Pinned = props => (
@@ -75,6 +93,52 @@ const borderWidth = 10
 //     background: linear-gradient(to bottom, black, blue);
 //   `)}
 // `
+
+export const Button = styled.button`
+  padding: 1em 3em;
+  border: 1px solid;
+  text-transform: uppercase;
+  text-spacing: 2px;
+  font-weight: bold;
+  background: transparent;
+  color: white;
+  font-size: 13px;
+  transition: all 150ms ease;
+  cursor: pointer;
+
+  &:hover {
+    background: white;
+    color: black;
+  }
+
+  ${p =>
+    p.primary &&
+    `
+    color: black;
+    border: none;
+    background: #f4f4f7;
+    border-radius: 4px;
+
+    &:hover {
+      background: black;
+      color: white;
+    }
+  `}
+
+  ${p =>
+    p.selected &&
+    `
+    background: black;
+    color: white;
+  `}
+
+  ${p =>
+    p.small &&
+    `
+    font-size: 12px;
+    padding: 1em 2em;
+    `}
+`
 
 const Border = styled.div`
   position: ${p => (p.abs ? 'absolute' : 'fixed')};
@@ -147,6 +211,31 @@ export const Container = styled.div`
   `)}
 `
 
+export const ScrollContainer = styled(Flex).attrs({
+  alignItems: 'start',
+})`
+  max-width: 100vw;
+  overflow-x: scroll;
+  white-space: nowrap;
+  scroll-padding-left: 24px;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+export const ScrollContainerBlock = styled.div`
+  width: 42px;
+  margin-right: 6em;
+  height: 100px;
+  display: block;
+`
+
 export const Content = styled.section`
   position: relative;
   z-index: 2;
@@ -175,6 +264,7 @@ export const PageHeading = styled.h1`
     black 0% 0% / 100% no-repeat;
   background-clip: text;
   -webkit-background-clip: text;
+  ${textAlign};
 
   ${isMobile(`
     font-size: 3rem;
@@ -248,6 +338,56 @@ export const Timestamp = styled.p`
   color: ${theme('descriptionColor')};
   margin-bottom: 1.5em;
   ${fontSize};
+`
+
+export const Photo = styled(Box)`
+  position: relative;
+
+  img {
+    background: #f4f4f7;
+  }
+`
+
+export const PhotoInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background: #212124;
+  padding: 1em 1.5em;
+  color: white;
+
+  > * {
+    margin: 0;
+  }
+`
+
+export const PhotoOverlay = styled.div`
+  line-height: 2;
+  font-size: 13px;
+  opacity: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #212124);
+  height: 50%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2em;
+  padding-bottom: 1em;
+  transform: translateY(15px);
+  transition: all 150ms ease;
+  will-change: opacity, transform;
+
+  * {
+    margin: 0;
+  }
+
+  ${Photo}:hover & {
+    opacity: 1;
+    transform: translateY(0);
+  }
 `
 
 export const Post = styled.article`
@@ -391,6 +531,7 @@ export const GlobalStyles = createGlobalStyle`
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
   }
 
   body {

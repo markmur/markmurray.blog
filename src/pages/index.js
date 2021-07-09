@@ -14,9 +14,9 @@ export default class IndexPage extends React.Component {
     const posts = getNodes(data.posts)
 
     return (
-      <Layout displayTagline>
-        <Content>
-          <Container>
+      <Layout wide displayTagline>
+        <Content wide>
+          <Container wide>
             <PageHeading>Latest Posts</PageHeading>
           </Container>
           {posts

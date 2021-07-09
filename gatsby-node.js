@@ -8,7 +8,14 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
-      allMarkdownRemark(
+      products: allStripeProduct {
+        edges {
+          node {
+            id
+          }
+        }
+      }
+      posts: allMarkdownRemark(
         limit: 1000
         filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
       ) {
@@ -32,7 +39,21 @@ exports.createPages = ({ actions, graphql }) => {
       return Promise.reject(result.errors)
     }
 
-    const posts = result.data.allMarkdownRemark.edges
+    const products = result.data.products.edges
+
+    products.forEach(({ node }) => {
+      const { id } = node
+
+      createPage({
+        path: `/photography/${id}/`,
+        component: path.resolve(`src/templates/product.js`),
+        context: {
+          id,
+        },
+      })
+    })
+
+    const posts = result.data.posts.edges
 
     posts.forEach(edge => {
       const { id } = edge.node
