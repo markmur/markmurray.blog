@@ -37,7 +37,7 @@ function LineItem(props) {
 
 const Cart = ({ open, onClose }) => {
   const [loading, setLoadingState] = React.useState(false)
-  const [error, setErrorState] = React.useState('This is an error message')
+  const [error, setErrorState] = React.useState()
 
   const {
     cartCount,
