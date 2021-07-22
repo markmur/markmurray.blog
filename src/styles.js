@@ -200,6 +200,7 @@ export const Title = styled.h1`
   `)}
 
   strong {
+    z-index: 2;
     position: relative;
     font-weight: 800;
     display: inline-block;
