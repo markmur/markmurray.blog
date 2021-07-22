@@ -202,6 +202,7 @@ export const Title = styled.h1`
   strong {
     position: relative;
     font-weight: 800;
+    display: inline-block;
 
     &::before {
       content: '';
