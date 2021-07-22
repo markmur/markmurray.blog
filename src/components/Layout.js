@@ -72,7 +72,7 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
 
             {children}
 
-            <Container>
+            <Container wide>
               <Footer />
             </Container>
           </div>
