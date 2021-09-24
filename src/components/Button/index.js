@@ -2,8 +2,8 @@ import React from 'react'
 
 import './styles.scss'
 
-const Button = ({ href, children }) => (
-  <a className="button" rel="noopener noreferrer" target="_blank" href={href}>
+const Button = ({ href, children, ...props }) => (
+  <a className="button" rel="noopener noreferrer" href={href} {...props}>
     {children}{' '}
     <svg
       version="1.1"

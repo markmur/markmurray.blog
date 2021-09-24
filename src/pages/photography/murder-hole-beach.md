@@ -1,7 +1,5 @@
 ---
-stripe_product_id: prod_Jof2Ab0lPFdiQ0
-stripe_price_ids:
-  - price_1JB1i2IEGevYe70EBj18z7uq
+stripe_product_id: prod_Joey6ims98au0F
 order: 1
 templateKey: photo
 title: Murder Hole Beach

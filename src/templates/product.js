@@ -3,15 +3,28 @@ import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 import { useShoppingCart } from 'use-shopping-cart'
 
+import { CartConsumer } from '../context/CartContext.tsx'
 import Layout from '../components/Layout'
-import { Box, Button, Flex, Content, Select } from '../styles'
+import ImageGallery from '../components/ImageGallery/index.tsx'
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Content,
+  Select,
+  ProductTitle,
+  Subtitle,
+} from '../styles'
 import { formatPrice } from '../utils/currency'
 import { toCartProduct } from '../utils/product.ts'
+import { cmToInches } from '../utils/index.ts'
 
 function ProductTemplate(props) {
   const { product, photo, prices } = props
   const [addedToCart, setAddedToCart] = React.useState(false)
-  const [selectedPrice] = React.useState(prices[0])
+  const [selectedPrice, setSelectedPrice] = React.useState(prices[0])
+  const { setCartState } = React.useContext(CartConsumer)
 
   const { addItem, cartDetails } = useShoppingCart()
 
@@ -20,6 +33,7 @@ function ProductTemplate(props) {
     addItem(toCartProduct(product, selectedPrice), 1)
     // set loading state
     setAddedToCart(true)
+    setCartState({ open: true })
 
     // set timeout for loading state
     setTimeout(() => {
@@ -27,42 +41,98 @@ function ProductTemplate(props) {
     }, 5 * 1000)
   }, [])
 
+  const handleSizeChange = React.useCallback(event => {
+    event.persist()
+    const id = event.target.value
+    setSelectedPrice(prices.find(x => x.id === id))
+  }, [])
+
   return (
-    <div>
+    <Container wide>
       <Flex
         mt={2}
         justifyContent="flex-start"
         alignItems="flex-start"
         flexDirection={['column', 'row']}
       >
-        <Box flex="1 0 60%">
-          <img
-            loading="lazy"
-            src={photo.image_url}
-            alt={photo.title}
-            width={photo.width}
-            height={photo.height}
+        <Box flex="1 0 50%">
+          <ImageGallery
+            images={[
+              '/photography/collections/sapphire/product/home',
+              '/photography/collections/sapphire/product/home-2',
+              '/photography/collections/sapphire/sapphire-1',
+            ]}
           />
         </Box>
 
-        <Box py={2} px={[3, 4, 5]} flex="1 0 40%">
-          <Box mb={4}>
-            <h2>{product.name}</h2>
-          </Box>
+        <Box px={[3, 4, 4]} flex="1 0 50%">
+          {photo.limit && (
+            <Box mb={3}>
+              <Subtitle>Limited Edition</Subtitle>
+            </Box>
+          )}
+
+          <ProductTitle>{photo.title}</ProductTitle>
           <p>{photo.description}</p>
 
           <Box my={4}>
             <small>
-              <em>Taken with a</em>
-              <strong> {photo.camera}</strong>
-              {photo.lens && <strong>{photo.lens}</strong>}
+              <div>
+                <em>Location</em>
+              </div>
+
+              <strong> {photo.location}</strong>
             </small>
           </Box>
 
-          <Select>
+          <Box my={4}>
+            <small>
+              <div>
+                <em>Gear used</em>
+              </div>
+
+              <strong> {photo.camera}</strong>
+              {photo.lens && <strong> + {photo.lens}</strong>}
+            </small>
+          </Box>
+
+          <Box my={4}>
+            <small>
+              <strong>Sizes available</strong>
+              <ul>
+                {prices.map(price => (
+                  <li key={price.id}>
+                    {price.metadata.size} ({cmToInches(price.metadata.size)})
+                  </li>
+                ))}
+              </ul>
+
+              <small>
+                <a href="mailto:mark@markmurray.co">Get in touch</a> for custom
+                print sizes.
+              </small>
+            </small>
+          </Box>
+
+          {photo.limit && (
+            <Box my={4}>
+              <small>
+                <div>
+                  <strong>Limited edition</strong>
+                </div>
+                <small>
+                  This product is a limited edition item. Only {photo.limit}{' '}
+                  will be printed.
+                </small>
+              </small>
+            </Box>
+          )}
+
+          <Select value={selectedPrice.id} onChange={handleSizeChange}>
             {prices.map(price => (
-              <option key={price.id}>
-                {formatPrice(price.unit_amount, price.currency)}
+              <option key={price.id} value={price.id}>
+                {price.metadata.size} (
+                {formatPrice(price.unit_amount, price.currency)})
               </option>
             ))}
           </Select>
@@ -84,13 +154,17 @@ function ProductTemplate(props) {
           </Box>
 
           <Box pt={2} textAlign="center">
+            <small>Photos are printed on high-quality Fuji Matt paper.</small>
+          </Box>
+          <Box pt={2} textAlign="center">
             <small>
-              Photos are printed on the highest quality Fuji Matt paper.
+              Available in Ireland and the UK for now. International shipping
+              coming soon.
             </small>
           </Box>
         </Box>
       </Flex>
-    </div>
+    </Container>
   )
 }
 
@@ -107,7 +181,7 @@ const Product = ({ data }) => {
       <Content>
         <ProductTemplate
           product={product}
-          photo={photo.frontmatter}
+          photo={photo ? photo.frontmatter : {}}
           prices={prices.edges.map(x => x.node)}
         />
       </Content>
@@ -125,6 +199,9 @@ export const pageQuery = graphql`
           id
           currency
           unit_amount
+          metadata {
+            size
+          }
         }
       }
     }
@@ -143,11 +220,12 @@ export const pageQuery = graphql`
         description
         camera
         lens
-        orientation
+        location
         image_url
         width
         height
         tags
+        limit
       }
       fields {
         slug

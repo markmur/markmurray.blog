@@ -1,4 +1,6 @@
-require('dotenv').config()
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
 
 module.exports = {
   siteMetadata: {
@@ -104,6 +106,17 @@ module.exports = {
         downloadFiles: false,
       },
     },
+    // {
+    //   resolve: 'gatsby-source-graphql',
+    //   options: {
+    //     typeName: 'CreativeHub',
+    //     fieldName: 'creative-hub',
+    //     url: 'https://api.creativehub.io',
+    //     headers: {
+    //       Authorization: process.env.CREATIVE_HUB_API_KEY,
+    //     },
+    //   },
+    // },
     // {
     //   resolve: '@sentry/gatsby',
     //   options: {

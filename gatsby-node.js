@@ -15,6 +15,21 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
+      collections: allMarkdownRemark(
+        filter: { frontmatter: { templateKey: { eq: "collection" } } }
+      ) {
+        edges {
+          node {
+            id
+            fields {
+              slug
+            }
+            frontmatter {
+              templateKey
+            }
+          }
+        }
+      }
       posts: allMarkdownRemark(
         limit: 1000
         filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
@@ -70,6 +85,24 @@ exports.createPages = ({ actions, graphql }) => {
       })
     })
 
+    // Create collection pages
+    console.log(result.data)
+    const collections = result.data.collections.edges
+
+    collections.forEach(edge => {
+      const { id } = edge.node
+      createPage({
+        path: edge.node.fields.slug,
+        component: path.resolve(
+          `src/templates/${String(edge.node.frontmatter.templateKey)}.js`,
+        ),
+        // additional data can be passed via context
+        context: {
+          id,
+        },
+      })
+    })
+
     // Tag pages:
     let tags = []
     // Iterate through each post, putting all found tags into `tags`
@@ -95,6 +128,36 @@ exports.createPages = ({ actions, graphql }) => {
     })
   })
 }
+
+// exports.sourceNodes = async ({
+//   actions: { createNode },
+//   createContentDigest,
+// }) => {
+//   try {
+//     const result = await fetch(
+//       `https://api.creativehub.io/api/v1/products/query`,
+//     )
+//     console.log(result)
+//     const resultData = await result.json()
+//     console.log({ resultData })
+//     // create node for build time data example in the docs
+//     createNode({
+//       // nameWithOwner and url are arbitrary fields from the data
+//       nameWithOwner: resultData.full_name,
+//       url: resultData.html_url,
+//       // required fields
+//       id: `example-build-time-data`,
+//       parent: null,
+//       children: [],
+//       internal: {
+//         type: `Example`,
+//         contentDigest: createContentDigest(resultData),
+//       },
+//     })
+//   } catch (error) {
+//     console.log(error, "yep that's it")
+//   }
+// }
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions

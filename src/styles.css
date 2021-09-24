@@ -28,8 +28,8 @@ img {
 
 a {
   color: inherit;
-  font-style: inherit;
-  text-decoration: inherit;
+  /* font-style: inherit;
+  text-decoration: inherit; */
 }
 
 hr {
@@ -62,4 +62,8 @@ blockquote {
   margin: 0;
   margin-bottom: 2em;
   border-left: 2em solid #eeedf3;
+}
+
+ul, ol {
+  line-height: 1.65;
 }

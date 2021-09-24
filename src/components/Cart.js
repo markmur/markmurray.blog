@@ -15,6 +15,9 @@ function LineItem(props) {
             </Box>
             <Box>
               <h6>{props.name}</h6>
+              <Box mb={2}>
+                <small>{props.description}</small>
+              </Box>
               <a onClick={props.onRemove}>
                 <small>Remove</small>
               </a>
@@ -97,7 +100,14 @@ const Cart = ({ open, onClose }) => {
         <Box p={4} bg="#f4f4f7">
           <Flex justifyContent="space-between">
             <strong>Estimated Total</strong>
-            <strong>{formattedTotalPrice}</strong>
+            <div>
+              <strong>{formattedTotalPrice}</strong>
+              <div>
+                <small>
+                  <em>incl. Tax</em>
+                </small>
+              </div>
+            </div>
           </Flex>
         </Box>
 

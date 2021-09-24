@@ -1,0 +1,40 @@
+$post-width: 400px;
+
+.postPreviews {
+  max-width: 100%;
+
+  ul {
+    display: flex;
+    list-style: none;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 93px;
+    scroll-padding-block-end: 50px;
+    padding-left: calc(50vw - 627px);
+    scroll-behavior: smooth;
+    overflow-x: scroll;
+    position: relative;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    li {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      flex: 1 0 $post-width;
+      width: $post-width;
+      flex-direction: column;
+      height: auto;
+      border: 1px solid #eaeaea;
+      margin-right: 2em;
+      transition: box-shadow 100ms ease;
+      background: white;
+
+      &:hover {
+        box-shadow: 0 10px 30px 0 rgba(#f4f4f7, 0.9)
+      }
+    }
+  }  
+}

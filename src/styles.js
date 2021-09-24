@@ -204,7 +204,7 @@ export const Tag = styled(Link)`
   font-family: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New',
     Courier, monospace;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-right: 8px;
   margin-bottom: 10px;
   border-radius: 3px;
@@ -296,6 +296,7 @@ export const Title = styled.h1`
   font-weight: 800;
   margin-top: 0;
   margin-bottom: 12px;
+  white-space: normal;
   ${fontSize};
   ${transition};
 
@@ -335,6 +336,19 @@ export const PostTitle = styled(Title)`
   ${isMobile(`
     margin-top: 1em;
   `)};
+`
+
+export const ProductTitle = styled.h2`
+  ${SERIF_FONT};
+  margin: 0;
+  padding: 0;
+`
+
+export const Subtitle = styled.h6`
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #2980b9;
+  margin-bottom: 5px;
 `
 
 export const LineBreak = styled.div.attrs({
@@ -419,10 +433,23 @@ export const Post = styled.article`
   `)}
 `
 
+export const PostPreview = styled.article`
+  padding: 2em 3em;
+  background: white;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  ${isMobile(`
+    padding-top: 2em;
+  `)}
+`
+
 export const Paragraph = styled.p`
   ${SERIF_FONT};
   font-size: 15px;
   line-height: 1.65;
+  white-space: normal;
   color: ${theme('color')};
   ${space};
 `

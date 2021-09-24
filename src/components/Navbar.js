@@ -18,8 +18,8 @@ const Navbar = ({ displayTagline, wide = false, onCartClick }) => {
           </div>
 
           <Flex>
-            <Link style={{ marginRight: 25 }} to="/">
-              Posts
+            <Link style={{ marginRight: 25 }} to="/posts">
+              Blog
             </Link>
             <Link style={{ marginRight: 25 }} to="/projects">
               Portfolio
@@ -34,8 +34,8 @@ const Navbar = ({ displayTagline, wide = false, onCartClick }) => {
         </Flex>
 
         {displayTagline && (
-          <Timestamp fontSize="1.1rem">
-            Senior Software Engineer @ Zalando, Dublin
+          <Timestamp fontSize="13px">
+            Software Engineer, Photographer, Musician
           </Timestamp>
         )}
       </Container>

@@ -16,11 +16,11 @@ class TagRoute extends React.Component {
     const { totalCount } = allMarkdownRemark
 
     return (
-      <Layout>
+      <Layout wide>
         <section>
           <Helmet title={`${tag} | ${title}`} />
           <Content>
-            <Container>
+            <Container wide>
               <h3>
                 {totalCount} post{totalCount === 1 ? '' : 's'} tagged with “
                 {tag}”

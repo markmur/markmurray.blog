@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components'
 import { StaticQuery, graphql } from 'gatsby'
 import { GlobalStyles, Container } from '../styles'
 import useTheme from '../hooks/theme'
+import CartContext, { CartConsumer } from '../context/CartContext.tsx'
 
 import BackgroundLines from './BackgroundLines'
 import Footer from './Footer'
@@ -52,7 +53,6 @@ const Head = ({ site }) => (
 
 const Content = ({ site, children, displayTagline = false, wide = false }) => {
   const [theme, setTheme, themeName] = useTheme()
-  const [cartOpen, setCartState] = React.useState(false)
 
   return (
     <div>
@@ -64,23 +64,29 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
         <div>
           <GlobalStyles />
 
-          <div>
-            <Navbar
-              wide={wide}
-              theme={themeName}
-              displayTagline={displayTagline}
-              onThemeChange={setTheme}
-              onCartClick={() => setCartState(true)}
-            />
+          <CartContext initialState={{ open: false }}>
+            <CartConsumer>
+              {({ open, setCartState }) => (
+                <React.Fragment>
+                  <Cart open={open} onClose={() => setCartState(false)} />
 
-            <Cart open={cartOpen} onClose={() => setCartState(false)} />
+                  <Navbar
+                    wide={wide}
+                    theme={themeName}
+                    displayTagline={displayTagline}
+                    onThemeChange={setTheme}
+                    onCartClick={() => setCartState(true)}
+                  />
 
-            {children}
+                  {children}
 
-            <Container>
-              <Footer />
-            </Container>
-          </div>
+                  <Container>
+                    <Footer />
+                  </Container>
+                </React.Fragment>
+              )}
+            </CartConsumer>
+          </CartContext>
         </div>
       </ThemeProvider>
     </div>

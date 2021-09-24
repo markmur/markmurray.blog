@@ -19,7 +19,7 @@ export const wrapPageElement = ({ element, props }) => {
       successUrl="https://markmurray.co"
       cancelUrl="https://markmurray.co"
       currency="EUR"
-      allowedCountries={['US', 'GB', 'IE']}
+      allowedCountries={['GB', 'IE']}
       {...props}
     >
       {element}

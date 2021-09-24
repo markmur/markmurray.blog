@@ -1,5 +1,6 @@
 import React from 'react'
 import { graphql } from 'gatsby'
+import { getImageUrl } from '../utils/image.ts'
 import {
   Flex,
   Box,
@@ -12,6 +13,7 @@ import {
 } from '../styles'
 import Layout from '../components/Layout'
 import BackgroundLines from '../components/BackgroundLines'
+import CollectionCarousel from '../components/CollectionCarousel/index.tsx'
 
 const getNodes = photos => {
   const nodes = []
@@ -91,7 +93,7 @@ function Photo(props) {
           }}
           width={photo.width}
           height={photo.height}
-          src={photo.image_url}
+          src={getImageUrl(photo.image_url)}
           alt={photo.description}
         />
 
@@ -163,6 +165,7 @@ export default class PhotographyPage extends React.Component {
 
   render() {
     const { data } = this.props
+    const { collection } = data
 
     let photos
 
@@ -182,6 +185,16 @@ export default class PhotographyPage extends React.Component {
     return (
       <Layout wide displayTagline={false}>
         <BackgroundLines />
+        <CollectionCarousel
+          id={collection.frontmatter.id}
+          title={collection.frontmatter.title}
+          description={collection.frontmatter.description}
+          heading={collection.frontmatter.heading}
+          images={data.collectionImages.edges.map(({ node }) =>
+            getImageUrl(node.frontmatter.image_url),
+          )}
+        />
+
         <Container wide>
           <PageHeading textAlign="center">Photography</PageHeading>
 
@@ -192,11 +205,12 @@ export default class PhotographyPage extends React.Component {
                 <strong>DJI Mavic Air 2</strong> drone and{' '}
                 <strong>Fujifilm XT-30</strong> DSLR. Prints will be available
                 soon for all listed photos and are printed on the highest
-                quality printing paper.
+                quality printing paper. Want a particular size or photo that
+                isn't listed? Contact me for any custom orders.
               </p>
 
               <p>
-                For collaboration requests, you can contact me at{' '}
+                For collaboration requests, contact me at{' '}
                 <a href="mailto:contact@markmurray.co">contact@markmurray.co</a>
                 . To follow my most recent work, follow my{' '}
                 <a href="https://instagram.com/markmur">Instagram</a> (
@@ -262,7 +276,7 @@ export default class PhotographyPage extends React.Component {
             </div>
           </div>
 
-          {photos.map(item => {
+          {/* {photos.map(item => {
             if (Array.isArray(item)) {
               return (
                 <Flex justifyContent="space-between">
@@ -275,7 +289,7 @@ export default class PhotographyPage extends React.Component {
 
             // Landscape
             return <Photo key={item.id} photo={item.frontmatter} />
-          })}
+          })} */}
         </Container>
       </Layout>
     )
@@ -284,6 +298,40 @@ export default class PhotographyPage extends React.Component {
 
 export const pageQuery = graphql`
   {
+    collection: markdownRemark(
+      frontmatter: { templateKey: { eq: "collection" }, id: { eq: "sapphire" } }
+    ) {
+      id
+      fields {
+        slug
+      }
+      frontmatter {
+        id
+        collection
+        stripe_product_id
+        title
+        heading
+        templateKey
+        description
+        image_url
+        location
+        orientation
+        width
+        height
+      }
+    }
+    collectionImages: allMarkdownRemark(
+      filter: { frontmatter: { collection: { eq: "sapphire" } } }
+    ) {
+      edges {
+        node {
+          id
+          frontmatter {
+            image_url
+          }
+        }
+      }
+    }
     photography: allMarkdownRemark(
       filter: {
         frontmatter: { templateKey: { eq: "photo" }, hidden: { ne: true } }
@@ -297,6 +345,7 @@ export const pageQuery = graphql`
             slug
           }
           frontmatter {
+            collection
             stripe_product_id
             title
             tags

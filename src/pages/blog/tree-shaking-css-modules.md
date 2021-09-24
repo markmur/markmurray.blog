@@ -2,10 +2,10 @@
 templateKey: blog-post
 title: Tree shaking CSS Modules
 description:
-  Eliminate collisions with CSS Modules and cut down bundle sizes by
-  purging unused styles.
+  Eliminate collisions with CSS Modules and cut down bundle sizes by purging
+  unused styles.
 date: 2019-12-11T12:00:00.000Z
-pinned: true
+pinned: false
 image: https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80
 tags:
   - Webpack
@@ -183,9 +183,9 @@ increased load times.
 
 ## Collisions
 
-On top of this, by _not_ using [CSS
-Modules](https://github.com/css-modules/css-modules) here, all of our classes
-will be loaded exactly as-is in the file.
+On top of this, by _not_ using
+[CSS Modules](https://github.com/css-modules/css-modules) here, all of our
+classes will be loaded exactly as-is in the file.
 
 ```css
 .margin_s {
@@ -248,7 +248,9 @@ e.exports={
   // ...plus 23 more pairs
 ```
 
-So while we've solved the problem of collisions for our styles, we still have an excessive number of classes in our stylesheet _and_ we have an unnecessary map of unused classes in our _JavaScript_ bundle.
+So while we've solved the problem of collisions for our styles, we still have an
+excessive number of classes in our stylesheet _and_ we have an unnecessary map
+of unused classes in our _JavaScript_ bundle.
 
 We can cut down the overall size of the stylesheet slightly by reducing the
 length of the hash for each class by controlling the size of the classname hash
@@ -378,16 +380,22 @@ Happy days!
 
 ## Addenum
 
-It should be noted here that while the extractor we're using in the `postcss-purgecss` plugin above should work in most cases, there are scenarios where it will not work as expected.
+It should be noted here that while the extractor we're using in the
+`postcss-purgecss` plugin above should work in most cases, there are scenarios
+where it will not work as expected.
 
-The RegEx `/w+/g` will run over each `.js(x)` file in the app as specified by our glob, capturing every word each file and attempting to match each word against the stylesheet classes. This means that if you were to have a JavaScript file with a text node or variable with the same name as one of your classes then the styles for that classes would be included in the bundle.
+The RegEx `/w+/g` will run over each `.js(x)` file in the app as specified by
+our glob, capturing every word each file and attempting to match each word
+against the stylesheet classes. This means that if you were to have a JavaScript
+file with a text node or variable with the same name as one of your classes then
+the styles for that classes would be included in the bundle.
 
 For example, let's say our stylesheet looks liks this:
 
 ```scss
 // styles.scss
 .main {
-  margin: auto; 
+  margin: auto;
 }
 
 .textAlignLeft {
@@ -403,20 +411,25 @@ import React from 'react'
 import styles from './styles.scss'
 
 const App = () => {
-  return (
-    <div>This is the main component</div>
-  )
+  return <div>This is the main component</div>
 }
 ```
 
-Because the extractor matches every word of the file, it will recognise "**main**" in the text node of the component and subsequently load the `.main` class of our `styles.scss` file, despite the fact that we never called `styles.main` anywhere in our file.
+Because the extractor matches every word of the file, it will recognise
+"**main**" in the text node of the component and subsequently load the `.main`
+class of our `styles.scss` file, despite the fact that we never called
+`styles.main` anywhere in our file.
 
-Another scenario where you might see issues is if you use [BEM](http://getbem.com/naming/) style class names with variable prefixes. For example, let's say we want to scope our component styles to the name of our app (this is not necessary since we're using CSS modules but let's explain for the point of argument):
+Another scenario where you might see issues is if you use
+[BEM](http://getbem.com/naming/) style class names with variable prefixes. For
+example, let's say we want to scope our component styles to the name of our app
+(this is not necessary since we're using CSS modules but let's explain for the
+point of argument):
 
 ```scss
 .app {
   background: blue;
-  
+
   &__input {
     padding: 1em;
   }
@@ -441,11 +454,15 @@ const App = () => {
 }
 ```
 
-The extractor will match the `BASE_CLASS` "app" string, but won't match `app__input`, and so our CSS file will contain the `.app {}` styles but _NOT_ the `.app__input {}` styles as the `purgecss` plugin will treat the styles as unused.
+The extractor will match the `BASE_CLASS` "app" string, but won't match
+`app__input`, and so our CSS file will contain the `.app {}` styles but _NOT_
+the `.app__input {}` styles as the `purgecss` plugin will treat the styles as
+unused.
 
-The solution here is to ditch the prefixes and rely on the hashing of your class names to scope your styles, importing them by name.
+The solution here is to ditch the prefixes and rely on the hashing of your class
+names to scope your styles, importing them by name.
 
 ---
 
-_Want to see the code in action? View the_ [example code
-here](https://github.com/markmur/webpack-css-tree-shaking-example)
+_Want to see the code in action? View the_
+[example code here](https://github.com/markmur/webpack-css-tree-shaking-example)

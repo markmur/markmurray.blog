@@ -12,6 +12,7 @@ import {
   Container,
   LineBreak,
   Tag,
+  PostPreview as StyledPostPreview,
 } from '../styles'
 
 const Tags = ({ tags }) =>
@@ -48,6 +49,28 @@ const Post = ({ post }) => (
       <Tags tags={post.frontmatter.tags} />
     </Container>
   </StyledPost>
+)
+
+export const PostPreview = ({ post }) => (
+  <StyledPostPreview>
+    {post.frontmatter.pinned && <Pinned />}
+
+    <Title>
+      <Link to={post.fields.slug}>
+        <span dangerouslySetInnerHTML={{ __html: post.frontmatter.title }} />
+      </Link>
+    </Title>
+
+    <Timestamp>
+      {post.frontmatter.date}
+      <Bullet />
+      {post.fields.readingTime.text}
+    </Timestamp>
+
+    <LineBreak />
+    <Paragraph mb={4}>{post.frontmatter.description}</Paragraph>
+    <Tags tags={post.frontmatter.tags} />
+  </StyledPostPreview>
 )
 
 export default Post
