@@ -1,9 +1,7 @@
 .imageGallery {
-  display: flex;
+  width: 100%;
 
   .main {
-    width: 500px;
-    height: 90vh;
     background-size: cover;
     background-position:center center;
     background-repeat: no-repeat;
@@ -20,10 +18,7 @@
     li {
       cursor: pointer;
       position:relative;
-      margin-left: 8px;
-      margin-bottom: 4px;
       min-height: 100px;
-      background-color: #f4f4f7;
 
       &:hover::after {
         opacity: 1;

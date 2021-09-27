@@ -3,14 +3,21 @@ import Helmet from 'react-helmet'
 import { graphql } from 'gatsby'
 
 import Layout from '../components/Layout'
-import { Container, Content, Description, PostTitle } from '../styles'
+import {
+  Container,
+  Content,
+  Description,
+  PostTitle,
+  Flex,
+  Box,
+} from '../styles'
 import ImageGrid from '../components/ImageGrid/index.tsx'
 import { getImageUrl, getProductUrl } from '../utils/image.ts'
 
 export const CollectionTemplate = ({ title, description, images }) => {
   return (
     <Content pb={4}>
-      <Container wide>
+      <Container>
         <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
         <Description>{description}</Description>
         <ImageGrid images={images} />
@@ -19,13 +26,22 @@ export const CollectionTemplate = ({ title, description, images }) => {
   )
 }
 
+const getPriceByProductId = (prices, productId) => {
+  const amounts = prices.edges.filter(
+    ({ node }) => node.product.id === productId,
+  )
+  return Math.min(...amounts.map(x => x.node.unit_amount)) / 100
+}
+
 const Collection = ({ data }) => {
-  const { collection, images } = data
+  const { collection, images, prices } = data
 
   const { id, title, description } = collection.frontmatter
   const imageUrls = images.edges.map(({ node }) => ({
     image_url: getImageUrl(node.frontmatter.image_url),
     href: getProductUrl(node.frontmatter.stripe_product_id),
+    title: node.frontmatter.title,
+    price: getPriceByProductId(prices, node.frontmatter.stripe_product_id),
   }))
 
   const url = data.site.siteMetadata.url + `/collection/${id}`
@@ -77,13 +93,27 @@ export const pageQuery = graphql`
         description
       }
     }
+    prices: allStripePrice(filter: {}) {
+      edges {
+        node {
+          id
+          currency
+          unit_amount
+          product {
+            id
+          }
+        }
+      }
+    }
     images: allMarkdownRemark(
       filter: { frontmatter: { collection: { eq: "sapphire" } } }
+      sort: { fields: [frontmatter___title] }
     ) {
       edges {
         node {
           id
           frontmatter {
+            title
             image_url
             stripe_product_id
           }

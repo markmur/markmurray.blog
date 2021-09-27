@@ -20,7 +20,7 @@ class TagRoute extends React.Component {
         <section>
           <Helmet title={`${tag} | ${title}`} />
           <Content>
-            <Container wide>
+            <Container>
               <h3>
                 {totalCount} post{totalCount === 1 ? '' : 's'} tagged with “
                 {tag}”

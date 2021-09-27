@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { Flex, PageHeading, Container, Content } from '../styles'
+import { Box, Flex, PageHeading, Container, Content } from '../styles'
 import Layout from '../components/Layout'
 import { PostPreview } from '../components/post'
 import CollectionCarousel from '../components/CollectionCarousel/index.tsx'
@@ -20,8 +20,10 @@ export default class IndexPage extends React.Component {
     return (
       <Layout wide displayTagline>
         <Content wide>
-          <Container wide>
-            <PageHeading>Latest Art</PageHeading>
+          <Container>
+            <Box mb={2}>
+              <PageHeading>Latest Art</PageHeading>
+            </Box>
           </Container>
         </Content>
 
@@ -31,23 +33,28 @@ export default class IndexPage extends React.Component {
           description={collection.frontmatter.description}
           heading={collection.frontmatter.heading}
           images={collectionImages.edges.map(({ node }) =>
-            getImageUrl(node.frontmatter.image_url),
+            getImageUrl(node.frontmatter.image_url, '300x375'),
           )}
+          minPrice={collection.frontmatter.minPrice}
         />
 
         <Content wide>
-          <Container wide>
-            <PageHeading>Latest Tech</PageHeading>
+          <Container>
+            <Box mb={3}>
+              <PageHeading>Latest Tech</PageHeading>
+            </Box>
 
             <a href="/posts">See all posts</a>
           </Container>
         </Content>
 
-        <PostPreviews
-          posts={posts.sort(
-            (a, b) => b.frontmatter.pinned - a.frontmatter.pinned,
-          )}
-        />
+        <Box mt={4}>
+          <PostPreviews
+            posts={posts.sort(
+              (a, b) => b.frontmatter.pinned - a.frontmatter.pinned,
+            )}
+          />
+        </Box>
       </Layout>
     )
   }
@@ -75,6 +82,7 @@ export const pageQuery = graphql`
         orientation
         width
         height
+        minPrice
       }
     }
     collectionImages: allMarkdownRemark(

@@ -8,6 +8,7 @@ import Layout from '../components/Layout'
 import { HTMLContent } from '../components/Content'
 import {
   Flex,
+  Box,
   Bullet,
   Comments,
   Container,
@@ -44,9 +45,11 @@ export const ProjectTemplate = ({
   const PostContent = postContent
   return (
     <Content pb={4}>
-      <Container>
-        <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
-        <Description>{description}</Description>
+      <Container narrow>
+        <Box mt={2}>
+          <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
+          <Description>{description}</Description>
+        </Box>
 
         <Timestamp>
           {date}

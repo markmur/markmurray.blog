@@ -14,6 +14,7 @@ import {
 import Layout from '../components/Layout'
 import BackgroundLines from '../components/BackgroundLines'
 import CollectionCarousel from '../components/CollectionCarousel/index.tsx'
+import ImageGrid from '../components/ImageGrid/index.tsx'
 
 const getNodes = photos => {
   const nodes = []
@@ -53,7 +54,7 @@ function getTags(edges) {
   const allTags = {}
 
   for (const photo of edges) {
-    const tags = photo.node.frontmatter.tags || []
+    const tags = [photo.node.frontmatter.collection] || []
 
     for (const tag of tags) {
       const lowercaseTag = (tag || '').toLowerCase()
@@ -185,28 +186,19 @@ export default class PhotographyPage extends React.Component {
     return (
       <Layout wide displayTagline={false}>
         <BackgroundLines />
-        <CollectionCarousel
-          id={collection.frontmatter.id}
-          title={collection.frontmatter.title}
-          description={collection.frontmatter.description}
-          heading={collection.frontmatter.heading}
-          images={data.collectionImages.edges.map(({ node }) =>
-            getImageUrl(node.frontmatter.image_url),
-          )}
-        />
 
-        <Container wide>
-          <PageHeading textAlign="center">Photography</PageHeading>
+        <Container py={[5, 6]} pt={[5, 5]} pb={[3, 4]}>
+          <PageHeading mb={2}>Photography &amp; art</PageHeading>
 
-          <Flex justifyContent="center">
-            <Box maxWidth={800} textAlign="center">
+          <Flex justifyContent="left">
+            <Box maxWidth={800} textAlign={['left', 'left']}>
               <p>
                 A collection of photos taken with my{' '}
                 <strong>DJI Mavic Air 2</strong> drone and{' '}
-                <strong>Fujifilm XT-30</strong> DSLR. Prints will be available
-                soon for all listed photos and are printed on the highest
-                quality printing paper. Want a particular size or photo that
-                isn't listed? Contact me for any custom orders.
+                <strong>Fujifilm XT-30</strong> DSLR. Prints are available soon
+                for all photos listed here and on my Instagram. Photos are print
+                on high quality Fuji Matt Paper. Want a particular size or photo
+                that isn't listed? Contact me for any custom orders.
               </p>
 
               <p>
@@ -218,7 +210,20 @@ export default class PhotographyPage extends React.Component {
               </p>
             </Box>
           </Flex>
+        </Container>
 
+        <CollectionCarousel
+          id={collection.frontmatter.id}
+          title={collection.frontmatter.title}
+          description={collection.frontmatter.description}
+          heading={collection.frontmatter.heading}
+          images={data.collectionImages.edges.map(({ node }) =>
+            getImageUrl(node.frontmatter.image_url),
+          )}
+          minPrice={collection.frontmatter.minPrice}
+        />
+
+        <Container>
           <hr />
 
           <div style={{ position: 'relative' }}>
@@ -254,7 +259,7 @@ export default class PhotographyPage extends React.Component {
                 </Box>
 
                 <Box>
-                  <h4>Tags</h4>
+                  <h4>Collection</h4>
                   <Flex>
                     {Object.entries(tags)
                       .sort()
@@ -276,20 +281,15 @@ export default class PhotographyPage extends React.Component {
             </div>
           </div>
 
-          {/* {photos.map(item => {
-            if (Array.isArray(item)) {
-              return (
-                <Flex justifyContent="space-between">
-                  {item.map(photo => (
-                    <Photo key={photo.id} photo={photo.frontmatter} />
-                  ))}
-                </Flex>
-              )
-            }
-
-            // Landscape
-            return <Photo key={item.id} photo={item.frontmatter} />
-          })} */}
+          <ImageGrid
+            images={data.photography.edges.map(({ node }) => ({
+              image_url:
+                node.frontmatter.collection === 'sapphire'
+                  ? getImageUrl(node.frontmatter.image_url, '300x375')
+                  : node.frontmatter.image_url,
+              title: node.frontmatter.title,
+            }))}
+          />
         </Container>
       </Layout>
     )
@@ -318,6 +318,7 @@ export const pageQuery = graphql`
         orientation
         width
         height
+        minPrice
       }
     }
     collectionImages: allMarkdownRemark(
@@ -349,6 +350,7 @@ export const pageQuery = graphql`
             stripe_product_id
             title
             tags
+            collection
             templateKey
             description
             image_url

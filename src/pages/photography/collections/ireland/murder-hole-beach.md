@@ -4,6 +4,7 @@ order: 1
 templateKey: photo
 title: Murder Hole Beach
 location: Donegal, Ireland
+collection: ireland
 description:
   It may have a sinister name, but Ireland's Murder Hole beach is one of the
   most pristine in the country.

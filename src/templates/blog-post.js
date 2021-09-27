@@ -8,6 +8,7 @@ import Layout from '../components/Layout'
 import { HTMLContent } from '../components/Content'
 import {
   Flex,
+  Box,
   Bullet,
   Comments,
   Container,
@@ -43,10 +44,12 @@ export const BlogPostTemplate = ({
 }) => {
   const PostContent = postContent
   return (
-    <Content pb={4}>
-      <Container>
-        <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
-        <Description>{description}</Description>
+    <Content pt={[4, 5]} pb={4}>
+      <Container narrow>
+        <Box mt={2}>
+          <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
+          <Description>{description}</Description>
+        </Box>
 
         <Timestamp>
           {date}

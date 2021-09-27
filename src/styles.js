@@ -2,7 +2,25 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { EntypoPin } from 'react-entypo-icons'
 import styled, { css, createGlobalStyle } from 'styled-components'
-import { fontSize, space, color, textAlign, maxWidth } from 'styled-system'
+import {
+  fontSize,
+  space,
+  color,
+  textAlign,
+  maxWidth,
+  layout,
+  flex,
+  display,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  flexWrap,
+  height,
+  width,
+  system,
+  backgroundSize,
+  backgroundPosition,
+} from 'styled-system'
 
 // const LOGO_FONT = 'PT Serif, serif'
 const font = family => `font-family: ${family}`
@@ -23,6 +41,18 @@ const notMobile = content => `
   @media (min-width: 720px) {
     ${content}
   }
+`
+
+export const HideOnMobile = styled.div`
+  ${isMobile(`
+    display: none;
+  `)};
+`
+
+export const HideOnDesktop = styled.div`
+  ${notMobile(`
+    display: none;
+  `)};
 `
 
 const transition = css`
@@ -46,20 +76,37 @@ export const Nav = styled.nav`
 
 export const Flex = styled.div`
   display: flex;
-  flex-direction: ${p => (p.column ? 'column' : 'row')};
-  justify-content: ${p => p.justifyContent || 'flex-start'};
-  align-items: ${p => p.alignItems || 'center'};
-  flex-wrap: ${p => (p.wrap ? 'wrap' : 'nowrap')};
-  ${p => (p.flex ? `flex: ${p.flex};` : '')}
+  ${flex};
   ${space};
+  ${layout};
+  ${display};
+  ${flexDirection};
+  ${justifyContent};
+  ${alignItems};
+  ${flexWrap};
+  ${color};
+  ${height};
 `
+
+const aspectRatio = system({
+  aspectRatio: {
+    property: 'aspectRatio',
+    transform: val => `${val}`,
+  },
+})
 
 export const Box = styled.div`
   ${space};
   ${maxWidth};
+  ${width};
+  ${height};
   ${textAlign};
   ${color};
-  ${p => (p.flex ? `flex: ${p.flex};` : '')}
+  ${layout};
+  ${flex};
+  ${backgroundPosition};
+  ${p => (p.aspectRatio ? aspectRatio : '')};
+  ${backgroundSize};
 `
 
 export const Pinned = props => (
@@ -89,15 +136,16 @@ const borderWidth = 10
 
 export const Button = styled.button`
   padding: 1em 3em;
-  border: 1px solid;
+  border: 1px solid #e0e0e8;
   text-transform: uppercase;
-  text-spacing: 2px;
+  letter-spacing: 1px;
   font-weight: bold;
   background: transparent;
-  color: white;
+  width: 100%;
   font-size: 13px;
   transition: all 150ms ease;
   cursor: pointer;
+  border-radius: 3px;
 
   ${p => p.expand && `width: 100%`};
 
@@ -109,6 +157,7 @@ export const Button = styled.button`
   &:hover {
     background: white;
     color: black;
+    box-shadow: 0 5px 20px 0 rgb(0 0 0 / 5%);
   }
 
   ${p =>
@@ -180,6 +229,13 @@ export const Toolbar = styled.div`
   width: 80px;
 `
 
+export const imageBackground = css`
+  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=50)
+    black 0% 0% / 100% no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+`
+
 export const Logo = styled.h2`
   ${LOGO_FONT};
   color: ${theme('logoColor', theme('color'))};
@@ -187,13 +243,9 @@ export const Logo = styled.h2`
   margin: 0;
   display: inline;
   letter-spacing: 0.75px;
-  font-weight: light;
+  font-weight: lighter;
   ${transition};
-  color: transparent;
-  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=50)
-    black 0% 0% / 100% no-repeat;
-  background-clip: text;
-  -webkit-background-clip: text;
+  color: blue;
 `
 
 export const Tag = styled(Link)`
@@ -204,7 +256,7 @@ export const Tag = styled(Link)`
   font-family: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New',
     Courier, monospace;
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   margin-right: 8px;
   margin-bottom: 10px;
   border-radius: 3px;
@@ -217,13 +269,13 @@ export const Tag = styled(Link)`
 `
 
 export const Container = styled.div`
-  max-width: ${p => (p.wide ? '1320px' : '800px')};
+  max-width: ${p => (p.narrow ? '800px' : '1320px')};
   margin: auto;
-  padding: 0 2em;
+  padding: 0 1.5em;
 
-  ${isMobile(`
-    padding: 0 1.5em;
-  `)}
+  ${maxWidth};
+  ${space};
+  ${layout};
 `
 
 export const ScrollContainer = styled(Flex).attrs({
@@ -268,25 +320,45 @@ export const Content = styled.section`
 `
 
 export const PageHeading = styled.h1`
-  font-size: 5rem;
-  font-weight: 900;
+  font-size: 2rem;
+  font-weight: 400;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: transparent;
   margin-top: 0.2em;
   margin-bottom: 0.15em;
-  background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=80)
-    black 0% 0% / 100% no-repeat;
-  background-clip: text;
-  -webkit-background-clip: text;
+  color: #333;
   ${textAlign};
+  ${space};
 
   ${isMobile(`
-    font-size: 3rem;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    font-size: 2rem;
     letter-spacing: 0;
   `)}
+`
+
+export const Carousel = styled(Flex)`
+  list-style: none;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  will-change: transform;
+  transition: transform 300ms ease-out;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+export const CarouselItem = styled(Box)`
+  display: flex;
+  cursor: pointer;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 `
 
 export const Title = styled.h1`
@@ -299,6 +371,7 @@ export const Title = styled.h1`
   white-space: normal;
   ${fontSize};
   ${transition};
+  ${space};
 
   ${isMobile(`
     font-weight: 800;
@@ -327,7 +400,6 @@ export const Title = styled.h1`
 export const PostTitle = styled(Title)`
   font-weight: 800;
   font-size: 3rem;
-  margin-top: 2em;
   line-height: 1.35;
   letter-spacing: 0.2px;
   color: ${theme('titleColor')};
@@ -433,8 +505,7 @@ export const Post = styled.article`
   `)}
 `
 
-export const PostPreview = styled.article`
-  padding: 2em 3em;
+export const PostPreview = styled(Box)`
   background: white;
   display: flex;
   flex: 1;
@@ -661,9 +732,12 @@ export const Drawer = styled.div`
   background: white;
   height: 100vh;
   z-index: 100;
-  transform: translateX(${p => (p.open ? '0%' : '100%')});
+  display: ${p => (p.open ? 'block' : 'none')};
+  opacity: ${p => (p.open ? '1' : '0')};
+  transform: translateX(${p => (p.open ? '0%' : '20%')});
   box-shadow: rgb(0 0 0 / 10%) -5px 0px 20px 0px;
-  transition: transform 200ms ease-in 0s;
+  transition: all 150ms ease-out 0s;
+  ${color};
 `
 
 export const Overlay = styled.div`

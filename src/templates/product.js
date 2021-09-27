@@ -48,14 +48,15 @@ function ProductTemplate(props) {
   }, [])
 
   return (
-    <Container wide>
+    <Container>
       <Flex
         mt={2}
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        width="100%"
+        justifyContent={['center', 'flex-start']}
+        alignItems={['inherit', 'flex-start']}
         flexDirection={['column', 'row']}
       >
-        <Box flex="1 0 50%">
+        <Box flex={[1, '1 0 50%']}>
           <ImageGallery
             images={[
               '/photography/collections/sapphire/product/home',
@@ -65,7 +66,7 @@ function ProductTemplate(props) {
           />
         </Box>
 
-        <Box px={[3, 4, 4]} flex="1 0 50%">
+        <Box pt={[5, 0]} px={[0, 4, 4]} flex={[1, '1 0 50%']}>
           {photo.limit && (
             <Box mb={3}>
               <Subtitle>Limited Edition</Subtitle>
@@ -99,13 +100,15 @@ function ProductTemplate(props) {
           <Box my={4}>
             <small>
               <strong>Sizes available</strong>
-              <ul>
-                {prices.map(price => (
-                  <li key={price.id}>
-                    {price.metadata.size} ({cmToInches(price.metadata.size)})
-                  </li>
-                ))}
-              </ul>
+              <Box p={3} pl={4}>
+                <ul>
+                  {prices.map(price => (
+                    <li key={price.id}>
+                      {price.metadata.size} ({cmToInches(price.metadata.size)})
+                    </li>
+                  ))}
+                </ul>
+              </Box>
 
               <small>
                 <a href="mailto:mark@markmurray.co">Get in touch</a> for custom
@@ -131,8 +134,9 @@ function ProductTemplate(props) {
           <Select value={selectedPrice.id} onChange={handleSizeChange}>
             {prices.map(price => (
               <option key={price.id} value={price.id}>
-                {price.metadata.size} (
-                {formatPrice(price.unit_amount, price.currency)})
+                {price.metadata.size} ({cmToInches(price.metadata.size)}){' '}
+                {' - '}
+                {formatPrice(price.unit_amount, price.currency)}
               </option>
             ))}
           </Select>

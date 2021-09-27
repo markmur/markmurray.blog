@@ -6,14 +6,15 @@
   margin: 0 -0.5em;
 
   li {
-    flex: 0 0 calc(100% / 4);
+    // flex: 0 0 calc(100% / 4);
     padding: 0.5em;
   }
 
   .image {
     max-width: 100%;
     background-size: cover;
-    height: 450px;
+    aspect-ratio: 9 / 16;
+
   }
 
   a {

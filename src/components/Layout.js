@@ -5,7 +5,9 @@ import { StaticQuery, graphql } from 'gatsby'
 import { GlobalStyles, Container } from '../styles'
 import useTheme from '../hooks/theme'
 import CartContext, { CartConsumer } from '../context/CartContext.tsx'
+import MenuContext, { MenuConsumer } from '../context/MenuContext.tsx'
 
+import MobileMenu from './MobileMenu.tsx'
 import BackgroundLines from './BackgroundLines'
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -64,29 +66,43 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
         <div>
           <GlobalStyles />
 
-          <CartContext initialState={{ open: false }}>
-            <CartConsumer>
-              {({ open, setCartState }) => (
-                <React.Fragment>
-                  <Cart open={open} onClose={() => setCartState(false)} />
+          <MenuContext initialState={{ open: false }}>
+            <CartContext initialState={{ open: false }}>
+              <CartConsumer>
+                {({ open, setCartState }) => (
+                  <React.Fragment>
+                    <Cart open={open} onClose={() => setCartState(false)} />
 
-                  <Navbar
-                    wide={wide}
-                    theme={themeName}
-                    displayTagline={displayTagline}
-                    onThemeChange={setTheme}
-                    onCartClick={() => setCartState(true)}
-                  />
+                    <MenuConsumer>
+                      {({ open, setOpenState }) => (
+                        <React.Fragment>
+                          <MobileMenu
+                            open={open}
+                            onClose={() => setOpenState(false)}
+                          />
 
-                  {children}
+                          <Navbar
+                            wide={wide}
+                            theme={themeName}
+                            displayTagline={displayTagline}
+                            onThemeChange={setTheme}
+                            onCartClick={() => setCartState(true)}
+                            onMenuClick={() => setOpenState(true)}
+                          />
+                        </React.Fragment>
+                      )}
+                    </MenuConsumer>
 
-                  <Container>
-                    <Footer />
-                  </Container>
-                </React.Fragment>
-              )}
-            </CartConsumer>
-          </CartContext>
+                    {children}
+
+                    <Container>
+                      <Footer />
+                    </Container>
+                  </React.Fragment>
+                )}
+              </CartConsumer>
+            </CartContext>
+          </MenuContext>
         </div>
       </ThemeProvider>
     </div>

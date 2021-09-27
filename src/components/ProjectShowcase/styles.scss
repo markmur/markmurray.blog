@@ -9,7 +9,7 @@ $showcase-height: 50vh;
 
   @include xs-device {
     height: auto;
-    padding: 1em 2em;
+    padding: 1em 0;
     margin-bottom: 0;
   }
 
