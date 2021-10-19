@@ -1,20 +1,20 @@
-import React from 'react'
-import {
-  HiOutlineArrowLeft as Left,
-  HiOutlineArrowRight as Right,
-} from 'react-icons/hi'
-import Button from '../Button'
+import React from 'react';
+import Button from '../Button';
 import {
   Flex,
   Box,
-  Container,
   HideOnMobile,
   HideOnDesktop,
   Carousel,
   CarouselItem,
-} from '../../styles'
+  Subtitle,
+} from '../../styles';
 
-import * as styles from './styles.scss'
+import * as styles from './styles.scss';
+import { useCarousel } from '../Carousel';
+import Controls from '../Carousel/Controls';
+
+const MobileContainer = ({ children }) => <Box px={3}>{children}</Box>;
 
 const CollectionCarousel = ({
   id,
@@ -24,90 +24,68 @@ const CollectionCarousel = ({
   description,
   images,
 }) => {
-  const [index, setIndex] = React.useState(0)
-  const ref = React.createRef<HTMLElement>()
-
-  const handleNextClick = () => {
-    if (index === images.length - 1) return
-
-    const next = index + 1
-
-    setIndex(next)
-    ref.current.scrollLeft = next * 272
-  }
-
-  const handlePrevClick = () => {
-    if (index === 0) return
-
-    setIndex(index - 1)
-    ref.current.scrollLeft -= 272
-  }
-
-  const [loaded, setLoadedState] = React.useState(false)
+  const [loaded, setLoadedState] = React.useState(false);
 
   React.useEffect(() => {
-    setLoadedState(true)
-  }, [])
+    setLoadedState(true);
+  }, []);
+
+  const containerRef = React.useRef(null);
+  const { observe, next, prev } = useCarousel(containerRef, 300);
 
   return (
     <Box
       id="content"
       className={styles.collectionCarousel}
       bg="rgba(244, 244, 247, 0.5)"
-      pt={[5, '45px']}
+      pt={[4, '45px']}
       pb={[4, '45px']}
       px={[0, 3]}
       mb={5}
     >
-      <Container maxWidth={['100%', '1320px']}>
+      <Box maxWidth="100%" ml={[0, 'calc(50vw - 668px)']}>
         <Flex flexDirection={['column', 'row']}>
           <Box flex="1" minWidth={400}>
-            <Box className="description" pr={[0, 5]} mb={[3, 0]}>
-              <Box className="caption" width={['auto']}>
-                <h6>Featured Collection</h6>
-                <Box my={3}>
-                  <h4>{title}</h4>
+            <MobileContainer>
+              <Box className="description" pr={[0, 5]} mb={[3, 0]}>
+                <Box className="caption" width={['auto']}>
+                  <Subtitle>Featured Collection</Subtitle>
+                  <Box my={3}>
+                    <h4>{title}</h4>
+                  </Box>
+                  <p>{description}</p>
+
+                  {minPrice && (
+                    <Box py={3}>
+                      <small>
+                        <em>
+                          from <strong>{minPrice}</strong>
+                        </em>
+                      </small>
+                    </Box>
+                  )}
                 </Box>
-                <p>{description}</p>
 
-                {minPrice && (
-                  <Box py={3}>
-                    <small>
-                      <em>
-                        from <strong>{minPrice}</strong>
-                      </em>
-                    </small>
-                  </Box>
-                )}
+                <div>
+                  <HideOnMobile>
+                    <Controls my={4} onPrev={prev} onNext={next} />
+
+                    <Button href={`/collections/${id}`}>View Collection</Button>
+                  </HideOnMobile>
+                </div>
               </Box>
-
-              <div>
-                <HideOnMobile>
-                  <Box className="controls" my={4}>
-                    <div onClick={handlePrevClick}>
-                      <Left size="20px" />
-                    </div>
-                    <div onClick={handleNextClick}>
-                      <Right size="20px" />
-                    </div>
-                  </Box>
-                  <Button href={`/collections/${id}`}>View Collection</Button>
-                </HideOnMobile>
-              </div>
-            </Box>
+            </MobileContainer>
           </Box>
 
           <Box flex={8} overflow="hidden">
-            <Carousel ref={ref}>
+            <Carousel ref={containerRef} pr={[3, 5]}>
               {images.map(image => (
-                <CarouselItem key={image} flex="1">
+                <CarouselItem ref={observe} key={image} flex="1">
                   <a href={`/photography/prod_KFZCWB1EJmCtfN`}>
                     <Box
-                      className={loaded ? 'loaded' : ''}
-                      // width="300"
-                      // height="428"
-                      mr={[1, 2]}
-                      width={['40vw', '20vw']}
+                      className={loaded ? 'item loaded' : 'item'}
+                      mr={[1, 3]}
+                      width={['40vw', '200px', '278px']}
                       aspectRatio={[4 / 6, 5 / 8]}
                       backgroundSize="cover"
                       style={{
@@ -120,9 +98,11 @@ const CollectionCarousel = ({
             </Carousel>
 
             <HideOnDesktop>
-              <Box mt={3}>
-                <Button href={`/collections/${id}`}>View Collection</Button>
-              </Box>
+              <MobileContainer>
+                <Box mt={3}>
+                  <Button href={`/collections/${id}`}>View Collection</Button>
+                </Box>
+              </MobileContainer>
             </HideOnDesktop>
 
             {/* <div className="title">
@@ -130,9 +110,9 @@ const CollectionCarousel = ({
             </div> */}
           </Box>
         </Flex>
-      </Container>
+      </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default CollectionCarousel
+export default CollectionCarousel;

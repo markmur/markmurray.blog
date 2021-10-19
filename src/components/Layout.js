@@ -1,17 +1,17 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { ThemeProvider } from 'styled-components'
-import { StaticQuery, graphql } from 'gatsby'
-import { GlobalStyles, Container } from '../styles'
-import useTheme from '../hooks/theme'
-import CartContext, { CartConsumer } from '../context/CartContext.tsx'
-import MenuContext, { MenuConsumer } from '../context/MenuContext.tsx'
+import React from 'react';
+import Helmet from 'react-helmet';
+import { ThemeProvider } from 'styled-components';
+import { StaticQuery, graphql } from 'gatsby';
+import { GlobalStyles, Container, Box } from '../styles';
+import useTheme from '../hooks/theme';
+import CartContext, { CartConsumer } from '../context/CartContext.tsx';
+import MenuContext, { MenuConsumer } from '../context/MenuContext.tsx';
 
-import MobileMenu from './MobileMenu.tsx'
-import BackgroundLines from './BackgroundLines'
-import Footer from './Footer'
-import Navbar from './Navbar'
-import Cart from './Cart'
+import MobileMenu from './MobileMenu.tsx';
+import BackgroundLines from './BackgroundLines';
+import Footer from './Footer';
+import Navbar from './Navbar';
+import Cart from './Cart';
 
 const query = graphql`
   query HeadingQuery {
@@ -22,7 +22,7 @@ const query = graphql`
       }
     }
   }
-`
+`;
 
 const Head = ({ site }) => (
   <Helmet>
@@ -51,10 +51,10 @@ const Head = ({ site }) => (
     <link rel="icon" type="image/png" href="/img/favicon.png" sizes="32x32" />
     <meta name="theme-color" content="#000" />
   </Helmet>
-)
+);
 
 const Content = ({ site, children, displayTagline = false, wide = false }) => {
-  const [theme, setTheme, themeName] = useTheme()
+  const [theme, setTheme, themeName] = useTheme();
 
   return (
     <div>
@@ -63,7 +63,7 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
       <BackgroundLines />
 
       <ThemeProvider theme={theme}>
-        <div>
+        <Box pt={5}>
           <GlobalStyles />
 
           <MenuContext initialState={{ open: false }}>
@@ -103,11 +103,11 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
               </CartConsumer>
             </CartContext>
           </MenuContext>
-        </div>
+        </Box>
       </ThemeProvider>
     </div>
-  )
-}
+  );
+};
 
 const Layout = ({ children, ...props }) => {
   return (
@@ -119,7 +119,7 @@ const Layout = ({ children, ...props }) => {
         </Content>
       )}
     />
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

@@ -1,11 +1,11 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
-import { useShoppingCart } from 'use-shopping-cart'
+import React from 'react';
+import Helmet from 'react-helmet';
+import { graphql } from 'gatsby';
+import { useShoppingCart } from 'use-shopping-cart';
 
-import { CartConsumer } from '../context/CartContext.tsx'
-import Layout from '../components/Layout'
-import ImageGallery from '../components/ImageGallery/index.tsx'
+import { CartConsumer } from '../context/CartContext.tsx';
+import Layout from '../components/Layout';
+import ImageGallery from '../components/ImageGallery/index.tsx';
 import {
   Box,
   Button,
@@ -15,37 +15,37 @@ import {
   Select,
   ProductTitle,
   Subtitle,
-} from '../styles'
-import { formatPrice } from '../utils/currency'
-import { toCartProduct } from '../utils/product.ts'
-import { cmToInches } from '../utils/index.ts'
+} from '../styles';
+import { formatPrice } from '../utils/currency';
+import { toCartProduct } from '../utils/product.ts';
+import { cmToInches } from '../utils/index.ts';
 
 function ProductTemplate(props) {
-  const { product, photo, prices } = props
-  const [addedToCart, setAddedToCart] = React.useState(false)
-  const [selectedPrice, setSelectedPrice] = React.useState(prices[0])
-  const { setCartState } = React.useContext(CartConsumer)
+  const { product, photo, prices } = props;
+  const [addedToCart, setAddedToCart] = React.useState(false);
+  const [selectedPrice, setSelectedPrice] = React.useState(prices[0]);
+  const { setCartState } = React.useContext(CartConsumer);
 
-  const { addItem, cartDetails } = useShoppingCart()
+  const { addItem, cartDetails } = useShoppingCart();
 
   const handleAddToCart = React.useCallback(() => {
     // add to cart
-    addItem(toCartProduct(product, selectedPrice), 1)
+    addItem(toCartProduct(product, selectedPrice), 1);
     // set loading state
-    setAddedToCart(true)
-    setCartState({ open: true })
+    setAddedToCart(true);
+    setCartState({ open: true });
 
     // set timeout for loading state
     setTimeout(() => {
-      setAddedToCart(false)
-    }, 5 * 1000)
-  }, [])
+      setAddedToCart(false);
+    }, 5 * 1000);
+  }, []);
 
   const handleSizeChange = React.useCallback(event => {
-    event.persist()
-    const id = event.target.value
-    setSelectedPrice(prices.find(x => x.id === id))
-  }, [])
+    event.persist();
+    const id = event.target.value;
+    setSelectedPrice(prices.find(x => x.id === id));
+  }, []);
 
   return (
     <Container>
@@ -56,7 +56,7 @@ function ProductTemplate(props) {
         alignItems={['inherit', 'flex-start']}
         flexDirection={['column', 'row']}
       >
-        <Box flex={[1, '1 0 50%']}>
+        <Box flex={[1, '1 0 55%']}>
           <ImageGallery
             images={[
               '/photography/collections/sapphire/product/home',
@@ -66,7 +66,7 @@ function ProductTemplate(props) {
           />
         </Box>
 
-        <Box pt={[5, 0]} px={[0, 4, 4]} flex={[1, '1 0 50%']}>
+        <Box border="1px solid" py={[5, 5]} px={[0, 5]} flex={[1, '1 0 45%']}>
           {photo.limit && (
             <Box mb={3}>
               <Subtitle>Limited Edition</Subtitle>
@@ -169,11 +169,11 @@ function ProductTemplate(props) {
         </Box>
       </Flex>
     </Container>
-  )
+  );
 }
 
 const Product = ({ data }) => {
-  const { product, photo, prices } = data
+  const { product, photo, prices } = data;
 
   return (
     <Layout wide displayTagline={false}>
@@ -190,10 +190,10 @@ const Product = ({ data }) => {
         />
       </Content>
     </Layout>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;
 
 export const pageQuery = graphql`
   query ProductByID($id: String!) {
@@ -236,4 +236,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

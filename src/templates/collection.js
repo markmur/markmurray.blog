@@ -1,8 +1,8 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import React from 'react';
+import Helmet from 'react-helmet';
+import { graphql } from 'gatsby';
 
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
 import {
   Container,
   Content,
@@ -10,41 +10,48 @@ import {
   PostTitle,
   Flex,
   Box,
-} from '../styles'
-import ImageGrid from '../components/ImageGrid/index.tsx'
-import { getImageUrl, getProductUrl } from '../utils/image.ts'
+} from '../styles';
+import ImageGrid from '../components/ImageGrid/index.tsx';
+import { getImageUrl, getProductUrl } from '../utils/image.ts';
 
 export const CollectionTemplate = ({ title, description, images }) => {
   return (
-    <Content pb={4}>
+    <Content pb={4} pt={5}>
       <Container>
-        <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
+        <PostTitle
+          dangerouslySetInnerHTML={{ __html: title }}
+          textAlign={['left', 'center']}
+          mb={3}
+        />
         <Description>{description}</Description>
+
+        <hr />
+
         <ImageGrid images={images} />
       </Container>
     </Content>
-  )
-}
+  );
+};
 
 const getPriceByProductId = (prices, productId) => {
   const amounts = prices.edges.filter(
     ({ node }) => node.product.id === productId,
-  )
-  return Math.min(...amounts.map(x => x.node.unit_amount)) / 100
-}
+  );
+  return Math.min(...amounts.map(x => x.node.unit_amount)) / 100;
+};
 
 const Collection = ({ data }) => {
-  const { collection, images, prices } = data
+  const { collection, images, prices } = data;
 
-  const { id, title, description } = collection.frontmatter
+  const { id, title, description } = collection.frontmatter;
   const imageUrls = images.edges.map(({ node }) => ({
     image_url: getImageUrl(node.frontmatter.image_url),
     href: getProductUrl(node.frontmatter.stripe_product_id),
     title: node.frontmatter.title,
     price: getPriceByProductId(prices, node.frontmatter.stripe_product_id),
-  }))
+  }));
 
-  const url = data.site.siteMetadata.url + `/collection/${id}`
+  const url = data.site.siteMetadata.url + `/collection/${id}`;
 
   return (
     <Layout wide>
@@ -74,10 +81,10 @@ const Collection = ({ data }) => {
         images={imageUrls}
       />
     </Layout>
-  )
-}
+  );
+};
 
-export default Collection
+export default Collection;
 
 export const pageQuery = graphql`
   query Collection($id: String!) {
@@ -121,4 +128,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

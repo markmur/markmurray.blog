@@ -1,20 +1,21 @@
-import React from 'react'
-import { PostPreview } from '../post'
+import React from 'react';
+import { CarouselItem } from '../../styles';
+import { PostPreview } from '../post';
 
-import './styles.scss'
+import './styles.scss';
 
-const PostPreviews = ({ posts }) => {
+const PostPreviews = ({ posts, forwardedRef, observe }) => {
   return (
     <div className="postPreviews">
-      <ul>
+      <ul ref={forwardedRef}>
         {posts.map(post => (
-          <li key={post.id}>
-            <PostPreview post={post} />
-          </li>
+          <CarouselItem key={post.id} ref={observe}>
+            <PostPreview post={post} mr={[2, 4]} />
+          </CarouselItem>
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default PostPreviews
+export default PostPreviews;

@@ -1,11 +1,11 @@
-import React from 'react'
-import './styles.scss'
+import React from 'react';
+import './styles.scss';
 
-import { Flex, Box } from '../../styles'
-import { getImageUrl } from '../../utils/image'
+import { Flex, Box } from '../../styles';
+import { getImageUrl, Sizes } from '../../utils/image';
 
 const ImageGallery = ({ images }) => {
-  const [selected, setSelected] = React.useState<string>(images[0])
+  const [selected, setSelected] = React.useState<string>(images[0]);
 
   return (
     <Flex className="imageGallery" flexDirection={['column', 'row']}>
@@ -31,14 +31,14 @@ const ImageGallery = ({ images }) => {
             aspectRatio={2 / 3}
             backgroundSize="cover"
             style={{
-              backgroundImage: `url(${getImageUrl(thumbnail, '300x375')})`,
+              backgroundImage: `url(${getImageUrl(thumbnail, Sizes.small)})`,
             }}
             onClick={() => setSelected(thumbnail)}
           />
         ))}
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
-export default ImageGallery
+export default ImageGallery;

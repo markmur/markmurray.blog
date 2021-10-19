@@ -1,6 +1,6 @@
-import React from 'react'
-import { Link } from 'gatsby'
-import { kebabCase } from 'lodash'
+import React from 'react';
+import { Link } from 'gatsby';
+import { kebabCase } from 'lodash';
 import {
   Flex,
   Box,
@@ -16,7 +16,7 @@ import {
   PostPreview as StyledPostPreview,
   Button,
   HideOnDesktop,
-} from '../styles'
+} from '../styles';
 
 const Tags = ({ tags, ...props }) =>
   tags &&
@@ -28,7 +28,7 @@ const Tags = ({ tags, ...props }) =>
         </Tag>
       ))}
     </Flex>
-  )
+  );
 
 const Post = ({ post }) => (
   <StyledPost>
@@ -60,18 +60,21 @@ const Post = ({ post }) => (
       </HideOnDesktop>
     </Container>
   </StyledPost>
-)
+);
 
-export const PostPreview = ({ post }) => (
+export const PostPreview = ({ post, ...props }) => (
   <StyledPostPreview
-    maxWidth={['80vw', '400px']}
+    width={['70vw', '400px']}
     role="article"
-    py={[2, '40px']}
-    px={[4, '40px']}
+    height="100%"
+    py={[4, '45px']}
+    px={[4, '45px']}
+    border="1px solid #eaeaea"
+    {...props}
   >
-    <Flex flexDirection="column" justifyContent="space-between">
+    <Flex height="100%" flexDirection="column" justifyContent="space-between">
       <div>
-        <Title mb={0}>
+        <Title mb={0} fontSize="1.25rem">
           <Link to={post.fields.slug}>
             <span
               dangerouslySetInnerHTML={{ __html: post.frontmatter.title }}
@@ -96,6 +99,6 @@ export const PostPreview = ({ post }) => (
       </Box>
     </Flex>
   </StyledPostPreview>
-)
+);
 
-export default Post
+export default Post;

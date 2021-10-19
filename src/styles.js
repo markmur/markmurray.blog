@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from 'gatsby'
-import { EntypoPin } from 'react-entypo-icons'
-import styled, { css, createGlobalStyle } from 'styled-components'
+import React from 'react';
+import { Link as GatsbyLink } from 'gatsby';
+import { EntypoPin } from 'react-entypo-icons';
+import styled, { css, createGlobalStyle } from 'styled-components';
 import {
   fontSize,
   space,
@@ -20,62 +20,66 @@ import {
   system,
   backgroundSize,
   backgroundPosition,
-} from 'styled-system'
+  backgroundImage,
+  border,
+} from 'styled-system';
 
 // const LOGO_FONT = 'PT Serif, serif'
-const font = family => `font-family: ${family}`
+const font = family => `font-family: ${family}`;
 
-const LOGO_FONT = font('Reenie Beanie')
-const SERIF_FONT = font('Merriweather, serif')
+const LOGO_FONT = font('Reenie Beanie');
+const SERIF_FONT = font('Merriweather, serif');
 
 const theme = (key, fallback) => props =>
-  props.theme[key] || fallback || 'initial'
+  props.theme[key] || fallback || 'initial';
 
 const isMobile = content => `
-  @media (max-width: 720px) {
+  @media (max-width: 767px) {
     ${content}
   }
-`
+`;
 
 const notMobile = content => `
-  @media (min-width: 720px) {
+  @media (min-width: 768px) {
     ${content}
   }
-`
+`;
 
 export const HideOnMobile = styled.div`
   ${isMobile(`
     display: none;
   `)};
-`
+`;
 
 export const HideOnDesktop = styled.div`
   ${notMobile(`
     display: none;
   `)};
-`
+`;
 
 const transition = css`
   transition: color 150ms, background 150ms;
   will-change: color, background;
-`
+`;
 
 export const Nav = styled.nav`
-  // position: fixed;
-  // top: 0;
-  // width: 100%;
-  // z-index: 1000;
-  // background: rgba(245, 245, 247, 0.5);
-  // backdrop-filter: blur(30px) saturate(150%);
   padding: 2.25em 0 1.35em;
 
   ${isMobile(`
     padding: 1.25em 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(245, 245, 247, 0.75);
+    border-bottom: 1px solid #eaeaea;
+    backdrop-filter: blur(10px) saturate(150%);
   `)}
-`
+`;
 
 export const Flex = styled.div`
   display: flex;
+  ${border};
   ${flex};
   ${space};
   ${layout};
@@ -86,16 +90,17 @@ export const Flex = styled.div`
   ${flexWrap};
   ${color};
   ${height};
-`
+`;
 
 const aspectRatio = system({
   aspectRatio: {
     property: 'aspectRatio',
     transform: val => `${val}`,
   },
-})
+});
 
 export const Box = styled.div`
+  ${border};
   ${space};
   ${maxWidth};
   ${width};
@@ -107,15 +112,16 @@ export const Box = styled.div`
   ${backgroundPosition};
   ${p => (p.aspectRatio ? aspectRatio : '')};
   ${backgroundSize};
-`
+  ${backgroundImage};
+`;
 
 export const Pinned = props => (
   <Timestamp {...props}>
     <EntypoPin style={{ marginTop: 2, marginRight: 5 }} /> Pinned post
   </Timestamp>
-)
+);
 
-const borderWidth = 10
+const borderWidth = 10;
 
 // const VerticalBorder = styled.div`
 //   position: absolute;
@@ -202,7 +208,7 @@ export const Button = styled.button`
     font-size: 12px;
     padding: 1em 2em;
     `}
-`
+`;
 
 const Border = styled.div`
   position: ${p => (p.abs ? 'absolute' : 'fixed')};
@@ -211,30 +217,30 @@ const Border = styled.div`
     border: ${borderWidth}px solid rgba(0, 0, 0, 0.95);
   `)}
   ${space};
-`
+`;
 
 export const GlobalBorder = () => (
   <>
     <Border abs style={{ top: 0, left: 0, right: 0 }} />
   </>
-)
+);
 
 export const Bullet = styled(props => <span {...props}>&bull;</span>)`
   color: ${theme('bullet')};
   margin: 0 10px;
-`
+`;
 
 export const Toolbar = styled.div`
   background: black;
   width: 80px;
-`
+`;
 
 export const imageBackground = css`
   background: url(https://images.unsplash.com/photo-1494031021996-ac2eb738d846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1603&q=50)
     black 0% 0% / 100% no-repeat;
   background-clip: text;
   -webkit-background-clip: text;
-`
+`;
 
 export const Logo = styled.h2`
   ${LOGO_FONT};
@@ -246,9 +252,23 @@ export const Logo = styled.h2`
   font-weight: lighter;
   ${transition};
   color: blue;
-`
+`;
 
-export const Tag = styled(Link)`
+export const Link = styled(GatsbyLink)`
+  cursor: pointer;
+  padding-bottom: 6px;
+  border-bottom: 1px solid;
+
+  svg {
+    margin-left: 0.5em;
+  }
+
+  &:hover {
+    border-bottom: 2px solid;
+  }
+`;
+
+export const Tag = styled(GatsbyLink)`
   padding: 5px 12px;
   color: ${theme('tagColor')};
   background: ${theme('tagBackground')};
@@ -266,7 +286,7 @@ export const Tag = styled(Link)`
   &:hover {
     background: ${theme('tagHoverBackground')};
   }
-`
+`;
 
 export const Container = styled.div`
   max-width: ${p => (p.narrow ? '800px' : '1320px')};
@@ -276,7 +296,7 @@ export const Container = styled.div`
   ${maxWidth};
   ${space};
   ${layout};
-`
+`;
 
 export const ScrollContainer = styled(Flex).attrs({
   alignItems: 'start',
@@ -294,14 +314,14 @@ export const ScrollContainer = styled(Flex).attrs({
   &::-webkit-scrollbar {
     display: none;
   }
-`
+`;
 
 export const ScrollContainerBlock = styled.div`
   width: 42px;
   margin-right: 6em;
   height: 100px;
   display: block;
-`
+`;
 
 export const Content = styled.section`
   position: relative;
@@ -317,7 +337,7 @@ export const Content = styled.section`
     margin-bottom: 0;
     padding-top: 1em;
   `)}
-`
+`;
 
 export const PageHeading = styled.h1`
   font-size: 2rem;
@@ -334,7 +354,7 @@ export const PageHeading = styled.h1`
     font-size: 2rem;
     letter-spacing: 0;
   `)}
-`
+`;
 
 export const Carousel = styled(Flex)`
   list-style: none;
@@ -347,19 +367,26 @@ export const Carousel = styled(Flex)`
   -webkit-overflow-scrolling: touch;
   position: relative;
   will-change: transform;
-  transition: transform 300ms ease-out;
+  transition: all 800ms ease-in-out;
+  ${space};
+  ${layout};
 
   &::-webkit-scrollbar {
     display: none;
   }
-`
+
+  ${isMobile(`
+    scroll-padding-left: 1em;
+    padding-left: 1em;
+  `)}
+`;
 
 export const CarouselItem = styled(Box)`
   display: flex;
   cursor: pointer;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-`
+`;
 
 export const Title = styled.h1`
   color: ${theme('titleColor')};
@@ -395,7 +422,7 @@ export const Title = styled.h1`
       transform: rotate(-1deg);
     }
   }
-`
+`;
 
 export const PostTitle = styled(Title)`
   font-weight: 800;
@@ -404,24 +431,27 @@ export const PostTitle = styled(Title)`
   letter-spacing: 0.2px;
   color: ${theme('titleColor')};
   ${transition};
+  ${space};
+  ${textAlign};
+  ${layout};
 
   ${isMobile(`
     margin-top: 1em;
   `)};
-`
+`;
 
 export const ProductTitle = styled.h2`
   ${SERIF_FONT};
   margin: 0;
   padding: 0;
-`
+`;
 
 export const Subtitle = styled.h6`
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #2980b9;
+  color: blue;
   margin-bottom: 5px;
-`
+`;
 
 export const LineBreak = styled.div.attrs({
   className: 'LineBreak',
@@ -431,7 +461,7 @@ export const LineBreak = styled.div.attrs({
   margin-bottom: 2em;
   ${space};
   transition: width 250ms ease-out;
-`
+`;
 
 export const Timestamp = styled.p`
   font-weight: 500;
@@ -439,7 +469,7 @@ export const Timestamp = styled.p`
   color: ${theme('descriptionColor')};
   margin-bottom: 1.5em;
   ${fontSize};
-`
+`;
 
 export const Photo = styled(Box)`
   position: relative;
@@ -447,7 +477,7 @@ export const Photo = styled(Box)`
   img {
     background: #f4f4f7;
   }
-`
+`;
 
 export const PhotoInfo = styled.div`
   display: flex;
@@ -459,7 +489,7 @@ export const PhotoInfo = styled.div`
   > * {
     margin: 0;
   }
-`
+`;
 
 export const PhotoOverlay = styled.div`
   line-height: 2;
@@ -489,7 +519,7 @@ export const PhotoOverlay = styled.div`
     opacity: 1;
     transform: translateY(0);
   }
-`
+`;
 
 export const Post = styled.article`
   border-bottom: 1px solid ${theme('postBorderColor')};
@@ -503,18 +533,21 @@ export const Post = styled.article`
       border-top: 1px solid #eaeaea;
     }
   `)}
-`
+`;
 
 export const PostPreview = styled(Box)`
   background: white;
   display: flex;
   flex: 1;
   flex-direction: column;
+  ${space};
+  ${layout};
+  ${border};
 
   ${isMobile(`
     padding-top: 2em;
   `)}
-`
+`;
 
 export const Paragraph = styled.p`
   ${SERIF_FONT};
@@ -523,7 +556,7 @@ export const Paragraph = styled.p`
   white-space: normal;
   color: ${theme('color')};
   ${space};
-`
+`;
 
 export const Description = styled(Paragraph)`
   color: ${theme('descriptionColor')};
@@ -535,7 +568,7 @@ export const Description = styled(Paragraph)`
   ${isMobile(`
     margin-bottom: 1em;
   `)}
-`
+`;
 
 export const BlogPost = styled.article`
   p,
@@ -551,14 +584,14 @@ export const BlogPost = styled.article`
     --baseline-multiplier: 0.17;
     ${transition};
   }
-`
+`;
 
 export const Comments = styled.div`
   padding: 3em 0;
   border-top: 1px solid ${theme('hrColor')};
   border-bottom: 1px solid ${theme('hrColor')};
   margin-top: 3em;
-`
+`;
 
 export const Footer = styled.footer`
   position: relative;
@@ -601,7 +634,7 @@ export const Footer = styled.footer`
   strong {
     color: black;
   }
-`
+`;
 
 export const GlobalStyles = createGlobalStyle`
   :root {
@@ -713,14 +746,14 @@ export const GlobalStyles = createGlobalStyle`
       padding: 0.5em 1em;
     `)}
   }
-`
+`;
 
 export const Select = styled.select`
   width: 100%;
   padding: 1em;
   font-size: 14px;
   border: 1px solid;
-`
+`;
 
 export const Drawer = styled.div`
   position: fixed;
@@ -731,14 +764,14 @@ export const Drawer = styled.div`
   width: 400px;
   background: white;
   height: 100vh;
-  z-index: 100;
+  z-index: 1000;
   display: ${p => (p.open ? 'block' : 'none')};
   opacity: ${p => (p.open ? '1' : '0')};
   transform: translateX(${p => (p.open ? '0%' : '20%')});
   box-shadow: rgb(0 0 0 / 10%) -5px 0px 20px 0px;
   transition: all 150ms ease-out 0s;
   ${color};
-`
+`;
 
 export const Overlay = styled.div`
   position: fixed;
@@ -748,9 +781,9 @@ export const Overlay = styled.div`
   left: 0;
   background: rgba(0, 0, 0, 0.1);
   z-index: 10;
-`
+`;
 
 export const ErrorMessage = styled.small`
   color: red;
   font-weight: bold;
-`
+`;

@@ -9,9 +9,9 @@
     white-space: nowrap;
     flex-wrap: nowrap;
     scroll-snap-type: x mandatory;
-    scroll-padding-left: 93px;
+    scroll-padding-left: 85px;
     scroll-padding-block-end: 50px;
-    padding-left: calc(50vw - 627px);
+    padding-left: calc(50vw - 635px);
     scroll-behavior: smooth;
     overflow-x: scroll;
     position: relative;
@@ -31,7 +31,7 @@
       flex-direction: column;
       height: auto;
       border: 1px solid #eaeaea;
-      margin-right: 2em;
+      margin-right: 2.5em;
       transition: box-shadow 100ms ease;
       background: white;
 

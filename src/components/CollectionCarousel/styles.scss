@@ -22,8 +22,6 @@ $description-size: 400px;
   }
 
   .description {
-    // flex: 1 0 $description-size;
-    // width: $description-size;
     background: transparent;
     flex-direction: column;
     justify-content: space-between;
@@ -32,12 +30,6 @@ $description-size: 400px;
     .caption {
       color: #333;
       white-space: pre-wrap;
-
-      h6 {
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #2980b9;
-      }
   
       h4 {
         margin-bottom: 6px;
@@ -46,21 +38,6 @@ $description-size: 400px;
   
       p {
         font-size: 13px;
-      }
-    }
-  
-    .controls {
-      display: flex;
-      align-items: center;
-      user-select: none;
-      cursor: pointer;
-      padding: 0;
-  
-      div,
-      a {
-        padding-right: 2em;
-        text-transform: uppercase;
-        letter-spacing: 0.2px;
       }
     }
   }

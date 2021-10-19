@@ -1,19 +1,19 @@
-import React from 'react'
-import './styles.scss'
+import React from 'react';
+import './styles.scss';
 
-import { Box } from '../../styles'
+import { Box } from '../../styles';
 
 interface Image {
-  image_url: string
-  href: string
-  title: string
-  price: number
-  width?: number
-  height?: number
+  image_url: string;
+  href: string;
+  title: string;
+  price: number;
+  width?: number;
+  height?: number;
 }
 
 interface Props {
-  images: Image[]
+  images: Image[];
 }
 
 const ImageGrid: React.FC<Props> = ({ images }) => {
@@ -22,12 +22,12 @@ const ImageGrid: React.FC<Props> = ({ images }) => {
       {images.map(image => (
         <Box
           key={image.href}
-          p={[1, 2]}
+          p={[1, 3]}
           flex={['0 0 calc(100% / 2)', '0 0 calc(100% / 4)']}
         >
           <a href={image.href}>
             <Box
-              aspectRatio={[4 / 5]}
+              aspectRatio={[2 / 3]}
               className="image"
               backgroundSize="cover"
               backgroundPosition="center center"
@@ -38,13 +38,13 @@ const ImageGrid: React.FC<Props> = ({ images }) => {
 
             <Box textAlign="center" py={3} mb={2}>
               <h5>{image.title}</h5>
-              <small>from €{image.price || 0}</small>
+              {image.price && <small>from €{image.price}</small>}
             </Box>
           </a>
         </Box>
       ))}
     </ul>
-  )
-}
+  );
+};
 
-export default ImageGrid
+export default ImageGrid;

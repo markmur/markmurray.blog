@@ -1,64 +1,78 @@
-import React from 'react'
-import { graphql } from 'gatsby'
-import { Box, Flex, PageHeading, Container, Content } from '../styles'
-import Layout from '../components/Layout'
-import { PostPreview } from '../components/post'
-import CollectionCarousel from '../components/CollectionCarousel/index.tsx'
-import { getImageUrl } from '../utils/image.ts'
-import PostPreviews from '../components/PostPreviews'
+import React from 'react';
+import { graphql } from 'gatsby';
+import { FiArrowRight } from 'react-icons/fi';
+import { Flex, Box, Link, PageHeading, Container, Content } from '../styles';
+import Layout from '../components/Layout';
+import CollectionCarousel from '../components/CollectionCarousel/index.tsx';
+import { getImageUrl } from '../utils/image.ts';
+import PostPreviews from '../components/PostPreviews/index.tsx';
+import { useCarousel } from '../components/Carousel';
+import Controls from '../components/Carousel/Controls';
+import { Sizes } from '../utils/image';
 
 const getNodes = entity => {
-  return entity.edges.map(({ node }) => node)
-}
+  return entity.edges.map(({ node }) => node);
+};
 
-export default class IndexPage extends React.Component {
-  render() {
-    const { data } = this.props
-    const { collection, collectionImages } = data
-    const posts = getNodes(data.posts)
+const IndexPage = props => {
+  const { data } = props;
+  const { collection, collectionImages } = data;
+  const posts = getNodes(data.posts);
 
-    return (
-      <Layout wide displayTagline>
-        <Content wide>
-          <Container>
-            <Box mb={2}>
-              <PageHeading>Latest Art</PageHeading>
-            </Box>
-          </Container>
-        </Content>
+  const containerRef = React.useRef(null);
+  const { observe, next, prev } = useCarousel(containerRef, 300);
 
-        <CollectionCarousel
-          id={collection.frontmatter.id}
-          title={collection.frontmatter.title}
-          description={collection.frontmatter.description}
-          heading={collection.frontmatter.heading}
-          images={collectionImages.edges.map(({ node }) =>
-            getImageUrl(node.frontmatter.image_url, '300x375'),
+  return (
+    <Layout wide displayTagline>
+      <Box pt={4}>
+        <Container>
+          <Box mb={4}>
+            <PageHeading>Latest Art</PageHeading>
+          </Box>
+        </Container>
+      </Box>
+
+      <CollectionCarousel
+        id={collection.frontmatter.id}
+        title={collection.frontmatter.title}
+        description={collection.frontmatter.description}
+        heading={collection.frontmatter.heading}
+        images={collectionImages.edges.map(({ node }) =>
+          getImageUrl(node.frontmatter.image_url, Sizes.medium),
+        )}
+        minPrice={collection.frontmatter.minPrice}
+      />
+
+      <Box pt={4}>
+        <Container mb="40px">
+          <Flex justifyContent="space-between" alignItems="flex-end">
+            <div>
+              <Box mb={3}>
+                <PageHeading>Latest Tech</PageHeading>
+              </Box>
+
+              <Link to="/posts">
+                See all posts <FiArrowRight />
+              </Link>
+            </div>
+
+            <Controls onNext={next} onPrev={prev} />
+          </Flex>
+        </Container>
+      </Box>
+
+      <Box mb={4}>
+        <PostPreviews
+          forwardedRef={containerRef}
+          observe={observe}
+          posts={posts.sort(
+            (a, b) => b.frontmatter.pinned - a.frontmatter.pinned,
           )}
-          minPrice={collection.frontmatter.minPrice}
         />
-
-        <Content wide>
-          <Container>
-            <Box mb={3}>
-              <PageHeading>Latest Tech</PageHeading>
-            </Box>
-
-            <a href="/posts">See all posts</a>
-          </Container>
-        </Content>
-
-        <Box mt={4}>
-          <PostPreviews
-            posts={posts.sort(
-              (a, b) => b.frontmatter.pinned - a.frontmatter.pinned,
-            )}
-          />
-        </Box>
-      </Layout>
-    )
-  }
-}
+      </Box>
+    </Layout>
+  );
+};
 
 export const pageQuery = graphql`
   {
@@ -87,6 +101,7 @@ export const pageQuery = graphql`
     }
     collectionImages: allMarkdownRemark(
       filter: { frontmatter: { collection: { eq: "sapphire" } } }
+      sort: { fields: [frontmatter___title] }
     ) {
       edges {
         node {
@@ -125,4 +140,6 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;
+
+export default IndexPage;

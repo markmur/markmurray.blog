@@ -1,6 +1,6 @@
-import React from 'react'
-import { graphql } from 'gatsby'
-import { getImageUrl } from '../utils/image.ts'
+import React from 'react';
+import { graphql } from 'gatsby';
+import { getImageUrl, getProductUrl, Sizes } from '../utils/image.ts';
 import {
   Flex,
   Box,
@@ -10,35 +10,35 @@ import {
   PhotoInfo,
   PhotoOverlay,
   PageHeading,
-} from '../styles'
-import Layout from '../components/Layout'
-import BackgroundLines from '../components/BackgroundLines'
-import CollectionCarousel from '../components/CollectionCarousel/index.tsx'
-import ImageGrid from '../components/ImageGrid/index.tsx'
+} from '../styles';
+import Layout from '../components/Layout';
+import BackgroundLines from '../components/BackgroundLines';
+import CollectionCarousel from '../components/CollectionCarousel/index.tsx';
+import ImageGrid from '../components/ImageGrid/index.tsx';
 
 const getNodes = photos => {
-  const nodes = []
-  let batchLength = 2
-  let batch = []
+  const nodes = [];
+  let batchLength = 2;
+  let batch = [];
 
   for (const edge of photos) {
-    const { node } = edge
+    const { node } = edge;
 
     if (node.frontmatter.orientation === 'landscape') {
-      nodes.push(node)
+      nodes.push(node);
     } else {
-      batch.push(node)
+      batch.push(node);
 
       if (batch.length === 2) {
-        nodes.push(batch)
-        batch = []
-        batchLength = batchLength === 2 ? 3 : 2
+        nodes.push(batch);
+        batch = [];
+        batchLength = batchLength === 2 ? 3 : 2;
       }
     }
   }
 
-  return nodes.concat(batch)
-}
+  return nodes.concat(batch);
+};
 
 function filterPhotos(photos, tag, orientation) {
   return photos.edges.filter(
@@ -47,32 +47,32 @@ function filterPhotos(photos, tag, orientation) {
       (orientation
         ? node.frontmatter.orientation.toLowerCase() === orientation
         : true),
-  )
+  );
 }
 
 function getTags(edges) {
-  const allTags = {}
+  const allTags = {};
 
   for (const photo of edges) {
-    const tags = [photo.node.frontmatter.collection] || []
+    const tags = [photo.node.frontmatter.collection] || [];
 
     for (const tag of tags) {
-      const lowercaseTag = (tag || '').toLowerCase()
+      const lowercaseTag = (tag || '').toLowerCase();
       if (lowercaseTag in allTags) {
-        allTags[lowercaseTag]++
+        allTags[lowercaseTag]++;
       } else {
-        allTags[lowercaseTag] = 1
+        allTags[lowercaseTag] = 1;
       }
     }
   }
 
-  return allTags
+  return allTags;
 }
 
 function Photo(props) {
-  const { photo, style = {} } = props
+  const { photo, style = {} } = props;
 
-  const maxWidth = photo.orientation === 'landscape' ? '100%' : '48%'
+  const maxWidth = photo.orientation === 'landscape' ? '100%' : '48%';
 
   return (
     <Box
@@ -131,57 +131,57 @@ function Photo(props) {
         <h5>{photo.location}</h5>
       </PhotoInfo>
     </Box>
-  )
+  );
 }
 
 export default class PhotographyPage extends React.Component {
   state = {
     selectedTag: null,
     selectedOrientation: null,
-  }
+  };
 
   handleTagClick = tag => {
     if (this.state.selectedTag === tag) {
       this.setState({
         selectedTag: null,
-      })
+      });
     } else {
       this.setState({
         selectedTag: tag,
-      })
+      });
     }
-  }
+  };
 
   handleOrientationClick = orientation => {
     if (this.state.selectedOrientation === orientation) {
       this.setState({
         selectedOrientation: null,
-      })
+      });
     } else {
       this.setState({
         selectedOrientation: orientation,
-      })
+      });
     }
-  }
+  };
 
   render() {
-    const { data } = this.props
-    const { collection } = data
+    const { data } = this.props;
+    const { collection } = data;
 
-    let photos
+    let photos;
 
     if (this.state.selectedOrientation || this.state.selectedTag) {
       const filteredPhotos = filterPhotos(
         data.photography,
         this.state.selectedTag,
         this.state.selectedOrientation,
-      )
-      photos = getNodes(filteredPhotos)
+      );
+      photos = getNodes(filteredPhotos);
     } else {
-      photos = getNodes(data.photography.edges)
+      photos = getNodes(data.photography.edges);
     }
 
-    const tags = getTags(data.photography.edges)
+    const tags = getTags(data.photography.edges);
 
     return (
       <Layout wide displayTagline={false}>
@@ -285,14 +285,15 @@ export default class PhotographyPage extends React.Component {
             images={data.photography.edges.map(({ node }) => ({
               image_url:
                 node.frontmatter.collection === 'sapphire'
-                  ? getImageUrl(node.frontmatter.image_url, '300x375')
+                  ? getImageUrl(node.frontmatter.image_url, Sizes.small)
                   : node.frontmatter.image_url,
               title: node.frontmatter.title,
+              href: getProductUrl(node.frontmatter.stripe_product_id),
             }))}
           />
         </Container>
       </Layout>
-    )
+    );
   }
 }
 
@@ -335,7 +336,11 @@ export const pageQuery = graphql`
     }
     photography: allMarkdownRemark(
       filter: {
-        frontmatter: { templateKey: { eq: "photo" }, hidden: { ne: true } }
+        frontmatter: {
+          templateKey: { eq: "photo" }
+          hidden: { ne: true }
+          stripe_product_id: { ne: null }
+        }
       }
       sort: { fields: [frontmatter___order] }
     ) {
@@ -366,4 +371,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

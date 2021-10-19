@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from 'gatsby'
-import { useShoppingCart } from 'use-shopping-cart'
-import { FiShoppingBag, FiMenu } from 'react-icons/fi'
+import React from 'react';
+import { Link } from 'gatsby';
+import { useShoppingCart } from 'use-shopping-cart';
+import { FiShoppingBag, FiMenu } from 'react-icons/fi';
 import {
   Flex,
   Box,
@@ -10,10 +10,11 @@ import {
   Nav,
   Timestamp,
   HideOnDesktop,
-} from '../styles'
+  HideOnMobile,
+} from '../styles';
 
 const Navbar = ({ displayTagline, wide = false, onCartClick, onMenuClick }) => {
-  const { cartCount } = useShoppingCart()
+  const { cartCount } = useShoppingCart();
 
   return (
     <Nav role="navigation" aria-label="main-navigation">
@@ -29,23 +30,26 @@ const Navbar = ({ displayTagline, wide = false, onCartClick, onMenuClick }) => {
             </Link>
           </div>
 
-          <Flex display={['none', 'flex']}>
-            <Link style={{ marginRight: 25 }} to="/about">
-              Who?
-            </Link>
-            <Link style={{ marginRight: 25 }} to="/posts">
-              Posts
-            </Link>
-            <Link style={{ marginRight: 25 }} to="/projects">
-              Projects
-            </Link>
-            <Link style={{ marginRight: 25 }} to="/photography">
-              Photography
-            </Link>
-            <a style={{ cursor: 'pointer' }} onClick={onCartClick}>
-              <FiShoppingBag verticalAlign="bottom" /> ({cartCount})
-            </a>
-          </Flex>
+          <HideOnMobile>
+            <Flex>
+              <Link style={{ marginRight: 25 }} to="/about">
+                Who?
+              </Link>
+              <Link style={{ marginRight: 25 }} to="/posts">
+                Posts
+              </Link>
+              <Link style={{ marginRight: 25 }} to="/projects">
+                Projects
+              </Link>
+              <Link style={{ marginRight: 25 }} to="/photography">
+                Photography
+              </Link>
+              <a style={{ cursor: 'pointer' }} onClick={onCartClick}>
+                <FiShoppingBag verticalAlign="bottom" /> ({cartCount})
+              </a>
+            </Flex>
+          </HideOnMobile>
+
           <HideOnDesktop>
             <Box display={['block', 'none']} />
           </HideOnDesktop>
@@ -60,7 +64,7 @@ const Navbar = ({ displayTagline, wide = false, onCartClick, onMenuClick }) => {
         </Box>
       </Container>
     </Nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

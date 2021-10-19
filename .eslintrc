@@ -1,0 +1,8 @@
+{
+	"eslintConfig": {
+		"extends": [
+			"xo",
+			"xo-typescript"
+		]
+	}
+}
