@@ -193,20 +193,34 @@ export default class PhotographyPage extends React.Component {
           <Flex justifyContent="left">
             <Box maxWidth={800} textAlign={['left', 'left']}>
               <p>
-                A collection of photos taken with my{' '}
+                I've always been particularly drawn to photography and capturing
+                ephemeral moments.
+              </p>
+
+              <p>
+                Below is a collection of photos taken with my{' '}
                 <strong>DJI Mavic Air 2</strong> drone and{' '}
-                <strong>Fujifilm XT-30</strong> DSLR. Prints are available soon
-                for all photos listed here and on my Instagram. Photos are print
-                on high quality Fuji Matt Paper. Want a particular size or photo
-                that isn't listed? Contact me for any custom orders.
+                <strong>Fujifilm XT-30</strong> DSLR. Prints are available for
+                all photos listed here and on my Instagram. All photos are
+                printed on high quality Fuji Matt Paper and come in a variety of
+                sizes. Don't see a particular size listed? Feel free to reach
+                out to me to arrange a custom order at no extra cost.
               </p>
 
               <p>
                 For collaboration requests, contact me at{' '}
-                <a href="mailto:contact@markmurray.co">contact@markmurray.co</a>
+                <a target="_blank" href="mailto:contact@markmurray.co">
+                  contact@markmurray.co
+                </a>
                 . To follow my most recent work, follow my{' '}
-                <a href="https://instagram.com/markmur">Instagram</a> (
-                <a href="https://instagram.com/markmur">@markmur</a>)
+                <a target="_blank" href="https://instagram.com/markmur">
+                  Instagram
+                </a>{' '}
+                (
+                <a target="_blank" href="https://instagram.com/markmur">
+                  @markmur
+                </a>
+                )
               </p>
             </Box>
           </Flex>
@@ -283,10 +297,11 @@ export default class PhotographyPage extends React.Component {
 
           <ImageGrid
             images={data.photography.edges.map(({ node }) => ({
-              image_url:
-                node.frontmatter.collection === 'sapphire'
-                  ? getImageUrl(node.frontmatter.image_url, Sizes.small)
-                  : node.frontmatter.image_url,
+              image_url: ['sapphire', 'reflections'].includes(
+                node.frontmatter.collection,
+              )
+                ? getImageUrl(node.frontmatter.image_url, Sizes.medium)
+                : node.frontmatter.image_url,
               title: node.frontmatter.title,
               href: getProductUrl(node.frontmatter.stripe_product_id),
             }))}
@@ -300,7 +315,10 @@ export default class PhotographyPage extends React.Component {
 export const pageQuery = graphql`
   {
     collection: markdownRemark(
-      frontmatter: { templateKey: { eq: "collection" }, id: { eq: "sapphire" } }
+      frontmatter: {
+        templateKey: { eq: "collection" }
+        id: { eq: "reflections" }
+      }
     ) {
       id
       fields {
@@ -323,7 +341,7 @@ export const pageQuery = graphql`
       }
     }
     collectionImages: allMarkdownRemark(
-      filter: { frontmatter: { collection: { eq: "sapphire" } } }
+      filter: { frontmatter: { collection: { eq: "reflections" } } }
     ) {
       edges {
         node {

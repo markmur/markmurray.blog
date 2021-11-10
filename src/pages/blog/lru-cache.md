@@ -1,6 +1,6 @@
 ---
 templateKey: blog-post
-title: Implementing an LRU cache in JavaScript
+title: Implementing an <strong>LRU cache</strong> in JavaScript
 description: Leverage the power of JavaScript Map's for efficiency
 date: 2020-02-05T00:00:00.000Z
 tags:

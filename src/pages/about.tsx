@@ -1,9 +1,9 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import React from 'react';
+import Helmet from 'react-helmet';
+import { graphql } from 'gatsby';
 
-import Layout from '../components/Layout'
-import { HTMLContent } from '../components/Content'
+import Layout from '../components/Layout';
+import { HTMLContent } from '../components/Content';
 import {
   Box,
   Flex,
@@ -13,16 +13,15 @@ import {
   LineBreak,
   PostTitle,
   HideOnMobile,
-} from '../styles'
+} from '../styles';
 
 const About = ({ data }) => {
-  const { markdownRemark: post } = data
-  console.log({ post })
-  const domain = data.site.siteMetadata.url
+  const { markdownRemark: post } = data;
+  const domain = data.site.siteMetadata.url;
 
-  const { title, description, image_url } = post.frontmatter
+  const { title, description, image_url } = post.frontmatter;
 
-  const url = domain + '/about'
+  const url = domain + '/about';
 
   return (
     <Layout>
@@ -48,7 +47,13 @@ const About = ({ data }) => {
       <Content pt={[4, 5]} pb={4}>
         <Container>
           <Flex>
-            <Box mr={[0, 5]}>
+            <Flex alignItems="flex-start" flex="1 0 400px" mr={[0, 5]}>
+              <HideOnMobile>
+                <img width={400} src={post.frontmatter.image_url} />
+              </HideOnMobile>
+            </Flex>
+
+            <Box>
               <Box mt={2}>
                 <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
                 <Description>{description}</Description>
@@ -58,20 +63,14 @@ const About = ({ data }) => {
 
               <HTMLContent content={post.html} />
             </Box>
-
-            <HideOnMobile>
-              <Flex alignItems="flex-start" flex="1 0 400px">
-                <img width={400} src={post.frontmatter.image_url} />
-              </Flex>
-            </HideOnMobile>
           </Flex>
         </Container>
       </Content>
     </Layout>
-  )
-}
+  );
+};
 
-export default About
+export default About;
 
 export const pageQuery = graphql`
   {
@@ -90,4 +89,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

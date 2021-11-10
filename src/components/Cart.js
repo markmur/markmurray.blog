@@ -1,8 +1,8 @@
-import React from 'react'
-import { useShoppingCart } from 'use-shopping-cart'
-import { FiShoppingBag, FiX } from 'react-icons/fi'
+import React from 'react';
+import { useShoppingCart } from 'use-shopping-cart';
+import { FiShoppingBag, FiX } from 'react-icons/fi';
 
-import { Box, Drawer, Overlay, Button, Flex, ErrorMessage } from '../styles'
+import { Box, Drawer, Overlay, Button, Flex, ErrorMessage } from '../styles';
 
 function LineItem(props) {
   return (
@@ -35,35 +35,37 @@ function LineItem(props) {
         </Flex>
       </Flex>
     </Box>
-  )
+  );
 }
 
 const Cart = ({ open, onClose }) => {
-  const [loading, setLoadingState] = React.useState(false)
-  const [error, setErrorState] = React.useState()
+  const [loading, setLoadingState] = React.useState(false);
+  const [error, setErrorState] = React.useState();
 
   const {
     cartCount,
-    cartDetails,
+    cartDetails = {},
     redirectToCheckout,
     removeItem,
     formattedTotalPrice,
-  } = useShoppingCart()
+  } = useShoppingCart();
+
+  const cartItems = Object.entries(cartDetails);
 
   const handleCheckout = async () => {
-    setLoadingState(true)
+    setLoadingState(true);
     try {
-      const error = await redirectToCheckout()
+      const error = await redirectToCheckout();
 
       if (error) {
-        setErrorState('Sorry something went wrong')
+        setErrorState('Sorry something went wrong');
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     } finally {
-      setLoadingState(false)
+      setLoadingState(false);
     }
-  }
+  };
 
   return (
     <React.Fragment>
@@ -87,7 +89,7 @@ const Cart = ({ open, onClose }) => {
         </Flex>
 
         <Box px={4}>
-          {Object.entries(cartDetails || {}).map(([sku, item]) => (
+          {cartItems.map(([sku, item]) => (
             <LineItem
               key={sku}
               id={sku}
@@ -112,7 +114,13 @@ const Cart = ({ open, onClose }) => {
         </Box>
 
         <Box py={3} px={4}>
-          <Button primary expand loading={loading} onClick={handleCheckout}>
+          <Button
+            disabled={cartItems.length === 0}
+            primary
+            expand
+            loading={loading}
+            onClick={handleCheckout}
+          >
             {loading ? 'Loading...' : 'Complete checkout'}
           </Button>
 
@@ -129,7 +137,7 @@ const Cart = ({ open, onClose }) => {
 
       {open && <Overlay onClick={onClose} />}
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;

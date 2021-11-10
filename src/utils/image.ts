@@ -9,9 +9,10 @@ export enum Sizes {
 }
 
 export function getImageUrl(url: string, size = Sizes.medium) {
+  const [path, ext = 'png'] = url.split('.');
   return `${firebaseImagePrefix}/${encodeURIComponent(
-    url.slice(1),
-  )}${size}.png?alt=media&token=7922bf67-74b5-4ab7-bfe9-b564cace3e4c`;
+    path.slice(1),
+  )}${size}.${ext}?alt=media&token=7922bf67-74b5-4ab7-bfe9-b564cace3e4c`;
 }
 
 export function getProductUrl(stripeProductId: string) {

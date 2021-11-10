@@ -1,10 +1,10 @@
-const path = require('path')
-const { get, uniq, kebabCase } = require('lodash')
-const { createFilePath } = require('gatsby-source-filesystem')
-const { fmImagesToRelative } = require('gatsby-remark-relative-images')
+const path = require('path');
+const { get, uniq, kebabCase } = require('lodash');
+const { createFilePath } = require('gatsby-source-filesystem');
+const { fmImagesToRelative } = require('gatsby-remark-relative-images');
 
 exports.createPages = ({ actions, graphql }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
 
   return graphql(`
     {
@@ -50,14 +50,14 @@ exports.createPages = ({ actions, graphql }) => {
     }
   `).then(result => {
     if (result.errors) {
-      result.errors.forEach(e => console.error(e.toString()))
-      return Promise.reject(result.errors)
+      result.errors.forEach(e => console.error(e.toString()));
+      return Promise.reject(result.errors);
     }
 
-    const products = result.data.products.edges
+    const products = result.data.products.edges;
 
     products.forEach(({ node }) => {
-      const { id } = node
+      const { id } = node;
 
       createPage({
         path: `/photography/${id}/`,
@@ -65,13 +65,13 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           id,
         },
-      })
-    })
+      });
+    });
 
-    const posts = result.data.posts.edges
+    const posts = result.data.posts.edges;
 
     posts.forEach(edge => {
-      const { id } = edge.node
+      const { id } = edge.node;
       createPage({
         path: edge.node.fields.slug,
         tags: edge.node.frontmatter.tags,
@@ -82,15 +82,14 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           id,
         },
-      })
-    })
+      });
+    });
 
     // Create collection pages
-    console.log(result.data)
-    const collections = result.data.collections.edges
+    const collections = result.data.collections.edges;
 
     collections.forEach(edge => {
-      const { id } = edge.node
+      const { id } = edge.node;
       createPage({
         path: edge.node.fields.slug,
         component: path.resolve(
@@ -100,23 +99,23 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           id,
         },
-      })
-    })
+      });
+    });
 
     // Tag pages:
-    let tags = []
+    let tags = [];
     // Iterate through each post, putting all found tags into `tags`
     posts.forEach(edge => {
       if (get(edge, `node.frontmatter.tags`)) {
-        tags = tags.concat(edge.node.frontmatter.tags)
+        tags = tags.concat(edge.node.frontmatter.tags);
       }
-    })
+    });
     // Eliminate duplicate tags
-    tags = uniq(tags)
+    tags = uniq(tags);
 
     // Make tag pages
     tags.forEach(tag => {
-      const tagPath = `/tags/${kebabCase(tag)}/`
+      const tagPath = `/tags/${kebabCase(tag)}/`;
 
       createPage({
         path: tagPath,
@@ -124,10 +123,10 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           tag,
         },
-      })
-    })
-  })
-}
+      });
+    });
+  });
+};
 
 // exports.sourceNodes = async ({
 //   actions: { createNode },
@@ -160,24 +159,24 @@ exports.createPages = ({ actions, graphql }) => {
 // }
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
-  fmImagesToRelative(node) // convert image paths for gatsby images
+  const { createNodeField } = actions;
+  fmImagesToRelative(node); // convert image paths for gatsby images
 
   if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
+    const value = createFilePath({ node, getNode });
 
     // Create `slug` field
     createNodeField({
       name: 'slug',
       node,
       value,
-    })
+    });
 
     // Create `pinned` field
     createNodeField({
       name: 'pinned',
       node,
       value: Boolean(get(node, 'frontmatter.pinned', false)),
-    })
+    });
   }
-}
+};

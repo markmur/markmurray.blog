@@ -8,6 +8,7 @@ import {
   Container,
   Logo,
   Nav,
+  CartCount,
   Timestamp,
   HideOnDesktop,
   HideOnMobile,
@@ -45,7 +46,8 @@ const Navbar = ({ displayTagline, wide = false, onCartClick, onMenuClick }) => {
                 Photography
               </Link>
               <a style={{ cursor: 'pointer' }} onClick={onCartClick}>
-                <FiShoppingBag verticalAlign="bottom" /> ({cartCount})
+                <FiShoppingBag verticalAlign="bottom" />{' '}
+                {cartCount > 0 ? <CartCount>{cartCount}</CartCount> : null}
               </a>
             </Flex>
           </HideOnMobile>

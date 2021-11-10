@@ -62,6 +62,22 @@ const transition = css`
   will-change: color, background;
 `;
 
+export const CartCount = styled.div`
+  font-size: 9px;
+  font-weight: bold;
+  color: white;
+  background: blue;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  text-align: center;
+  line-height: 16px;
+  position: relative;
+  display: inline-block;
+  top: -50%;
+  left: -25%;
+`;
+
 export const Nav = styled.nav`
   padding: 2.25em 0 1.35em;
 
@@ -140,7 +156,9 @@ const borderWidth = 10;
 //   `)}
 // `
 
-export const Button = styled.button`
+export const Button = styled.button.attrs({
+  className: p => (p.selected ? 'active' : ''),
+})`
   padding: 1em 3em;
   border: 1px solid #e0e0e8;
   text-transform: uppercase;
@@ -174,9 +192,13 @@ export const Button = styled.button`
     background: #f4f4f7;
     border-radius: 4px;
 
-    &:hover {
+    &.active {
       background: black;
       color: white;
+    }
+
+    &:hover:not(.active) {
+      background: #d5d5df;
     }
   `}
 
@@ -406,8 +428,10 @@ export const Title = styled.h1`
   `)}
 
   strong {
+    z-index: 2;
     position: relative;
     font-weight: 800;
+    display: inline-block;
 
     &::before {
       content: '';

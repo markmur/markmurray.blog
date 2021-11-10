@@ -32,14 +32,12 @@ const Tags = ({ tags, ...props }) =>
 
 const Post = ({ post }) => (
   <StyledPost>
-    <Container>
+    <Container wide>
       {post.frontmatter.pinned && <Pinned />}
 
-      <Title>
-        <Link to={post.fields.slug}>
-          <span dangerouslySetInnerHTML={{ __html: post.frontmatter.title }} />
-        </Link>
-      </Title>
+      <Link to={post.fields.slug}>
+        <Title dangerouslySetInnerHTML={{ __html: post.frontmatter.title }} />
+      </Link>
 
       <Timestamp>
         {post.frontmatter.date}

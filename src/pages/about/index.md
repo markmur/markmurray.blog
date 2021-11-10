@@ -1,10 +1,10 @@
 ---
 id: about
 templateKey: about
-title: Who the fuck is Mark Murray?
+title: Who?
 description:
-  Irish Software Engineer living in Dublin, Ireland with a passion for Art,
-  Design, Music and Technology.
+  Mark Murray is an Irish Software Engineer & Photographer living in Dublin,
+  Ireland with a passion for Art, Design, Music and Technology.
 image_url: https://firebasestorage.googleapis.com/v0/b/project-4767000521921178323.appspot.com/o/images%2Fmark.jpg?alt=media&token=94362653-9e33-4c10-8dd2-9299098d4b5e
 ---
 
