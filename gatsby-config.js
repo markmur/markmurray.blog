@@ -1,3 +1,5 @@
+const GA_TRACKING_ID = 'UA-76403737-3'
+
 module.exports = {
   siteMetadata: {
     title: 'Mark Murray',
@@ -11,8 +13,18 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
-        trackingId: 'UA-76403737-3',
+        trackingId: GA_TRACKING_ID,
         exclude: ['/admin/**'],
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-web-vitals',
+      options: {
+        trackingId: GA_TRACKING_ID,
+        metrics: [`FID`, `TTFB`, `LCP`, `CLS`, `FCP`],
+        eventCategory: 'Performance',
+        includeInDevelopment: false,
+        debug: false,
       },
     },
     'gatsby-plugin-styled-components',

@@ -702,6 +702,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.9.6":
+  version "7.16.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
+  integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.0.0", "@babel/template@^7.1.0", "@babel/template@^7.1.2", "@babel/template@^7.2.2":
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.2.2.tgz#005b3fdf0ed96e88041330379e0da9a708eb2907"
@@ -6435,6 +6442,14 @@ gatsby-plugin-styled-components@^3.0.6:
   integrity sha512-wCr0ab4LlYF7X2+idSB1fRIL4aoxoUjfRGYpcyDE0k9qsGHlMpD3Gd4qSdyCUdxSDd+7oK35Wqy0KPHl56RDCg==
   dependencies:
     "@babel/runtime" "^7.0.0"
+
+gatsby-plugin-web-vitals@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-web-vitals/-/gatsby-plugin-web-vitals-1.0.3.tgz#4f385e20ec846f722e4030ef0002add77fc2b65c"
+  integrity sha512-H1mY+YEnim8IV5QQtwKKPRiUsIBYnyuA8uStOqJ2bXIPWs+e2Zpf9/RVw5c6ZBMeYr/5akeRyi0HJ7kB7Gwt6Q==
+  dependencies:
+    "@babel/runtime" "^7.9.6"
+    web-vitals "^0.2.1"
 
 gatsby-react-router-scroll@^2.0.4:
   version "2.0.5"
@@ -16083,6 +16098,11 @@ wcwidth@^1.0.1:
 web-namespaces@^1.0.0, web-namespaces@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/web-namespaces/-/web-namespaces-1.1.2.tgz#c8dc267ab639505276bae19e129dbd6ae72b22b4"
+
+web-vitals@^0.2.1:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-0.2.4.tgz#ec3df43c834a207fd7cdefd732b2987896e08511"
+  integrity sha512-6BjspCO9VriYy12z356nL6JBS0GYeEcA457YyRzD+dD6XYCQ75NKhcOHUMHentOE7OcVCIXXDvOm0jKFfQG2Gg==
 
 webpack-assets-manifest@^3.0.2:
   version "3.1.1"
