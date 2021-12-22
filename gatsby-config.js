@@ -1,6 +1,6 @@
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
-})
+});
 
 module.exports = {
   siteMetadata: {
@@ -29,6 +29,7 @@ module.exports = {
           'Source Code Pro:400,500',
           'PT Serif:700',
           'Reenie Beanie',
+          'Inter:200,300,400,500,600,700,900',
         ],
       },
     },
@@ -61,12 +62,12 @@ module.exports = {
       options: {
         plugins: [
           'gatsby-remark-autolink-headers',
-          {
-            resolve: 'gatsby-remark-relative-images',
-            options: {
-              name: 'uploads',
-            },
-          },
+          // {
+          //   resolve: 'gatsby-remark-relative-images',
+          //   options: {
+          //     name: 'uploads',
+          //   },
+          // },
           {
             resolve: 'gatsby-remark-images',
             options: {
@@ -92,12 +93,12 @@ module.exports = {
         ],
       },
     },
-    {
-      resolve: 'gatsby-plugin-netlify-cms',
-      options: {
-        modulePath: `${__dirname}/src/cms/cms.js`,
-      },
-    },
+    // {
+    //   resolve: 'gatsby-plugin-netlify-cms',
+    //   options: {
+    //     modulePath: `${__dirname}/src/cms/cms.js`,
+    //   },
+    // },
     {
       resolve: `gatsby-source-stripe`,
       options: {
@@ -125,6 +126,8 @@ module.exports = {
     //   },
     // },
     'gatsby-plugin-typescript',
-    'gatsby-plugin-netlify', // make sure to keep it last in the array
+
+    // "gatsby-plugin-netlify" should come last here
+    'gatsby-plugin-netlify',
   ],
-}
+};

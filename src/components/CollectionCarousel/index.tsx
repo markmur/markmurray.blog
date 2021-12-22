@@ -1,22 +1,35 @@
-import React from 'react';
+import * as React from 'react';
 import Button from '../Button';
 import {
   Flex,
   Box,
-  HideOnMobile,
-  HideOnDesktop,
   Carousel,
   CarouselItem,
   Subtitle,
+  CollectionCarouselBox,
 } from '../../styles';
 
 import * as styles from './styles.scss';
 import { useCarousel } from '../Carousel';
+import { getImageUrl, getProductUrl, Sizes } from '../../utils/image';
 import Controls from '../Carousel/Controls';
 
 const MobileContainer = ({ children }) => <Box px={3}>{children}</Box>;
 
-const CollectionCarousel = ({
+interface Image {
+  image_url: string;
+  stripe_product_id: string;
+}
+interface Props {
+  id: string;
+  minPrice?: number;
+  title: string;
+  heading?: string;
+  description?: string;
+  images: Image[];
+}
+
+const CollectionCarousel: React.FunctionComponent<Props> = ({
   id,
   minPrice,
   title,
@@ -42,10 +55,16 @@ const CollectionCarousel = ({
       pb={[4, '45px']}
       px={[0, 3]}
       mb={5}
+      overflowX="hidden"
     >
-      <Box maxWidth="100%" ml={[0, 'calc(50vw - 668px)']}>
-        <Flex flexDirection={['column', 'row']}>
-          <Box flex="1" minWidth={400}>
+      <Box maxWidth="100%" ml={[0, 0, 0]}>
+        <Flex flexDirection={['column', 'column', 'row']}>
+          <CollectionCarouselBox
+            id="CollectionCarouselBox"
+            flex="1"
+            minWidth={400}
+            maxWidth="100%"
+          >
             <MobileContainer>
               <Box className="description" pr={[0, 5]} mb={[3, 0]}>
                 <Box className="caption" width={['auto']}>
@@ -66,22 +85,27 @@ const CollectionCarousel = ({
                   )}
                 </Box>
 
-                <div>
-                  <HideOnMobile>
-                    <Controls my={4} onPrev={prev} onNext={next} />
-
+                <Box mt={1}>
+                  <Box display={['none', 'none', 'block']}>
+                    {images.length > 3 && (
+                      <Controls mt={3} mb={4} onPrev={prev} onNext={next} />
+                    )}
                     <Button href={`/collections/${id}`}>View Collection</Button>
-                  </HideOnMobile>
-                </div>
+                  </Box>
+                </Box>
               </Box>
             </MobileContainer>
-          </Box>
+          </CollectionCarouselBox>
 
           <Box flex={8} overflow="hidden">
             <Carousel ref={containerRef} pr={[3, 5]}>
-              {images.map(image => (
-                <CarouselItem ref={observe} key={image} flex="1">
-                  <a href={`/photography/prod_KFZCWB1EJmCtfN`}>
+              {images.map((image) => (
+                <CarouselItem ref={observe} key={image.stripe_product_id}>
+                  <a href={getProductUrl(image)}>
+                    {console.log(`image-set(
+                          url(${getImageUrl(image.image_url, Sizes.large)}) 2x,
+                          url(${getImageUrl(image.image_url, Sizes.medium)}) 1x,
+                        )`)}
                     <Box
                       className={loaded ? 'item loaded' : 'item'}
                       mr={[1, 3]}
@@ -89,7 +113,10 @@ const CollectionCarousel = ({
                       aspectRatio={[4 / 6, 5 / 8]}
                       backgroundSize="cover"
                       style={{
-                        backgroundImage: `url(${image})`,
+                        backgroundImage: `-webkit-image-set(
+                          url(${getImageUrl(image.image_url, Sizes.medium)}) 1x,
+                          url(${getImageUrl(image.image_url, Sizes.large)}) 2x
+                        )`,
                       }}
                     />
                   </a>
@@ -97,19 +124,19 @@ const CollectionCarousel = ({
               ))}
             </Carousel>
 
-            <HideOnDesktop>
-              <MobileContainer>
-                <Box mt={3}>
-                  <Button href={`/collections/${id}`}>View Collection</Button>
-                </Box>
-              </MobileContainer>
-            </HideOnDesktop>
-
             {/* <div className="title">
-              <h1>{heading}</h1>
+              <h1 style={{ zIndex: -1 }}>#{heading}</h1>
             </div> */}
           </Box>
         </Flex>
+
+        <MobileContainer>
+          <Box display={['block', 'block', 'none']}>
+            <Box mt={3}>
+              <Button href={`/collections/${id}`}>View Collection</Button>
+            </Box>
+          </Box>
+        </MobileContainer>
       </Box>
     </Box>
   );

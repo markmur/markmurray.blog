@@ -1,4 +1,5 @@
 ---
+slug: photography/ireland/coolbawn-castle
 order: 7
 templateKey: photo
 title: Hidden Castle

@@ -1,4 +1,5 @@
 ---
+slug: photography/ireland/lighthouse
 order: 2
 templateKey: photo
 title: Rotten Island Lighthouse

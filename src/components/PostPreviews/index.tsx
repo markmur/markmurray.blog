@@ -9,7 +9,7 @@ const PostPreviews = ({ posts, forwardedRef, observe }) => {
     <div className="postPreviews">
       <ul ref={forwardedRef}>
         {posts.map(post => (
-          <CarouselItem key={post.id} ref={observe}>
+          <CarouselItem key={post.id} ref={observe} pb={4}>
             <PostPreview post={post} mr={[2, 4]} />
           </CarouselItem>
         ))}

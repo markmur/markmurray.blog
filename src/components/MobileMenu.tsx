@@ -1,15 +1,16 @@
-import React from 'react'
-import { Link } from 'gatsby'
-import { useShoppingCart } from 'use-shopping-cart'
-import { FiX } from 'react-icons/fi'
+import React from 'react';
+import { Link } from 'gatsby';
+import { useShoppingCart } from 'use-shopping-cart';
+import { FiX } from 'react-icons/fi';
 
-import { Box, Drawer, Overlay, Flex } from '../styles'
+import Drawer from './Drawer';
+import { Box, Overlay, Flex } from '../styles';
 
 const MobileMenu = ({ open = true, onClose }) => {
-  const { cartCount } = useShoppingCart()
+  const { cartCount } = useShoppingCart();
   return (
     <React.Fragment>
-      <Drawer open={open} bg="black">
+      <Drawer open={open} backgroundColor="black">
         <Box m={4} onClick={onClose}>
           <FiX color="white" size={24} />
         </Box>
@@ -34,7 +35,7 @@ const MobileMenu = ({ open = true, onClose }) => {
                   <Link to="/about">Who?</Link>
                 </Box>
                 <Box px={4} my={4}>
-                  <Link to="/posts">Posts</Link>
+                  <Link to="/posts">Articles</Link>
                 </Box>
                 <Box px={4} my={4}>
                   <Link to="/projects">Projects</Link>
@@ -53,7 +54,7 @@ const MobileMenu = ({ open = true, onClose }) => {
 
       {open && <Overlay onClick={onClose} />}
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default MobileMenu
+export default MobileMenu;

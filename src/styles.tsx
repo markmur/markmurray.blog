@@ -1,68 +1,177 @@
 import React from 'react';
 import { Link as GatsbyLink } from 'gatsby';
 import { EntypoPin } from 'react-entypo-icons';
-import styled, { css, createGlobalStyle } from 'styled-components';
+import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 import {
-  fontSize,
-  space,
-  color,
-  textAlign,
-  maxWidth,
-  layout,
-  flex,
-  display,
-  flexDirection,
-  justifyContent,
-  alignItems,
-  flexWrap,
-  height,
-  width,
-  system,
-  backgroundSize,
-  backgroundPosition,
   backgroundImage,
+  BackgroundImageProps,
+  backgroundPosition,
+  BackgroundPositionProps,
+  backgroundSize,
+  BackgroundSizeProps,
   border,
+  BorderProps,
+  boxShadow,
+  BoxShadowProps,
+  color,
+  ColorProps,
+  display,
+  DisplayProps,
+  flexbox,
+  FlexboxProps,
+  fontSize,
+  FontSizeProps,
+  fontWeight,
+  FontWeightProps,
+  height,
+  HeightProps,
+  layout,
+  LayoutProps,
+  maxWidth,
+  MaxWidthProps,
+  position,
+  PositionProps,
+  space,
+  SpaceProps,
+  system,
+  textAlign,
+  TextAlignProps,
+  width,
+  WidthProps,
 } from 'styled-system';
 
-// const LOGO_FONT = 'PT Serif, serif'
-const font = family => `font-family: ${family}`;
+const aspectRatio = system({
+  aspectRatio: {
+    property: 'aspectRatio',
+    transform: (val) => `${val}`,
+  },
+});
 
+const cursor = system({
+  cursor: {
+    property: 'cursor',
+  },
+});
+
+interface CustomDefinitions {
+  cursor?: string;
+  aspectRatio?: string | number | number[];
+}
+
+const defaults = css`
+  ${position};
+  ${border};
+  ${boxShadow};
+  ${flexbox};
+  ${space};
+  ${layout};
+  ${display};
+  ${color};
+  ${height};
+  ${fontSize};
+  ${fontWeight};
+  ${maxWidth};
+  ${width};
+  ${textAlign};
+  ${backgroundPosition};
+  ${backgroundSize};
+  ${backgroundImage};
+  ${(p: any) => (p.aspectRatio ? aspectRatio : '')};
+  ${cursor};
+`;
+
+export type Defaults = FlexboxProps &
+  BackgroundImageProps &
+  BackgroundPositionProps &
+  BackgroundSizeProps &
+  BorderProps &
+  BoxShadowProps &
+  ColorProps &
+  DisplayProps &
+  FontSizeProps &
+  FontWeightProps &
+  HeightProps &
+  PositionProps &
+  LayoutProps &
+  MaxWidthProps &
+  SpaceProps &
+  TextAlignProps &
+  WidthProps &
+  CustomDefinitions;
+
+export const Text = styled('p')<Defaults>`
+  ${defaults};
+`;
+
+export const Flex = styled('div')<Defaults>`
+  display: flex;
+  flex-wrap: wrap;
+  ${defaults};
+`;
+
+export const Box = styled('div')<Defaults>`
+  ${defaults};
+`;
+
+export const CollectionCarouselBox = styled(Box)<Defaults>`
+  ${defaults};
+
+  @media screen and (min-width: 1320px) {
+    margin-left: calc(50vw - 668px);
+  }
+`;
+
+// const LOGO_FONT = 'PT Serif, serif'
+const font = (family) => `font-family: ${family}`;
+
+const MAIN_FONT = font(
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+);
 const LOGO_FONT = font('Reenie Beanie');
 const SERIF_FONT = font('Merriweather, serif');
 
-const theme = (key, fallback) => props =>
+const theme = (key: string, fallback?: any) => (props) =>
   props.theme[key] || fallback || 'initial';
 
-const isMobile = content => `
-  @media (max-width: 767px) {
+export const isMobile = (content) => `
+  @media screen and (max-width: 40em) {
     ${content}
   }
 `;
 
-const notMobile = content => `
-  @media (min-width: 768px) {
+export const isTablet = (content) => `
+  @media screen and (min-width: 52em) {
+    ${content};
+  }
+`;
+
+export const isDesktop = (content) => `
+  @media screen and (min-width: 60em) {
+    ${content};
+  }
+`;
+
+export const notMobile = (content) => `
+  @media screen and (min-width: 41em) {
     ${content}
   }
 `;
 
-export const HideOnMobile = styled.div`
-  ${isMobile(`
-    display: none;
-  `)};
-`;
+export const HideOnMobile = ({ children }) => (
+  <Box display={['none', 'block']}>{children}</Box>
+);
 
-export const HideOnDesktop = styled.div`
-  ${notMobile(`
-    display: none;
-  `)};
-`;
+export const HideOnDesktop = ({ children }) => (
+  <Box display={['block', 'none', 'none']}>{children}</Box>
+);
 
 const transition = css`
   transition: color 150ms, background 150ms;
   will-change: color, background;
 `;
 
-export const CartCount = styled.div`
+export const CartCount = styled(Box)<Defaults>`
+  ${defaults};
   font-size: 9px;
   font-weight: bold;
   color: white;
@@ -78,7 +187,8 @@ export const CartCount = styled.div`
   left: -25%;
 `;
 
-export const Nav = styled.nav`
+export const Nav = styled('nav')<Defaults>`
+  ${defaults};
   padding: 2.25em 0 1.35em;
 
   ${isMobile(`
@@ -93,45 +203,7 @@ export const Nav = styled.nav`
   `)}
 `;
 
-export const Flex = styled.div`
-  display: flex;
-  ${border};
-  ${flex};
-  ${space};
-  ${layout};
-  ${display};
-  ${flexDirection};
-  ${justifyContent};
-  ${alignItems};
-  ${flexWrap};
-  ${color};
-  ${height};
-`;
-
-const aspectRatio = system({
-  aspectRatio: {
-    property: 'aspectRatio',
-    transform: val => `${val}`,
-  },
-});
-
-export const Box = styled.div`
-  ${border};
-  ${space};
-  ${maxWidth};
-  ${width};
-  ${height};
-  ${textAlign};
-  ${color};
-  ${layout};
-  ${flex};
-  ${backgroundPosition};
-  ${p => (p.aspectRatio ? aspectRatio : '')};
-  ${backgroundSize};
-  ${backgroundImage};
-`;
-
-export const Pinned = props => (
+export const Pinned = (props) => (
   <Timestamp {...props}>
     <EntypoPin style={{ marginTop: 2, marginRight: 5 }} /> Pinned post
   </Timestamp>
@@ -139,7 +211,7 @@ export const Pinned = props => (
 
 const borderWidth = 10;
 
-// const VerticalBorder = styled.div`
+// const VerticalBorder = styled("div")<Defaults>`
 //   position: absolute;
 //   z-index: 100;
 //   ${space};
@@ -156,9 +228,21 @@ const borderWidth = 10;
 //   `)}
 // `
 
-export const Button = styled.button.attrs({
-  className: p => (p.selected ? 'active' : ''),
-})`
+interface ButtonProps {
+  expand?: boolean;
+  tag?: boolean;
+  primary?: boolean;
+  secondary?: boolean;
+  selected?: boolean;
+  small?: boolean;
+  increment?: boolean;
+}
+
+export const Button = styled('button').attrs({
+  // @ts-ignore
+  className: (p: any) => (p.selected ? 'active' : ''),
+})<Defaults & ButtonProps>`
+  ${defaults};
   padding: 1em 3em;
   border: 1px solid #e0e0e8;
   text-transform: uppercase;
@@ -170,27 +254,29 @@ export const Button = styled.button.attrs({
   transition: all 150ms ease;
   cursor: pointer;
   border-radius: 3px;
+  white-space: nowrap;
+  text-align: center;
 
-  ${p => p.expand && `width: 100%`};
+  ${(p) => p.expand && `width: 100%`};
 
   :disabled {
-    opacity: 0.5;
+    opacity: 0.9;
     pointer-events: none;
   }
 
   &:hover {
     background: white;
     color: black;
-    box-shadow: 0 5px 20px 0 rgb(0 0 0 / 5%);
   }
 
-  ${p =>
+  ${(p) =>
     p.tag &&
     `
-    color: black;
+    font-size: 13px;
+    color: rgba(156,163,175,1);
     border: none;
-    background: #f4f4f7;
-    border-radius: 4px;
+    border-radius: 30px;
+    min-width: 160px;
 
     &.active {
       background: black;
@@ -198,42 +284,71 @@ export const Button = styled.button.attrs({
     }
 
     &:hover:not(.active) {
-      background: #d5d5df;
+      color: black
     }
   `}
 
-  ${p =>
+  ${(p) =>
     p.primary &&
     `
     color: white;
     border: none;
     background: black;
     border-radius: 4px;
+    box-shadow: 0 12px 20px 0 rgba(0,0,0,0.15);
+
+    :disabled {
+      opacity: 0.75;
+      background: #aaa;
+    }
 
     &:hover {
-      background: #333;
+      background: #222;
       color: white;
       border: none;
+      box-shadow: 0 12px 20px 0 rgba(0,0,0,0.25);
     }
   `}
 
-  ${p =>
+  ${(p) =>
     p.selected &&
     `
-    background: black;
-    color: white;
+    background: rgba(243,244,246,1);
+    color: black;
+
+    &:hover {
+      background: rgba(243,244,246,1);
+    }
   `}
 
-  ${p =>
+  ${(p) =>
     p.small &&
     `
     font-size: 12px;
     padding: 1em 2em;
     `}
+
+  ${(p) =>
+    p.increment &&
+    `
+    font-size: 16px;
+    font-weight: normal;
+    padding: 4px 14px;
+    background: white;
+    border: 0;
+    margin: 0;
+    background: white;
+    opacity: 0.6;
+
+
+    &:hover {
+      opacity: 1;
+    }
+  `}
 `;
 
-const Border = styled.div`
-  position: ${p => (p.abs ? 'absolute' : 'fixed')};
+const Border = styled(Box)<Defaults & { abs?: boolean }>`
+  position: ${(p) => (p.abs ? 'absolute' : 'fixed')};
   z-index: 100;
   ${notMobile(`
     border: ${borderWidth}px solid rgba(0, 0, 0, 0.95);
@@ -247,12 +362,13 @@ export const GlobalBorder = () => (
   </>
 );
 
-export const Bullet = styled(props => <span {...props}>&bull;</span>)`
+export const Bullet = styled((props) => <span {...props}>&bull;</span>)`
   color: ${theme('bullet')};
   margin: 0 10px;
 `;
 
-export const Toolbar = styled.div`
+export const Toolbar = styled(Box)<Defaults>`
+  ${defaults};
   background: black;
   width: 80px;
 `;
@@ -264,7 +380,7 @@ export const imageBackground = css`
   -webkit-background-clip: text;
 `;
 
-export const Logo = styled.h2`
+export const Logo = styled(Text).attrs({ as: 'h2' })<Defaults>`
   ${LOGO_FONT};
   color: ${theme('logoColor', theme('color'))};
   font-size: 3.5rem;
@@ -276,18 +392,20 @@ export const Logo = styled.h2`
   color: blue;
 `;
 
-export const Link = styled(GatsbyLink)`
+export const Link = styled(GatsbyLink)<Defaults>`
+  ${defaults};
   cursor: pointer;
-  padding-bottom: 6px;
-  border-bottom: 1px solid;
+  font-weight: normal;
+  // padding-bottom: 6px;
+  // border-bottom: 1px solid;
 
   svg {
     margin-left: 0.5em;
   }
 
-  &:hover {
-    border-bottom: 2px solid;
-  }
+  // &:hover {
+  //   border-bottom: 2px solid;
+  // }
 `;
 
 export const Tag = styled(GatsbyLink)`
@@ -303,6 +421,7 @@ export const Tag = styled(GatsbyLink)`
   margin-bottom: 10px;
   border-radius: 3px;
   letter-spacing: 0.25px;
+  cursor: pointer;
   ${transition};
 
   &:hover {
@@ -310,14 +429,18 @@ export const Tag = styled(GatsbyLink)`
   }
 `;
 
-export const Container = styled.div`
-  max-width: ${p => (p.narrow ? '800px' : '1320px')};
+export const Container = styled(Box)<Defaults & { narrow?: boolean }>`
+  ${defaults};
   margin: auto;
   padding: 0 1.5em;
 
-  ${maxWidth};
-  ${space};
-  ${layout};
+  @media screen and (min-width: 40em) {
+    max-width: 100%;
+  }
+
+  @media screen and (min-width: 64em) {
+    max-width: ${(p) => (p.narrow ? '800px' : '1320px')};
+  }
 `;
 
 export const ScrollContainer = styled(Flex).attrs({
@@ -338,19 +461,18 @@ export const ScrollContainer = styled(Flex).attrs({
   }
 `;
 
-export const ScrollContainerBlock = styled.div`
+export const ScrollContainerBlock = styled(Box)<Defaults>`
   width: 42px;
   margin-right: 6em;
   height: 100px;
   display: block;
 `;
 
-export const Content = styled.section`
+export const Content = styled('section')<Defaults>`
   position: relative;
   z-index: 2;
   margin: 1em 3em 0;
   padding-top: 1em;
-  ${space};
   ${transition};
 
   ${isMobile(`
@@ -361,7 +483,7 @@ export const Content = styled.section`
   `)}
 `;
 
-export const PageHeading = styled.h1`
+export const PageHeading = styled(Text).attrs({ as: 'h1' })<Defaults>`
   font-size: 2rem;
   font-weight: 400;
   letter-spacing: 1px;
@@ -369,8 +491,6 @@ export const PageHeading = styled.h1`
   margin-top: 0.2em;
   margin-bottom: 0.15em;
   color: #333;
-  ${textAlign};
-  ${space};
 
   ${isMobile(`
     font-size: 2rem;
@@ -378,7 +498,8 @@ export const PageHeading = styled.h1`
   `)}
 `;
 
-export const Carousel = styled(Flex)`
+export const Carousel = styled(Flex)<Defaults>`
+  ${defaults};
   list-style: none;
   white-space: nowrap;
   flex-wrap: nowrap;
@@ -386,31 +507,30 @@ export const Carousel = styled(Flex)`
   scroll-behavior: smooth;
   padding: 0;
   overflow-x: scroll;
+  max-width: 100vw;
   -webkit-overflow-scrolling: touch;
   position: relative;
   will-change: transform;
   transition: all 800ms ease-in-out;
-  ${space};
-  ${layout};
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  ${isMobile(`
+  @media screen and (max-width: 52em) {
     scroll-padding-left: 1em;
     padding-left: 1em;
-  `)}
+  }
 `;
 
-export const CarouselItem = styled(Box)`
+export const CarouselItem = styled(Box)<Defaults>`
   display: flex;
   cursor: pointer;
   scroll-snap-align: start;
   scroll-snap-stop: always;
 `;
 
-export const Title = styled.h1`
+export const Title = styled.h1<Defaults>`
   color: ${theme('titleColor')};
   font-size: 1.75rem;
   line-height: 1.45;
@@ -418,9 +538,8 @@ export const Title = styled.h1`
   margin-top: 0;
   margin-bottom: 12px;
   white-space: normal;
-  ${fontSize};
   ${transition};
-  ${space};
+  ${defaults};
 
   ${isMobile(`
     font-weight: 800;
@@ -448,51 +567,44 @@ export const Title = styled.h1`
   }
 `;
 
-export const PostTitle = styled(Title)`
+export const PostTitle = styled(Title)<Defaults>`
+  ${defaults};
   font-weight: 800;
   font-size: 3rem;
   line-height: 1.35;
   letter-spacing: 0.2px;
   color: ${theme('titleColor')};
   ${transition};
-  ${space};
-  ${textAlign};
-  ${layout};
 
   ${isMobile(`
     margin-top: 1em;
   `)};
 `;
 
-export const ProductTitle = styled.h2`
+export const ProductTitle = styled(Text).attrs({ as: 'h2' })<Defaults>`
   ${SERIF_FONT};
   margin: 0;
   padding: 0;
 `;
 
-export const Subtitle = styled.h6`
+export const Subtitle = styled(Text).attrs({ as: 'h6' })<Defaults>`
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: blue;
   margin-bottom: 5px;
 `;
 
-export const LineBreak = styled.div.attrs({
-  className: 'LineBreak',
-})`
-  width: ${p => (p.width ? `${p.width}px` : '80px')};
+export const LineBreak = styled(Box)<Defaults>`
+  width: ${(p) => (p.width ? `${p.width}px` : '80px')};
   border: 2px solid ${theme('primary')};
-  margin-bottom: 2em;
-  ${space};
   transition: width 250ms ease-out;
 `;
 
-export const Timestamp = styled.p`
+export const Timestamp = styled(Text)`
   font-weight: 500;
   font-size: 15px;
   color: ${theme('descriptionColor')};
   margin-bottom: 1.5em;
-  ${fontSize};
 `;
 
 export const Photo = styled(Box)`
@@ -503,7 +615,8 @@ export const Photo = styled(Box)`
   }
 `;
 
-export const PhotoInfo = styled.div`
+export const PhotoInfo = styled(Box)<Defaults>`
+  ${defaults};
   display: flex;
   justify-content: space-between;
   background: #212124;
@@ -515,7 +628,8 @@ export const PhotoInfo = styled.div`
   }
 `;
 
-export const PhotoOverlay = styled.div`
+export const PhotoOverlay = styled(Box)<Defaults>`
+  ${defaults};
   line-height: 2;
   font-size: 13px;
   opacity: 0;
@@ -545,7 +659,8 @@ export const PhotoOverlay = styled.div`
   }
 `;
 
-export const Post = styled.article`
+export const Post = styled('article')<Defaults>`
+  ${defaults};
   border-bottom: 1px solid ${theme('postBorderColor')};
   padding: 4em 0;
   background: white;
@@ -564,16 +679,13 @@ export const PostPreview = styled(Box)`
   display: flex;
   flex: 1;
   flex-direction: column;
-  ${space};
-  ${layout};
-  ${border};
 
   ${isMobile(`
     padding-top: 2em;
   `)}
 `;
 
-export const Paragraph = styled.p`
+export const Paragraph = styled(Text)`
   ${SERIF_FONT};
   font-size: 15px;
   line-height: 1.65;
@@ -594,7 +706,8 @@ export const Description = styled(Paragraph)`
   `)}
 `;
 
-export const BlogPost = styled.article`
+export const BlogPost = styled('article')<Defaults>`
+  ${defaults};
   p,
   ul,
   ol,
@@ -608,16 +721,24 @@ export const BlogPost = styled.article`
     --baseline-multiplier: 0.17;
     ${transition};
   }
+
+  ul,
+  ol {
+    padding-left: 2em;
+    margin-bottom: 2em;
+    line-height: 2;
+  }
 `;
 
-export const Comments = styled.div`
+export const Comments = styled(Box)<Defaults>`
   padding: 3em 0;
   border-top: 1px solid ${theme('hrColor')};
   border-bottom: 1px solid ${theme('hrColor')};
   margin-top: 3em;
 `;
 
-export const Footer = styled.footer`
+export const Footer = styled('footer')<Defaults>`
+  ${defaults};
   position: relative;
   text-align: center;
   color: #666;
@@ -660,6 +781,136 @@ export const Footer = styled.footer`
   }
 `;
 
+export const Select = styled('select')<Defaults>`
+  ${defaults};
+  width: 100%;
+  padding: 1em;
+  font-size: 14px;
+  border: 1px solid;
+`;
+
+const slideInKeyframes = keyframes`
+ from { transform: translateX(200px) }
+ to { transform: translate(0) }
+`;
+
+const slideOutKeyframes = keyframes`
+ from { transform: translate(0) }
+ to { transform: translateX(200px) }
+`;
+
+const fadeInKeyframes = keyframes`
+  from { opacity: 0 }
+  to { opacity: 1 }
+`;
+
+const fadeOutKeyframes = keyframes`
+  from { opacity: 1 }
+  to { opacity: 0 }
+`;
+
+const animations = (...animations) => css`
+  animation: ${animations.join(', ')};
+`;
+
+export const Drawer = styled(Box)<{
+  open?: boolean;
+}>`
+  ${defaults};
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  max-width: 90%;
+  width: 500px;
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 5em;
+  z-index: 1000;
+  // display: ${(p) => (p.open ? 'block' : 'none')};
+  // opacity: ${(p) => (p.open ? '1' : '0')};
+  transform: translateX(${(p) => (p.open ? '0%' : '20%')});
+  box-shadow: rgb(0 0 0 / 10%) -5px 0px 20px 0px;
+  transition: all 150ms ease-out 0s;
+  animation: ${slideInKeyframes} 200ms ease-out;
+
+  a {
+    transition: all 200ms ease;
+    opacity: 0.8;
+  }
+
+  a[aria-current='page'] {
+    opacity: 1;
+    font-weight: bold;
+  }
+
+  a:hover {
+    padding-left: 0.25em;
+    opacity: 1;
+  }
+
+  &.exit {
+    opacity: 1;
+  }
+  &.exit-active {
+    opacity: 0;
+    transition: opacity 250ms, transform 250ms;
+  }
+`;
+
+export const Overlay = styled(Box)`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(63, 63, 106, 0.42);
+  z-index: 999;
+  // transition: all 10s ease;
+  animation: ${fadeInKeyframes} 200ms ease;
+
+  &.close {
+    animation: ${fadeOutKeyframes};
+  }
+`;
+
+export const ErrorMessage = styled(Text).attrs({ as: 'small' })<Defaults>`
+  ${defaults};
+  display: block;
+  color: red;
+  font-weight: bold;
+`;
+
+export const Image = styled.img<Defaults>`
+  ${defaults};
+  height: auto;
+  max-width: 100%;
+`;
+
+function getUnitValue(value: number | string): string {
+  if (typeof value === 'number') {
+    return `${value}px`;
+  }
+
+  if (typeof value === 'string' && !/(%)|(px)|(em)/gi.test(value)) {
+    return `${value}px`;
+  }
+
+  return value;
+}
+
+export const BackgroundImage = styled.div<
+  Defaults & { width: number; height: number; src: string }
+>`
+  ${defaults};
+  // width: ${(p) => getUnitValue(p.width)};
+  // height: ${(p) => getUnitValue(p.height)};
+  background-image: url(${(p) => p.src});
+  background-size: cover;
+  background-position: center center;
+`;
+
+/** Max sure this one is last */
 export const GlobalStyles = createGlobalStyle`
   :root {
     --background: ${theme('background')};
@@ -691,17 +942,16 @@ export const GlobalStyles = createGlobalStyle`
 
   html,
   body {
+    ${MAIN_FONT};
+    // font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
     font-size: 100%;
     letter-spacing: 0.2px;
     color: ${theme('color')};
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
-    overflow-x: hidden;
   }
 
   body {
@@ -746,7 +996,7 @@ export const GlobalStyles = createGlobalStyle`
   p > a:hover,
   li > a:hover,
   strong > a:hover {
-    border-bottom: 1px solid #0087ff;
+    border-bottom: 1px solid var(--primary);
   }
 
   h6 {
@@ -770,44 +1020,4 @@ export const GlobalStyles = createGlobalStyle`
       padding: 0.5em 1em;
     `)}
   }
-`;
-
-export const Select = styled.select`
-  width: 100%;
-  padding: 1em;
-  font-size: 14px;
-  border: 1px solid;
-`;
-
-export const Drawer = styled.div`
-  position: fixed;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  max-width: 400px;
-  width: 400px;
-  background: white;
-  height: 100vh;
-  z-index: 1000;
-  display: ${p => (p.open ? 'block' : 'none')};
-  opacity: ${p => (p.open ? '1' : '0')};
-  transform: translateX(${p => (p.open ? '0%' : '20%')});
-  box-shadow: rgb(0 0 0 / 10%) -5px 0px 20px 0px;
-  transition: all 150ms ease-out 0s;
-  ${color};
-`;
-
-export const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.1);
-  z-index: 10;
-`;
-
-export const ErrorMessage = styled.small`
-  color: red;
-  font-weight: bold;
 `;

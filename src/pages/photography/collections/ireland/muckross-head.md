@@ -1,4 +1,5 @@
 ---
+slug: photography/ireland/muckross-head
 order: 7
 templateKey: photo
 title: Muckross Head

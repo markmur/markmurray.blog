@@ -1,5 +1,6 @@
 ---
 # stripe_product_id: prod_Joey6ims98au0F
+slug: photography/ireland/murder-hole-beach
 order: 1
 templateKey: photo
 title: Murder Hole Beach

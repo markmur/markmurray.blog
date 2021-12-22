@@ -22,7 +22,7 @@ const Tags = ({ tags, ...props }) =>
   tags &&
   tags.length > 0 && (
     <Flex wrap {...props}>
-      {tags.map(tag => (
+      {tags.map((tag) => (
         <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
           {tag}
         </Tag>
@@ -68,11 +68,12 @@ export const PostPreview = ({ post, ...props }) => (
     py={[4, '45px']}
     px={[4, '45px']}
     border="1px solid #eaeaea"
+    boxShadow="0 12px 20px 0 rgb(44 62 80 / 5%)"
     {...props}
   >
     <Flex height="100%" flexDirection="column" justifyContent="space-between">
       <div>
-        <Title mb={0} fontSize="1.25rem">
+        <Title mb={2} fontSize="1.25rem">
           <Link to={post.fields.slug}>
             <span
               dangerouslySetInnerHTML={{ __html: post.frontmatter.title }}
@@ -86,7 +87,7 @@ export const PostPreview = ({ post, ...props }) => (
           {post.fields.readingTime.text}
         </Timestamp>
 
-        <LineBreak mb={2} />
+        <LineBreak mb={4} />
         <Paragraph mb={3}>{post.frontmatter.description}</Paragraph>
       </div>
 

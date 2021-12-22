@@ -11,8 +11,8 @@ import {
   Flex,
   Box,
 } from '../styles';
-import ImageGrid from '../components/ImageGrid/index.tsx';
-import { getImageUrl, getProductUrl } from '../utils/image.ts';
+import ImageGrid from '../components/ImageGrid';
+import { getImageUrl, getProductUrl } from '../utils/image';
 
 export const CollectionTemplate = ({ title, description, images }) => {
   return (
@@ -27,7 +27,7 @@ export const CollectionTemplate = ({ title, description, images }) => {
 
         <hr />
 
-        <ImageGrid images={images} />
+        <ImageGrid images={images} grid={[2, 3, 4]} />
       </Container>
     </Content>
   );
@@ -37,7 +37,7 @@ const getPriceByProductId = (prices, productId) => {
   const amounts = prices.edges.filter(
     ({ node }) => node.product.id === productId,
   );
-  return Math.min(...amounts.map(x => x.node.unit_amount)) / 100;
+  return Math.min(...amounts.map((x) => x.node.unit_amount)) / 100;
 };
 
 const Collection = ({ data }) => {
@@ -93,7 +93,7 @@ export const pageQuery = graphql`
         url
       }
     }
-    collection: markdownRemark(id: { eq: $id }) {
+    collection: markdownRemark(frontmatter: { collection_id: { eq: $id } }) {
       id
       frontmatter {
         title
@@ -113,7 +113,7 @@ export const pageQuery = graphql`
       }
     }
     images: allMarkdownRemark(
-      filter: { frontmatter: { collection: { eq: "sapphire" } } }
+      filter: { frontmatter: { collection: { eq: $id } } }
       sort: { fields: [frontmatter___title] }
     ) {
       edges {

@@ -1,29 +1,34 @@
 import React from 'react';
 import './styles.scss';
 
-import { Box } from '../../styles';
+import { Flex, Box } from '../../styles';
 
 interface Image {
   image_url: string;
   href: string;
   title: string;
-  price: number;
+  price?: number;
   width?: number;
   height?: number;
 }
 
 interface Props {
   images: Image[];
+  grid?: [number, number, number];
 }
 
-const ImageGrid: React.FC<Props> = ({ images }) => {
+const ImageGrid: React.FC<Props> = ({ images, grid = [2, 3, 5] }) => {
   return (
-    <ul className="imageGrid">
-      {images.map(image => (
+    <Flex mx={-3}>
+      {images.map((image) => (
         <Box
           key={image.href}
           p={[1, 3]}
-          flex={['0 0 calc(100% / 2)', '0 0 calc(100% / 4)']}
+          flex={[
+            `0 0 calc(100% / ${grid[0]})`,
+            `0 0 calc(100% / ${grid[1]})`,
+            `0 0 calc(100% / ${grid[2]})`,
+          ]}
         >
           <a href={image.href}>
             <Box
@@ -38,12 +43,14 @@ const ImageGrid: React.FC<Props> = ({ images }) => {
 
             <Box textAlign="center" py={3} mb={2}>
               <h5>{image.title}</h5>
-              {image.price && <small>from €{image.price}</small>}
+              {image.price && isFinite(image.price) && (
+                <small>from €{image.price}</small>
+              )}
             </Box>
           </a>
         </Box>
       ))}
-    </ul>
+    </Flex>
   );
 };
 

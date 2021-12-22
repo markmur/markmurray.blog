@@ -1,4 +1,5 @@
 ---
+slug: photography/ireland/saltee-puffin
 order: 3
 templateKey: photo
 title: Saltee Puffin

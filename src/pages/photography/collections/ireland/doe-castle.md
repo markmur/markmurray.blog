@@ -1,4 +1,5 @@
 ---
+slug: photography/ireland/doe-castle
 order: 6
 templateKey: photo
 title: Doe Castle

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'gatsby';
 import { useShoppingCart } from 'use-shopping-cart';
 import { FiShoppingBag, FiMenu } from 'react-icons/fi';
 import {
   Flex,
   Box,
   Container,
+  Link,
   Logo,
   Nav,
   CartCount,
@@ -19,7 +19,7 @@ const Navbar = ({ displayTagline, wide = false, onCartClick, onMenuClick }) => {
 
   return (
     <Nav role="navigation" aria-label="main-navigation">
-      <Container wide={wide}>
+      <Container>
         <Flex alignItems="center" justifyContent={['space-between']}>
           <HideOnDesktop>
             <FiMenu fontSize={24} onClick={onMenuClick} />
@@ -33,20 +33,20 @@ const Navbar = ({ displayTagline, wide = false, onCartClick, onMenuClick }) => {
 
           <HideOnMobile>
             <Flex>
-              <Link style={{ marginRight: 25 }} to="/about">
+              <Link mr={4} to="/about">
                 Who?
               </Link>
-              <Link style={{ marginRight: 25 }} to="/posts">
-                Posts
+              <Link mr={4} to="/posts">
+                Articles
               </Link>
-              <Link style={{ marginRight: 25 }} to="/projects">
+              <Link mr={4} to="/projects">
                 Projects
               </Link>
-              <Link style={{ marginRight: 25 }} to="/photography">
+              <Link mr={4} to="/photography">
                 Photography
               </Link>
               <a style={{ cursor: 'pointer' }} onClick={onCartClick}>
-                <FiShoppingBag verticalAlign="bottom" />{' '}
+                <FiShoppingBag style={{ verticalAlign: 'bottom' }} />{' '}
                 {cartCount > 0 ? <CartCount>{cartCount}</CartCount> : null}
               </a>
             </Flex>

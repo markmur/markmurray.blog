@@ -1,5 +1,6 @@
 ---
-id: sapphire
+collection_id: sapphire
+slug: collections/sapphire
 templateKey: collection
 title: The Sapphire Collection
 heading: Sapphire.

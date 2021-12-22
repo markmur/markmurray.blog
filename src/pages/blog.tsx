@@ -1,15 +1,15 @@
-import React from 'react'
-import { graphql } from 'gatsby'
-import { PageHeading, Container, Content } from '../styles'
-import Layout from '../components/Layout'
-import Post from '../components/post'
+import React from 'react';
+import { graphql } from 'gatsby';
+import { PageHeading, Container, Content } from '../styles';
+import Layout from '../components/Layout';
+import Post from '../components/post';
 
 export default class BlogPage extends React.Component {
   render() {
-    const { data } = this.props
-    const { edges } = data.allMarkdownRemark
+    const { data } = this.props;
+    const { edges } = data.allMarkdownRemark;
 
-    const posts = edges.map(({ node }) => node)
+    const posts = edges.map(({ node }) => node);
 
     return (
       <Layout>
@@ -22,7 +22,7 @@ export default class BlogPage extends React.Component {
           ))}
         </Content>
       </Layout>
-    )
+    );
   }
 }
 
@@ -41,12 +41,12 @@ export const pageQuery = graphql`
         node {
           id
           fields {
-            slug
             readingTime {
               text
             }
           }
           frontmatter {
+            slug
             title
             tags
             templateKey
@@ -58,4 +58,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

@@ -1,4 +1,5 @@
 ---
+slug: projects/spotify-tracklist
 order: 3
 templateKey: project
 title: Spotify tracklist

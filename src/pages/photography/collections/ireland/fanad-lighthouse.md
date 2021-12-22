@@ -1,4 +1,5 @@
 ---
+slug: photography/ireland/fanad-lighthouse
 order: 5
 templateKey: photo
 title: Fanad Lighthouse

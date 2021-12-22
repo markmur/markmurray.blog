@@ -5,7 +5,7 @@ title: Who?
 description:
   Mark Murray is an Irish Software Engineer & Photographer living in Dublin,
   Ireland with a passion for Art, Design, Music and Technology.
-image_url: https://firebasestorage.googleapis.com/v0/b/project-4767000521921178323.appspot.com/o/images%2Fmark.jpg?alt=media&token=94362653-9e33-4c10-8dd2-9299098d4b5e
+image_url: https://firebasestorage.googleapis.com/v0/b/project-4767000521921178323.appspot.com/o/images%2Fresized%2Fmark_600x750?alt=media&token=ff0e3bd6-5225-41bf-b96b-f8e166ed92d9
 ---
 
 Irish Software Engineer living in Dublin, Ireland with a passion for Art,

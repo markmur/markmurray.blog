@@ -1,11 +1,11 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { graphql } from 'gatsby';
+import { graphql, PageProps } from 'gatsby';
 import Layout from '../components/Layout';
 import { Content, Container } from '../styles';
 import Post from '../components/post';
 
-class TagRoute extends React.Component {
+class TagRoute extends React.Component<PageProps> {
   render() {
     const { pageContext } = this.props;
     const { allMarkdownRemark, site } = this.props.data;
@@ -20,7 +20,7 @@ class TagRoute extends React.Component {
         <section>
           <Helmet title={`${tag} | ${title}`} />
           <Content>
-            <Container wide>
+            <Container>
               <h3>
                 {totalCount} post{totalCount === 1 ? '' : 's'} tagged with “
                 {tag}”

@@ -1,4 +1,5 @@
 ---
+slug: photography/ireland/malin-head
 order: 6
 templateKey: photo
 title: The Claw of Malin Head

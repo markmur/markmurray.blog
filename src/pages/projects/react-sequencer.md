@@ -1,4 +1,5 @@
 ---
+slug: projects/react-sequencer
 order: 6
 templateKey: project
 title: React Sequencer

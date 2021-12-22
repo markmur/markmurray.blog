@@ -3,9 +3,9 @@ import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
 import { useShoppingCart } from 'use-shopping-cart';
 
-import { CartConsumer } from '../context/CartContext.tsx';
+import { CartContext } from '../context/CartContext';
 import Layout from '../components/Layout';
-import ImageGallery from '../components/ImageGallery/index.tsx';
+import ImageGallery from '../components/ImageGallery';
 import {
   Box,
   Button,
@@ -17,20 +17,27 @@ import {
   Subtitle,
 } from '../styles';
 import { formatPrice } from '../utils/currency';
-import { toCartProduct } from '../utils/product.ts';
-import { cmToInches } from '../utils/index.ts';
+import { toCartProduct } from '../utils/product';
+import { cmToInches } from '../utils/index';
+import config, { getCountryById } from '../../config';
 
 function ProductTemplate(props) {
   const { product, photo, prices } = props;
   const [addedToCart, setAddedToCart] = React.useState(false);
   const [selectedPrice, setSelectedPrice] = React.useState(prices[0]);
-  const { setCartState } = React.useContext(CartConsumer);
+  const { setCartState } = React.useContext(CartContext);
+
+  console.log({ product, photo, prices });
 
   const { addItem, cartDetails } = useShoppingCart();
 
+  const sortedPrices = prices.sort((a, b) =>
+    a?.nickname.localeCompare(b?.nickname),
+  );
+
   const handleAddToCart = React.useCallback(() => {
     // add to cart
-    addItem(toCartProduct(product, selectedPrice), 1);
+    addItem(toCartProduct(product, selectedPrice), { count: 1 });
     // set loading state
     setAddedToCart(true);
     setCartState({ open: true });
@@ -41,10 +48,10 @@ function ProductTemplate(props) {
     }, 5 * 1000);
   }, []);
 
-  const handleSizeChange = React.useCallback(event => {
+  const handleSizeChange = React.useCallback((event) => {
     event.persist();
     const id = event.target.value;
-    setSelectedPrice(prices.find(x => x.id === id));
+    setSelectedPrice(sortedPrices.find((x) => x.id === id));
   }, []);
 
   return (
@@ -56,17 +63,21 @@ function ProductTemplate(props) {
         alignItems={['inherit', 'flex-start']}
         flexDirection={['column', 'row']}
       >
-        <Box flex={[1, '1 0 55%']}>
+        <Box
+          flex={[1, '1 0 50%']}
+          position={['relative', 'relative', 'sticky']}
+          top="2em"
+        >
           <ImageGallery
             images={[
+              photo.image_url,
               '/photography/collections/sapphire/product/home',
               '/photography/collections/sapphire/product/home-2',
-              '/photography/collections/sapphire/sapphire-1',
             ]}
           />
         </Box>
 
-        <Box border="1px solid" py={[5, 5]} px={[0, 5]} flex={[1, '1 0 45%']}>
+        <Box border="1px solid" py={[5, 5]} px={[0, 5]} flex={[1, '1 0 50%']}>
           {photo.limit && (
             <Box mb={3}>
               <Subtitle>Limited Edition</Subtitle>
@@ -102,9 +113,9 @@ function ProductTemplate(props) {
               <strong>Sizes available</strong>
               <Box p={3} pl={4}>
                 <ul>
-                  {prices.map(price => (
+                  {sortedPrices.map((price) => (
                     <li key={price.id}>
-                      {price.metadata.size} ({cmToInches(price.metadata.size)})
+                      {price.nickname} ({cmToInches(price.nickname)})
                     </li>
                   ))}
                 </ul>
@@ -132,10 +143,9 @@ function ProductTemplate(props) {
           )}
 
           <Select value={selectedPrice.id} onChange={handleSizeChange}>
-            {prices.map(price => (
+            {sortedPrices.map((price) => (
               <option key={price.id} value={price.id}>
-                {price.metadata.size} ({cmToInches(price.metadata.size)}){' '}
-                {' - '}
+                {price.nickname} ({cmToInches(price.nickname)}) {' - '}
                 {formatPrice(price.unit_amount, price.currency)}
               </option>
             ))}
@@ -162,8 +172,8 @@ function ProductTemplate(props) {
           </Box>
           <Box pt={2} textAlign="center">
             <small>
-              Available in Ireland and the UK for now. International shipping
-              coming soon.
+              Available only in {getCountryById(config.allowed_countries)} for
+              now. International shipping coming soon.
             </small>
           </Box>
         </Box>
@@ -186,7 +196,7 @@ const Product = ({ data }) => {
         <ProductTemplate
           product={product}
           photo={photo ? photo.frontmatter : {}}
-          prices={prices.edges.map(x => x.node)}
+          prices={prices.edges.map((x) => x.node)}
         />
       </Content>
     </Layout>
@@ -203,9 +213,7 @@ export const pageQuery = graphql`
           id
           currency
           unit_amount
-          metadata {
-            size
-          }
+          nickname
         }
       }
     }

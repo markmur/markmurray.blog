@@ -13,6 +13,7 @@ import {
   LineBreak,
   PostTitle,
   HideOnMobile,
+  Text,
 } from '../styles';
 
 const About = ({ data }) => {
@@ -46,21 +47,29 @@ const About = ({ data }) => {
 
       <Content pt={[4, 5]} pb={4}>
         <Container>
+          <Box mt={2}>
+            <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
+            <Description>{description}</Description>
+          </Box>
+
+          <LineBreak mt="4em" mb="3em" />
+
           <Flex>
-            <Flex alignItems="flex-start" flex="1 0 400px" mr={[0, 5]}>
-              <HideOnMobile>
-                <img width={400} src={post.frontmatter.image_url} />
-              </HideOnMobile>
-            </Flex>
+            <HideOnMobile>
+              <Flex
+                flexWrap="wrap"
+                alignItems="flex-start"
+                flex={[1]}
+                mr={[0, 5]}
+                position="sticky"
+                top="2em"
+                alignSelf="flex-start"
+              >
+                <img width="500" src={post.frontmatter.image_url} />
+              </Flex>
+            </HideOnMobile>
 
-            <Box>
-              <Box mt={2}>
-                <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
-                <Description>{description}</Description>
-              </Box>
-
-              <LineBreak mt="4em" mb="3em" />
-
+            <Box flex={[1]} mt={-3}>
               <HTMLContent content={post.html} />
             </Box>
           </Flex>

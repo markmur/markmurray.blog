@@ -1,11 +1,11 @@
-import React from 'react'
-import { DiscussionEmbed } from 'disqus-react'
-import { kebabCase } from 'lodash'
-import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import React from 'react';
+import { DiscussionEmbed } from 'disqus-react';
+import { kebabCase } from 'lodash';
+import Helmet from 'react-helmet';
+import { graphql } from 'gatsby';
 
-import Layout from '../components/Layout'
-import { HTMLContent } from '../components/Content'
+import Layout from '../components/Layout';
+import { HTMLContent } from '../components/Content';
 import {
   Flex,
   Box,
@@ -18,18 +18,18 @@ import {
   PostTitle,
   Tag,
   Timestamp,
-} from '../styles'
+} from '../styles';
 
 const Tags = ({ tags }) =>
   tags && tags.length > 0 ? (
-    <Flex wrap>
+    <Flex>
       {tags.map(tag => (
         <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
           {tag}
         </Tag>
       ))}
     </Flex>
-  ) : null
+  ) : null;
 
 export const ProjectTemplate = ({
   id,
@@ -42,7 +42,7 @@ export const ProjectTemplate = ({
   postContent = HTMLContent,
   showComments = true,
 }) => {
-  const PostContent = postContent
+  const PostContent = postContent;
   return (
     <Content pb={4}>
       <Container narrow>
@@ -76,12 +76,12 @@ export const ProjectTemplate = ({
         )}
       </Container>
     </Content>
-  )
-}
+  );
+};
 
 const Project = ({ data }) => {
-  const { markdownRemark: post } = data
-  const { title, description, tags, date } = post.frontmatter
+  const { markdownRemark: post } = data;
+  const { title, description, tags, date } = post.frontmatter;
 
   return (
     <Layout>
@@ -100,10 +100,10 @@ const Project = ({ data }) => {
         readingTime={post.fields.readingTime.text}
       />
     </Layout>
-  )
-}
+  );
+};
 
-export default Project
+export default Project;
 
 export const pageQuery = graphql`
   query ProjectByID($id: String!) {
@@ -117,4 +117,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

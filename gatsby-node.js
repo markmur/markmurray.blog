@@ -1,17 +1,34 @@
 const path = require('path');
 const { get, uniq, kebabCase } = require('lodash');
 const { createFilePath } = require('gatsby-source-filesystem');
-const { fmImagesToRelative } = require('gatsby-remark-relative-images');
+
+function findByName(stripeProductName, localPhotoName) {
+  return stripeProductName?.toLowerCase() === localPhotoName?.toLowerCase();
+}
 
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions;
 
   return graphql(`
     {
+      photos: allMarkdownRemark(
+        filter: { frontmatter: { templateKey: { eq: "photo" } } }
+      ) {
+        edges {
+          node {
+            id
+            frontmatter {
+              title
+              stripe_product_id
+            }
+          }
+        }
+      }
       products: allStripeProduct {
         edges {
           node {
             id
+            name
           }
         }
       }
@@ -25,6 +42,7 @@ exports.createPages = ({ actions, graphql }) => {
               slug
             }
             frontmatter {
+              collection_id
               templateKey
             }
           }
@@ -48,35 +66,34 @@ exports.createPages = ({ actions, graphql }) => {
         }
       }
     }
-  `).then(result => {
+  `).then((result) => {
     if (result.errors) {
-      result.errors.forEach(e => console.error(e.toString()));
+      result.errors.forEach((e) => console.error(e.toString()));
       return Promise.reject(result.errors);
     }
 
     const products = result.data.products.edges;
 
     products.forEach(({ node }) => {
-      const { id } = node;
-
       createPage({
-        path: `/photography/${id}/`,
-        component: path.resolve(`src/templates/product.js`),
+        path: `/photography/${node.id}/`,
+        component: path.resolve(`src/templates/product.tsx`),
         context: {
-          id,
+          id: node.id,
         },
       });
     });
 
     const posts = result.data.posts.edges;
 
-    posts.forEach(edge => {
+    posts.forEach((edge) => {
       const { id } = edge.node;
+
       createPage({
         path: edge.node.fields.slug,
         tags: edge.node.frontmatter.tags,
         component: path.resolve(
-          `src/templates/${String(edge.node.frontmatter.templateKey)}.js`,
+          `src/templates/${String(edge.node.frontmatter.templateKey)}.tsx`,
         ),
         // additional data can be passed via context
         context: {
@@ -88,16 +105,16 @@ exports.createPages = ({ actions, graphql }) => {
     // Create collection pages
     const collections = result.data.collections.edges;
 
-    collections.forEach(edge => {
-      const { id } = edge.node;
+    collections.forEach((edge) => {
+      const { collection_id } = edge.node.frontmatter;
       createPage({
         path: edge.node.fields.slug,
         component: path.resolve(
-          `src/templates/${String(edge.node.frontmatter.templateKey)}.js`,
+          `src/templates/${String(edge.node.frontmatter.templateKey)}.tsx`,
         ),
         // additional data can be passed via context
         context: {
-          id,
+          id: collection_id,
         },
       });
     });
@@ -105,7 +122,7 @@ exports.createPages = ({ actions, graphql }) => {
     // Tag pages:
     let tags = [];
     // Iterate through each post, putting all found tags into `tags`
-    posts.forEach(edge => {
+    posts.forEach((edge) => {
       if (get(edge, `node.frontmatter.tags`)) {
         tags = tags.concat(edge.node.frontmatter.tags);
       }
@@ -114,12 +131,12 @@ exports.createPages = ({ actions, graphql }) => {
     tags = uniq(tags);
 
     // Make tag pages
-    tags.forEach(tag => {
+    tags.forEach((tag) => {
       const tagPath = `/tags/${kebabCase(tag)}/`;
 
       createPage({
         path: tagPath,
-        component: path.resolve(`src/templates/tags.js`),
+        component: path.resolve(`src/templates/tags.tsx`),
         context: {
           tag,
         },
@@ -128,39 +145,8 @@ exports.createPages = ({ actions, graphql }) => {
   });
 };
 
-// exports.sourceNodes = async ({
-//   actions: { createNode },
-//   createContentDigest,
-// }) => {
-//   try {
-//     const result = await fetch(
-//       `https://api.creativehub.io/api/v1/products/query`,
-//     )
-//     console.log(result)
-//     const resultData = await result.json()
-//     console.log({ resultData })
-//     // create node for build time data example in the docs
-//     createNode({
-//       // nameWithOwner and url are arbitrary fields from the data
-//       nameWithOwner: resultData.full_name,
-//       url: resultData.html_url,
-//       // required fields
-//       id: `example-build-time-data`,
-//       parent: null,
-//       children: [],
-//       internal: {
-//         type: `Example`,
-//         contentDigest: createContentDigest(resultData),
-//       },
-//     })
-//   } catch (error) {
-//     console.log(error, "yep that's it")
-//   }
-// }
-
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
-  fmImagesToRelative(node); // convert image paths for gatsby images
 
   if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode });

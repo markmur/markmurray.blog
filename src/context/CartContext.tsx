@@ -1,28 +1,36 @@
-import React from 'react'
+import React from 'react';
 
-const { Provider, Consumer } = React.createContext({})
+interface Props {
+  setCartState: ({ open: boolean }) => void;
+}
 
-const CartContext = ({ initialState, children }) => {
-  const [state, setState] = React.useState(initialState)
+export const CartContext = React.createContext<Props>({
+  setCartState({ open: boolean }) {},
+});
+
+const Cart = ({ initialState, children }) => {
+  const [state, setState] = React.useState(initialState);
 
   const setCartState = (value: boolean) => {
     setState({
       open: value,
-    })
-  }
+    });
+  };
 
   return (
-    <Provider
+    <CartContext.Provider
       value={{
         ...state,
         setCartState,
       }}
     >
       {children}
-    </Provider>
-  )
-}
+    </CartContext.Provider>
+  );
+};
 
-export { Consumer as CartConsumer }
+const { Consumer } = CartContext;
 
-export default CartContext
+export { Consumer as CartConsumer };
+
+export default Cart;

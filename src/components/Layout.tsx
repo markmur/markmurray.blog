@@ -7,7 +7,8 @@ import useTheme from '../hooks/theme';
 import CartContext, { CartConsumer } from '../context/CartContext.tsx';
 import MenuContext, { MenuConsumer } from '../context/MenuContext.tsx';
 
-import MobileMenu from './MobileMenu.tsx';
+import Drawer from './Drawer';
+import MobileMenu from './MobileMenu';
 import BackgroundLines from './BackgroundLines';
 import Footer from './Footer';
 import Navbar from './Navbar';
@@ -71,7 +72,9 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
               <CartConsumer>
                 {({ open, setCartState }) => (
                   <React.Fragment>
-                    <Cart open={open} onClose={() => setCartState(false)} />
+                    <Drawer open={open} onClose={() => setCartState(false)}>
+                      <Cart />
+                    </Drawer>
 
                     <MenuConsumer>
                       {({ open, setOpenState }) => (
@@ -113,7 +116,7 @@ const Layout = ({ children, ...props }) => {
   return (
     <StaticQuery
       query={query}
-      render={data => (
+      render={(data) => (
         <Content {...data} {...props}>
           {children}
         </Content>

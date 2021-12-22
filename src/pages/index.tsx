@@ -1,20 +1,19 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import { FiArrowRight } from 'react-icons/fi';
-import { Flex, Box, Link, PageHeading, Container, Content } from '../styles';
+import { Flex, Box, Link, PageHeading, Container } from '../styles';
 import Layout from '../components/Layout';
-import CollectionCarousel from '../components/CollectionCarousel/index.tsx';
-import { getImageUrl } from '../utils/image.ts';
-import PostPreviews from '../components/PostPreviews/index.tsx';
+import CollectionCarousel from '../components/CollectionCarousel';
+import PostPreviews from '../components/PostPreviews';
 import { useCarousel } from '../components/Carousel';
 import Controls from '../components/Carousel/Controls';
-import { Sizes } from '../utils/image';
+import ErrorBoundary from '../components/ErrorBoundary';
 
-const getNodes = entity => {
+const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);
 };
 
-const IndexPage = props => {
+const IndexPage = (props) => {
   const { data } = props;
   const { collection, collectionImages } = data;
   const posts = getNodes(data.posts);
@@ -32,16 +31,16 @@ const IndexPage = props => {
         </Container>
       </Box>
 
-      <CollectionCarousel
-        id={collection.frontmatter.id}
-        title={collection.frontmatter.title}
-        description={collection.frontmatter.description}
-        heading={collection.frontmatter.heading}
-        images={collectionImages.edges.map(({ node }) =>
-          getImageUrl(node.frontmatter.image_url, Sizes.medium),
-        )}
-        minPrice={collection.frontmatter.minPrice}
-      />
+      <ErrorBoundary>
+        <CollectionCarousel
+          id={collection.frontmatter.id}
+          title={collection.frontmatter.title}
+          description={collection.frontmatter.description}
+          heading={collection.frontmatter.heading}
+          images={collectionImages.edges.map(({ node }) => node.frontmatter)}
+          minPrice={collection.frontmatter.minPrice}
+        />
+      </ErrorBoundary>
 
       <Box pt={4}>
         <Container mb="40px">
@@ -61,7 +60,7 @@ const IndexPage = props => {
         </Container>
       </Box>
 
-      <Box mb={4}>
+      <Box mb={4} mt={4}>
         <PostPreviews
           forwardedRef={containerRef}
           observe={observe}
@@ -77,7 +76,10 @@ const IndexPage = props => {
 export const pageQuery = graphql`
   {
     collection: markdownRemark(
-      frontmatter: { templateKey: { eq: "collection" }, id: { eq: "sapphire" } }
+      frontmatter: {
+        templateKey: { eq: "collection" }
+        collection_id: { eq: "sapphire" }
+      }
     ) {
       id
       fields {
@@ -108,6 +110,7 @@ export const pageQuery = graphql`
           id
           frontmatter {
             image_url
+            stripe_product_id
           }
         }
       }

@@ -14,15 +14,19 @@ const ImageGallery = ({ images }) => {
         height={['55vh', '90vh']}
         className="main"
         style={{
-          backgroundImage: `url(${getImageUrl(selected)})`,
+          backgroundImage: `-webkit-image-set(
+            url(${getImageUrl(selected, Sizes.medium)}) 1x,
+            url(${getImageUrl(selected, Sizes.large)}) 2x
+          )`,
         }}
       />
 
       <Flex flexDirection={['row', 'column']}>
-        {images.map(thumbnail => (
+        {images.map((thumbnail) => (
           <Box
             key={thumbnail}
-            bgColor="#f4f4f7"
+            cursor="pointer"
+            backgroundColor="#f4f4f7"
             mt={[2, 0]}
             mr={[2, 0]}
             ml={[0, 2]}
