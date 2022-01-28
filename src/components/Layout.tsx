@@ -4,8 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import { StaticQuery, graphql } from 'gatsby';
 import { GlobalStyles, Container, Box } from '../styles';
 import useTheme from '../hooks/theme';
-import CartContext, { CartConsumer } from '../context/CartContext.tsx';
-import MenuContext, { MenuConsumer } from '../context/MenuContext.tsx';
+import CartContext, { CartConsumer } from '../context/CartContext';
+import MenuContext, { MenuConsumer } from '../context/MenuContext';
 
 import Drawer from './Drawer';
 import MobileMenu from './MobileMenu';
@@ -73,7 +73,7 @@ const Content = ({ site, children, displayTagline = false, wide = false }) => {
                 {({ open, setCartState }) => (
                   <React.Fragment>
                     <Drawer open={open} onClose={() => setCartState(false)}>
-                      <Cart />
+                      <Cart open={open} />
                     </Drawer>
 
                     <MenuConsumer>

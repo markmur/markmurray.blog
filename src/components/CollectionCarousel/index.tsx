@@ -11,14 +11,15 @@ import {
 
 import * as styles from './styles.scss';
 import { useCarousel } from '../Carousel';
-import { getImageUrl, getProductUrl, Sizes } from '../../utils/image';
+import { getProductUrl } from '../../utils/product';
 import Controls from '../Carousel/Controls';
 
 const MobileContainer = ({ children }) => <Box px={3}>{children}</Box>;
 
 interface Image {
   image_url: string;
-  stripe_product_id: string;
+  id: string;
+  handle: string;
 }
 interface Props {
   id: string;
@@ -33,7 +34,6 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
   id,
   minPrice,
   title,
-  heading,
   description,
   images,
 }) => {
@@ -100,12 +100,8 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
           <Box flex={8} overflow="hidden">
             <Carousel ref={containerRef} pr={[3, 5]}>
               {images.map((image) => (
-                <CarouselItem ref={observe} key={image.stripe_product_id}>
+                <CarouselItem ref={observe} key={image.id}>
                   <a href={getProductUrl(image)}>
-                    {console.log(`image-set(
-                          url(${getImageUrl(image.image_url, Sizes.large)}) 2x,
-                          url(${getImageUrl(image.image_url, Sizes.medium)}) 1x,
-                        )`)}
                     <Box
                       className={loaded ? 'item loaded' : 'item'}
                       mr={[1, 3]}
@@ -113,10 +109,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                       aspectRatio={[4 / 6, 5 / 8]}
                       backgroundSize="cover"
                       style={{
-                        backgroundImage: `-webkit-image-set(
-                          url(${getImageUrl(image.image_url, Sizes.medium)}) 1x,
-                          url(${getImageUrl(image.image_url, Sizes.large)}) 2x
-                        )`,
+                        backgroundImage: `url(${image.image_url})`
                       }}
                     />
                   </a>

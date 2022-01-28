@@ -15,8 +15,8 @@ const ImageGallery = ({ images }) => {
         className="main"
         style={{
           backgroundImage: `-webkit-image-set(
-            url(${getImageUrl(selected, Sizes.medium)}) 1x,
-            url(${getImageUrl(selected, Sizes.large)}) 2x
+            url(${selected}) 1x,
+            url(${selected}) 2x
           )`,
         }}
       />
@@ -35,7 +35,7 @@ const ImageGallery = ({ images }) => {
             aspectRatio={2 / 3}
             backgroundSize="cover"
             style={{
-              backgroundImage: `url(${getImageUrl(thumbnail, Sizes.small)})`,
+              backgroundImage: `url(${thumbnail})`,
             }}
             onClick={() => setSelected(thumbnail)}
           />

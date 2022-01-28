@@ -4,20 +4,24 @@ import { graphql } from 'gatsby';
 
 import Layout from '../components/Layout';
 import {
+  Box,
   Container,
   Content,
   Description,
   PostTitle,
-  Flex,
-  Box,
+  Subtitle,
 } from '../styles';
 import ImageGrid from '../components/ImageGrid';
-import { getImageUrl, getProductUrl } from '../utils/image';
+import { getProductUrl } from '../utils/product';
 
 export const CollectionTemplate = ({ title, description, images }) => {
   return (
     <Content pb={4} pt={5}>
       <Container>
+        <Box textAlign={["left", "center"]}>
+          <Subtitle>Collection</Subtitle>
+        </Box>
+
         <PostTitle
           dangerouslySetInnerHTML={{ __html: title }}
           textAlign={['left', 'center']}
@@ -41,14 +45,13 @@ const getPriceByProductId = (prices, productId) => {
 };
 
 const Collection = ({ data }) => {
-  const { collection, images, prices } = data;
+  const { collection } = data;
 
-  const { id, title, description } = collection.frontmatter;
-  const imageUrls = images.edges.map(({ node }) => ({
-    image_url: getImageUrl(node.frontmatter.image_url),
-    href: getProductUrl(node.frontmatter.stripe_product_id),
-    title: node.frontmatter.title,
-    price: getPriceByProductId(prices, node.frontmatter.stripe_product_id),
+  const { id, title, description } = collection;
+  const imageUrls = collection.products.map((product) => ({
+    image_url: product.images[0].src,
+    href: getProductUrl(product),
+    title: product.title
   }));
 
   const url = data.site.siteMetadata.url + `/collection/${id}`;
@@ -93,37 +96,16 @@ export const pageQuery = graphql`
         url
       }
     }
-    collection: markdownRemark(frontmatter: { collection_id: { eq: $id } }) {
+    collection: shopifyCollection(id: { eq: $id }) {
       id
-      frontmatter {
+      title
+      description
+      products {
+        id
         title
-        description
-      }
-    }
-    prices: allStripePrice(filter: {}) {
-      edges {
-        node {
-          id
-          currency
-          unit_amount
-          product {
-            id
-          }
-        }
-      }
-    }
-    images: allMarkdownRemark(
-      filter: { frontmatter: { collection: { eq: $id } } }
-      sort: { fields: [frontmatter___title] }
-    ) {
-      edges {
-        node {
-          id
-          frontmatter {
-            title
-            image_url
-            stripe_product_id
-          }
+        handle
+        images {
+          src
         }
       }
     }

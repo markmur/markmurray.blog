@@ -1,7 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
-import { useShoppingCart } from 'use-shopping-cart';
 
 import { CartContext } from '../context/CartContext';
 import Layout from '../components/Layout';
@@ -16,28 +15,77 @@ import {
   ProductTitle,
   Subtitle,
 } from '../styles';
-import { formatPrice } from '../utils/currency';
-import { toCartProduct } from '../utils/product';
-import { cmToInches } from '../utils/index';
-import config, { getCountryById } from '../../config';
+import shopify from '../utils/shopify';
+import { get } from 'lodash';
+import ImageGrid from '../components/ImageGrid';
+import { getProductUrl } from '../utils/product';
 
-function ProductTemplate(props) {
-  const { product, photo, prices } = props;
+interface Variant {
+  id: string
+  productId: string
+  shopifyId: string
+  price: string
+  sku: string
+  title: string
+  availableForSale: boolean
+}
+
+interface Metafield {
+  product: {
+    metafields: {
+      key: string
+      value: string
+    }
+  }
+}
+
+interface Product {
+  id: string
+  title: string
+  description: string
+  createdAt: string
+  updatedAt: string
+  tags: string[]
+  images: {
+    src: string
+  }[]
+  variants: Variant[]
+  metafield: Metafield[]
+}
+
+interface Collection {
+  title: string
+  products: {
+    id: string
+    handle: string
+    title: string
+    images: {
+      src: string
+    }[]
+  }[]
+}
+
+function getMetafield(product: Product, key: string) {
+  return get(product, "metafields.0.product.metafields", [])
+    .find(metafield => get(metafield, "key") === key)?.value
+}
+
+interface Props {
+  product: Product
+  collection: Collection
+}
+
+function ProductTemplate(props: Props) {
+  const product: Product = props.product;
+  const [selectedVariant, setSelectedVariant] = React.useState(product.variants[0].id);
   const [addedToCart, setAddedToCart] = React.useState(false);
-  const [selectedPrice, setSelectedPrice] = React.useState(prices[0]);
   const { setCartState } = React.useContext(CartContext);
 
-  console.log({ product, photo, prices });
-
-  const { addItem, cartDetails } = useShoppingCart();
-
-  const sortedPrices = prices.sort((a, b) =>
-    a?.nickname.localeCompare(b?.nickname),
-  );
-
   const handleAddToCart = React.useCallback(() => {
-    // add to cart
-    addItem(toCartProduct(product, selectedPrice), { count: 1 });
+    const variant = product.variants.find(x => x.id === selectedVariant)
+
+    shopify.addLineItem(selectedVariant, variant);
+
     // set loading state
     setAddedToCart(true);
     setCartState({ open: true });
@@ -48,10 +96,9 @@ function ProductTemplate(props) {
     }, 5 * 1000);
   }, []);
 
-  const handleSizeChange = React.useCallback((event) => {
+  const handleVariantChange = React.useCallback((event) => {
     event.persist();
-    const id = event.target.value;
-    setSelectedPrice(sortedPrices.find((x) => x.id === id));
+    setSelectedVariant(product.variants.find((x) => x.id === event.target.value).id);
   }, []);
 
   return (
@@ -69,23 +116,25 @@ function ProductTemplate(props) {
           top="2em"
         >
           <ImageGallery
-            images={[
-              photo.image_url,
-              '/photography/collections/sapphire/product/home',
-              '/photography/collections/sapphire/product/home-2',
-            ]}
+            images={product.images.map(x => x.src)}
           />
         </Box>
 
         <Box border="1px solid" py={[5, 5]} px={[0, 5]} flex={[1, '1 0 50%']}>
-          {photo.limit && (
+          {product.limit && (
             <Box mb={3}>
               <Subtitle>Limited Edition</Subtitle>
             </Box>
           )}
 
-          <ProductTitle>{photo.title}</ProductTitle>
-          <p>{photo.description}</p>
+          {product.tags && (
+            <Box mb={3}>
+              <Subtitle>{product.tags.join(" ")}</Subtitle>
+            </Box>
+          )}
+
+          <ProductTitle>{product.title}</ProductTitle>
+          <p>{product.description}</p>
 
           <Box my={4}>
             <small>
@@ -93,7 +142,7 @@ function ProductTemplate(props) {
                 <em>Location</em>
               </div>
 
-              <strong> {photo.location}</strong>
+              <strong> {getMetafield(product, "location")}</strong>
             </small>
           </Box>
 
@@ -103,8 +152,9 @@ function ProductTemplate(props) {
                 <em>Gear used</em>
               </div>
 
-              <strong> {photo.camera}</strong>
-              {photo.lens && <strong> + {photo.lens}</strong>}
+              <strong>{getMetafield(product, "camera")}</strong>
+              <small>, </small>
+              <strong>{getMetafield(product, "lens")}</strong>
             </small>
           </Box>
 
@@ -113,9 +163,9 @@ function ProductTemplate(props) {
               <strong>Sizes available</strong>
               <Box p={3} pl={4}>
                 <ul>
-                  {sortedPrices.map((price) => (
-                    <li key={price.id}>
-                      {price.nickname} ({cmToInches(price.nickname)})
+                  {product.variants.map((variant) => (
+                    <li key={variant.id}>
+                      {variant.title} {/*({cmToInches(variant.nickname)})*/}
                     </li>
                   ))}
                 </ul>
@@ -128,25 +178,25 @@ function ProductTemplate(props) {
             </small>
           </Box>
 
-          {photo.limit && (
+          {product.limit && (
             <Box my={4}>
               <small>
                 <div>
                   <strong>Limited edition</strong>
                 </div>
                 <small>
-                  This product is a limited edition item. Only {photo.limit}{' '}
+                  This product is a limited edition item. Only {product.limit}{' '}
                   will be printed.
                 </small>
               </small>
             </Box>
           )}
 
-          <Select value={selectedPrice.id} onChange={handleSizeChange}>
-            {sortedPrices.map((price) => (
-              <option key={price.id} value={price.id}>
-                {price.nickname} ({cmToInches(price.nickname)}) {' - '}
-                {formatPrice(price.unit_amount, price.currency)}
+          <Select value={selectedVariant} onChange={handleVariantChange}>
+            {product.variants.map((variant) => (
+              <option key={variant.id} value={variant.id}>
+                {variant.title} {/*({cmToInches(variant.nickname)}) {' - '}*/}
+                {/* {formatPrice(variant.price, variant.currency)} */}
               </option>
             ))}
           </Select>
@@ -156,14 +206,15 @@ function ProductTemplate(props) {
               expand
               primary
               success={addedToCart}
-              disabled={addedToCart || selectedPrice.id in cartDetails}
+              // disabled={addedToCart || selectedPrice.id in cartDetails}
               onClick={handleAddToCart}
             >
-              {addedToCart
+              Add to cart
+              {/* {addedToCart
                 ? 'Added!'
                 : selectedPrice.id in cartDetails
                 ? 'In your cart'
-                : 'Add to cart'}
+                : 'Add to cart'} */}
             </Button>
           </Box>
 
@@ -172,31 +223,47 @@ function ProductTemplate(props) {
           </Box>
           <Box pt={2} textAlign="center">
             <small>
-              Available only in {getCountryById(config.allowed_countries)} for
-              now. International shipping coming soon.
+              All prints come with a 10mm white border. This is for easier handling and better mounting options. If you would like borderless prints, please get in touch.
             </small>
           </Box>
         </Box>
       </Flex>
+
+      <hr />
+
+
+      {props.collection && props.collection?.products.length > 1 && (<Box>
+        <Box mb={3}>
+        <Subtitle>{props.collection.title} Collection</Subtitle>
+        <h1>More from the collection...</h1>
+        </Box>
+
+        <ImageGrid images={props.collection.products.filter(x => x.id !== props.product.id).sort((a, b) => a.title.localeCompare(b.title)).map(x => ({
+          image_url: x.images?.[0].src,
+          href: getProductUrl(x),
+          title: x.title
+        }))} />
+      </Box>)}
     </Container>
   );
 }
 
-const Product = ({ data }) => {
-  const { product, photo, prices } = data;
+const Product = ({ data, ...rest }) => {
+  const { product, collection } = data;
+
+  console.log(data, rest)
 
   return (
     <Layout wide displayTagline={false}>
       <Helmet titleTemplate="%s | Photography">
-        <title>{product.name}</title>
+        <title>{product.title}</title>
         <meta name="description" content={product.description} />
       </Helmet>
 
       <Content>
         <ProductTemplate
           product={product}
-          photo={photo ? photo.frontmatter : {}}
-          prices={prices.edges.map((x) => x.node)}
+          collection={collection}
         />
       </Content>
     </Layout>
@@ -206,41 +273,48 @@ const Product = ({ data }) => {
 export default Product;
 
 export const pageQuery = graphql`
-  query ProductByID($id: String!) {
-    prices: allStripePrice(filter: { product: { id: { eq: $id } } }) {
-      edges {
-        node {
-          id
-          currency
-          unit_amount
-          nickname
+  query ProductByID($id: String!, $collectionId: String) {
+    product: shopifyProduct(id: { eq: $id }) {
+      id
+      title
+      description
+      createdAt
+    	updatedAt
+      tags
+      collections {
+        id
+      }
+      images {
+				src
+      }
+      variants {
+        id
+        productId
+        shopifyId
+        price
+        sku
+        title
+        availableForSale
+      }
+      metafields {
+        product {
+          metafields {
+            key
+            value
+          }
         }
       }
     }
-    product: stripeProduct(id: { eq: $id }) {
-      id
-      name
-      active
-      created
-      images
-      name
-      updated
-    }
-    photo: markdownRemark(frontmatter: { stripe_product_id: { eq: $id } }) {
-      frontmatter {
+
+    collection: shopifyCollection(id: { eq: $collectionId }) {
+      title
+      products {
+        id
+        handle
         title
-        description
-        camera
-        lens
-        location
-        image_url
-        width
-        height
-        tags
-        limit
-      }
-      fields {
-        slug
+        images {
+          src
+        }
       }
     }
   }

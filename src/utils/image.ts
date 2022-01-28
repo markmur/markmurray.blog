@@ -31,11 +31,3 @@ export function getImageUrl(url: string, size = Sizes.medium) {
     path.slice(1),
   )}${size}.${ext}?alt=media&token=7922bf67-74b5-4ab7-bfe9-b564cace3e4c`;
 }
-
-export function getProductUrl({
-  stripe_product_id,
-}: {
-  stripe_product_id: string;
-}) {
-  return `/photography/${stripe_product_id}`;
-}

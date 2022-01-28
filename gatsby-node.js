@@ -2,10 +2,6 @@ const path = require('path');
 const { get, uniq, kebabCase } = require('lodash');
 const { createFilePath } = require('gatsby-source-filesystem');
 
-function findByName(stripeProductName, localPhotoName) {
-  return stripeProductName?.toLowerCase() === localPhotoName?.toLowerCase();
-}
-
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions;
 
@@ -24,27 +20,24 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
-      products: allStripeProduct {
-        edges {
-          node {
-            id
-            name
-          }
-        }
-      }
-      collections: allMarkdownRemark(
-        filter: { frontmatter: { templateKey: { eq: "collection" } } }
+      products: allShopifyProduct(
+        sort: { fields: [publishedAt], order: ASC }
       ) {
         edges {
           node {
             id
-            fields {
-              slug
+            handle
+            collections {
+              id
             }
-            frontmatter {
-              collection_id
-              templateKey
-            }
+          }
+        }
+      }
+      collections: allShopifyCollection{
+        edges {
+          node {
+            id
+            handle
           }
         }
       }
@@ -80,6 +73,19 @@ exports.createPages = ({ actions, graphql }) => {
         component: path.resolve(`src/templates/product.tsx`),
         context: {
           id: node.id,
+          collectionId: node.collections?.[0]?.id
+        },
+      });
+    });
+
+    // product: alias ("handle")
+    products.forEach(({ node }) => {
+      createPage({
+        path: `/photography/${node.handle}/`,
+        component: path.resolve(`src/templates/product.tsx`),
+        context: {
+          id: node.id,
+          collectionId: node.collections?.[0]?.id
         },
       });
     });
@@ -95,7 +101,6 @@ exports.createPages = ({ actions, graphql }) => {
         component: path.resolve(
           `src/templates/${String(edge.node.frontmatter.templateKey)}.tsx`,
         ),
-        // additional data can be passed via context
         context: {
           id,
         },
@@ -105,16 +110,16 @@ exports.createPages = ({ actions, graphql }) => {
     // Create collection pages
     const collections = result.data.collections.edges;
 
+    console.log(collections)
+
     collections.forEach((edge) => {
-      const { collection_id } = edge.node.frontmatter;
       createPage({
-        path: edge.node.fields.slug,
+        path: `/collections/${edge.node.id}`,
         component: path.resolve(
-          `src/templates/${String(edge.node.frontmatter.templateKey)}.tsx`,
+          `src/templates/collection.tsx`,
         ),
-        // additional data can be passed via context
         context: {
-          id: collection_id,
+          id: edge.node.id,
         },
       });
     });

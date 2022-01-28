@@ -13,9 +13,13 @@ const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);
 };
 
+const getMinPrice = (products) => {
+  return Math.min(...products.map(product => product.priceRangeV2.minVariantPrice.amount))
+}
+
 const IndexPage = (props) => {
   const { data } = props;
-  const { collection, collectionImages } = data;
+  const { featuredCollection, collectionImages } = data;
   const posts = getNodes(data.posts);
 
   const containerRef = React.useRef(null);
@@ -33,12 +37,12 @@ const IndexPage = (props) => {
 
       <ErrorBoundary>
         <CollectionCarousel
-          id={collection.frontmatter.id}
-          title={collection.frontmatter.title}
-          description={collection.frontmatter.description}
-          heading={collection.frontmatter.heading}
-          images={collectionImages.edges.map(({ node }) => node.frontmatter)}
-          minPrice={collection.frontmatter.minPrice}
+          id={featuredCollection.id}
+          title={`The ${featuredCollection.title} Collection`}
+          description={featuredCollection.description}
+          heading={featuredCollection.title}
+          images={featuredCollection.products.map(({ id, handle, images }) => ({image_url: images?.[0].src, id, handle  }))}
+          minPrice={getMinPrice(featuredCollection.products)}
         />
       </ErrorBoundary>
 
@@ -75,30 +79,22 @@ const IndexPage = (props) => {
 
 export const pageQuery = graphql`
   {
-    collection: markdownRemark(
-      frontmatter: {
-        templateKey: { eq: "collection" }
-        collection_id: { eq: "sapphire" }
-      }
-    ) {
+    featuredCollection: shopifyCollection(title: {eq: "Sapphire"}) {
       id
-      fields {
-        slug
-      }
-      frontmatter {
+      title
+      description
+      products {
         id
-        collection
-        stripe_product_id
-        title
-        heading
-        templateKey
-        description
-        image_url
-        location
-        orientation
-        width
-        height
-        minPrice
+        handle
+        images {
+          src
+        }
+        priceRangeV2 {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
       }
     }
     collectionImages: allMarkdownRemark(

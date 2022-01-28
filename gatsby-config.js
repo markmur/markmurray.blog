@@ -3,10 +3,14 @@ require('dotenv').config({
 });
 
 module.exports = {
+  // flags: {
+  //   PRESERVE_FILE_DOWNLOAD_CACHE: false,
+  //   DEV_WEBPACK_CACHE: false
+  // },
   siteMetadata: {
     title: 'Mark Murray',
     url: 'https://markmurray.co',
-    description: 'Front End Developer @ Zalando, Dublin',
+    description: 'Senior Developer @ Shopify',
   },
   plugins: [
     'gatsby-plugin-sass',
@@ -21,6 +25,7 @@ module.exports = {
     },
     'gatsby-plugin-styled-components',
     'gatsby-plugin-react-helmet',
+    'gatsby-plugin-image',
     {
       resolve: 'gatsby-plugin-google-fonts',
       options: {
@@ -93,32 +98,17 @@ module.exports = {
         ],
       },
     },
-    // {
-    //   resolve: 'gatsby-plugin-netlify-cms',
-    //   options: {
-    //     modulePath: `${__dirname}/src/cms/cms.js`,
-    //   },
-    // },
     {
-      resolve: `gatsby-source-stripe`,
+      resolve: "gatsby-source-shopify",
       options: {
-        objects: ['Product', 'Price'],
-        secretKey: process.env.STRIPE_SECRET_KEY,
-        downloadFiles: false,
+        password: process.env.SHOPIFY_SHOP_PASSWORD,
+        storeUrl: process.env.GATSBY_SHOPIFY_STORE_URL,
+        // Not set by default. If set to true, this plugin will download and process images during the build.
+        // The plugin’s default behavior is to fall back to Shopify’s CDN.
+        downloadImages: false,
+        shopifyConnections: ['collections']
       },
     },
-    // {
-    //   resolve: 'gatsby-source-graphql',
-    //   options: {
-    //     typeName: 'CreativeHub',
-    //     fieldName: 'creative-hub',
-    //     url: 'https://api.creativehub.io',
-    //     headers: {
-    //       Authorization: process.env.CREATIVE_HUB_API_KEY,
-    //     },
-    //   },
-    // },
-    // {
     //   resolve: '@sentry/gatsby',
     //   options: {
     //     dsn: process.env.SENTRY_DSN,

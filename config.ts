@@ -1,7 +1,5 @@
-import Stripe from 'stripe';
-
 interface Config {
-  allowed_countries: Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[];
+  allowed_countries: string[];
   success_url: string;
   cancel_url: string;
 }
@@ -25,7 +23,7 @@ function join(arr: string[]): string {
 }
 
 export function getCountryById(
-  ids: Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[],
+  ids: string[],
 ) {
   return join(ids.map((id) => countries[id]));
 }

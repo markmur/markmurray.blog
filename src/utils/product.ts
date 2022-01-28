@@ -30,3 +30,17 @@ export function toCartProduct(product: Product, price: Price): CartProduct {
     image: product.images[0],
   };
 }
+
+export function getProductUrl({
+  id,
+  handle
+}: {
+  id: string;
+  handle: string;
+}) {
+  if (!handle) {
+    return `/photography/${id}`;
+  }
+
+  return `/photography/${handle}`;
+}

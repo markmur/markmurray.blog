@@ -1,11 +1,11 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { getImageUrl, getProductUrl, Sizes } from '../utils/image';
-import { Flex, Box, Button, Container, PageHeading, Text } from '../styles';
+import { Flex, Box, Button, Container, PageHeading, Text, Subtitle } from '../styles';
 import Layout from '../components/Layout';
 import BackgroundLines from '../components/BackgroundLines';
 import CollectionCarousel from '../components/CollectionCarousel';
 import ImageGrid from '../components/ImageGrid';
+import { getProductUrl } from '../utils/product';
 
 function getTags(edges) {
   const allTags = {};
@@ -27,35 +27,22 @@ function getTags(edges) {
 }
 
 type Edge<T> = {
-  node: {
-    id: string;
-    fields: {
-      slug: string;
-    };
-  } & {
-    frontmatter: T;
-  };
+  node: T
 };
 
 type Edges<T> = {
   edges: Edge<T>[];
 };
 
-interface Photo {
-  collection: string;
-  stripe_product_id: string;
-  title: string;
-  tags: string[];
-  templateKey: string;
-  description: string;
-  image_url: string;
-  camera: string;
-  lens: string;
-  location: string;
-  orientation: string;
-  width: string;
-  height: string;
-  date: string;
+interface ShopifyCollection {
+  id: string
+  title: string
+  handle: string
+  products: {
+    title: string
+    handle: string
+    images: {src: string}[]
+  }[]
 }
 
 interface Collection {
@@ -87,56 +74,72 @@ interface CollectionImages {
 interface Props {
   data: {
     collection: Collection;
-    photography: Edges<Photo>;
+    collections: Edges<ShopifyCollection>;
     collectionImages: Edges<CollectionImages>;
   };
 }
 
+interface State {
+  selectedCollection: string | null
+}
+
 export default class PhotographyPage extends React.Component<
   Props,
-  { selectedCollection: string | null }
+  State
 > {
   state = {
     selectedCollection: null,
   };
 
-  _filterPhotosByCollection(
-    photos: Props['data']['photography'],
-    collection: string,
-  ) {
-    if (!collection) return photos.edges;
-
-    return photos.edges.filter(
-      ({ node }) => node.frontmatter.collection == collection,
-    );
+  _transformEdges(edges) {
+    return edges
+      .reduce((state, { node }) => ([...state, ...node.products]), [])
+      .map(product => ({
+        image_url: product.images[0].src,
+        title: product.title,
+        href: getProductUrl(product)
+      }))
   }
 
-  _getCollections(photos: Props['data']['photography']): string[] {
+  _filterPhotosByCollection(
+    collections: Props['data']['collections'],
+    selectedCollectionTitle: string,
+  ) {
+    if (!selectedCollectionTitle) return this._transformEdges(collections.edges);
+
+    const filtered = collections.edges.filter(
+      ({ node }) => node.title == selectedCollectionTitle,
+    );
+
+    return this._transformEdges(filtered)
+  }
+
+  _getCollections(photos: Props['data']['collections']): string[] {
     const collections = new Set();
 
     for (const { node } of photos.edges) {
-      collections.add(node.frontmatter.collection);
+      collections.add(node.title);
     }
 
     return Array.from(collections) as string[];
   }
 
-  handleCollectionClick = (collection: string | null) => {
+  handleCollectionClick = (title: string | null) => {
     this.setState({
-      selectedCollection: collection,
+      selectedCollection: title,
     });
   };
 
   render() {
     const { data } = this.props;
-    const { collection } = data;
+    const { featuredCollection } = data;
 
-    const photos = this._filterPhotosByCollection(
-      data.photography,
+    const filteredPhotos = this._filterPhotosByCollection(
+      data.collections,
       this.state.selectedCollection,
     );
 
-    const collections = this._getCollections(data.photography);
+    const collections = this._getCollections(data.collections);
 
     return (
       <Layout wide displayTagline={false}>
@@ -182,14 +185,17 @@ export default class PhotographyPage extends React.Component<
         </Container>
 
         <CollectionCarousel
-          id={collection.frontmatter.collection_id}
-          title={collection.frontmatter.title}
-          description={collection.frontmatter.description}
-          heading={collection.frontmatter.heading}
-          images={data.collectionImages.edges.map(
-            ({ node }) => node.frontmatter,
+          id={featuredCollection.id}
+          title={featuredCollection.title}
+          description={featuredCollection.description}
+          images={featuredCollection.products.map(
+            (product) => ({
+              id: product.id,
+              handle: product.handle,
+              image_url: product.images[0].src
+            }),
           )}
-          minPrice={collection.frontmatter.minPrice}
+          minPrice={featuredCollection.products?.[0]?.priceRangeV2.minVariantPrice.amount}
         />
 
         <Container>
@@ -199,6 +205,7 @@ export default class PhotographyPage extends React.Component<
             <div style={{ position: 'sticky', top: 0 }}>
               <Flex py={5} style={{ overflow: 'auto' }} justifyContent="center">
                 <Box>
+                  <Subtitle textAlign="center">Shop prints</Subtitle>
                   <Text textAlign="center" as="h1" mb={5}>
                     Collections
                   </Text>
@@ -232,11 +239,7 @@ export default class PhotographyPage extends React.Component<
 
           <ImageGrid
             key={this.state.selectedCollection || 'all'}
-            images={photos.map(({ node }) => ({
-              image_url: getImageUrl(node.frontmatter.image_url, Sizes.medium),
-              title: node.frontmatter.title,
-              href: getProductUrl(node.frontmatter),
-            }))}
+            images={filteredPhotos}
           />
         </Container>
       </Layout>
@@ -246,76 +249,39 @@ export default class PhotographyPage extends React.Component<
 
 export const pageQuery = graphql`
   {
-    collection: markdownRemark(
-      frontmatter: {
-        templateKey: { eq: "collection" }
-        collection_id: { eq: "reflections" }
-      }
+    featuredCollection: shopifyCollection(
+      title: { eq: "Reflections" }
     ) {
       id
-      fields {
-        slug
-      }
-      frontmatter {
+      title
+      description
+      products {
         id
-        collection_id
-        stripe_product_id
-        title
-        heading
-        templateKey
-        description
-        image_url
-        location
-        orientation
-        width
-        height
-        minPrice
-      }
-    }
-    collectionImages: allMarkdownRemark(
-      filter: { frontmatter: { collection: { eq: "reflections" } } }
-    ) {
-      edges {
-        node {
-          id
-          frontmatter {
-            image_url
-            stripe_product_id
+        handle
+        images {
+          src
+        }
+        priceRangeV2 {
+          minVariantPrice {
+            amount
+            currencyCode
           }
         }
       }
     }
-    photography: allMarkdownRemark(
-      filter: {
-        frontmatter: {
-          templateKey: { eq: "photo" }
-          hidden: { ne: true }
-          stripe_product_id: { ne: null }
-        }
-      }
-      sort: { fields: [frontmatter___title] }
-    ) {
+    collections: allShopifyCollection {
       edges {
         node {
           id
-          fields {
-            slug
-          }
-          frontmatter {
-            collection
-            stripe_product_id
+          title
+          handle
+          products {
+            id
             title
-            tags
-            templateKey
-            description
-            image_url
-            camera
-            lens
-            location
-            orientation
-            width
-            height
-            date(formatString: "MMMM DD, YYYY")
+            handle
+            images {
+              src
+            }
           }
         }
       }
