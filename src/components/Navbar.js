@@ -23,7 +23,7 @@ const Navbar = ({ displayTagline, wide = false }) => {
 
         {displayTagline && (
           <Timestamp fontSize="1.1rem">
-            Frontend Engineer @ Zalando, Dublin
+            Senior Developer @ Shopify, Dublin
           </Timestamp>
         )}
       </Container>

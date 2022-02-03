@@ -4,7 +4,7 @@ module.exports = {
   siteMetadata: {
     title: 'Mark Murray',
     url: 'https://markmurray.co',
-    description: 'Front End Developer @ Zalando, Dublin',
+    description: 'Senior Developer @ Shopify, Dublin',
   },
   plugins: [
     'gatsby-plugin-sass',
