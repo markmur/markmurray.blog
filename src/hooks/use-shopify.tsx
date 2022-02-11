@@ -75,8 +75,6 @@ const ShopifyProvider = ({ client, children }: Props) => {
     0,
   );
 
-  console.log('SHOPIFY', { checkout, cartCount });
-
   React.useEffect(() => {
     setLoading(true);
     client

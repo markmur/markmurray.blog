@@ -25,6 +25,7 @@
     "dotenv": "^10.0.0",
     "gatsby-plugin-image": "^2.6.0",
     "gatsby-plugin-sass": "^5.2.0",
+    "gatsby-plugin-web-vitals": "^1.0.3",
     "gatsby-source-graphql": "^4.6.0",
     "gatsby-source-shopify": "^6.6.0",
     "lodash": "^4.17.21",
@@ -45,7 +46,6 @@
     "shopify-buy": "^2.14.0",
     "styled-components": "^5.3.3",
     "styled-system": "^5.1.5",
-    "use-shopping-cart": "^3.0.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

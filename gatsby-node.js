@@ -12,20 +12,6 @@ exports.createPages = ({ actions, graphql }) => {
           featuredCollectionTitle
         }
       }
-
-      photos: allMarkdownRemark(
-        filter: { frontmatter: { templateKey: { eq: "photo" } } }
-      ) {
-        edges {
-          node {
-            id
-            frontmatter {
-              title
-              stripe_product_id
-            }
-          }
-        }
-      }
       products: allShopifyProduct(sort: { fields: [publishedAt], order: ASC }) {
         edges {
           node {

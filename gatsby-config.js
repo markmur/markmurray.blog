@@ -1,3 +1,5 @@
+const GA_TRACKING_ID = 'UA-76403737-3';
+
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
@@ -70,19 +72,11 @@ module.exports = {
         name: 'images',
       },
     },
-    // 'gatsby-plugin-sharp',
-    // 'gatsby-transformer-sharp',
     {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
           'gatsby-remark-autolink-headers',
-          // {
-          //   resolve: 'gatsby-remark-relative-images',
-          //   options: {
-          //     name: 'uploads',
-          //   },
-          // },
           {
             resolve: 'gatsby-remark-images',
             options: {
