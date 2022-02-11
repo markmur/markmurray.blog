@@ -1,7 +1,8 @@
 import React from 'react';
 import './styles.scss';
 
-import { Flex, Box } from '../../styles';
+import { Flex, Box, Text } from '../../styles';
+import { formatPrice } from '../../utils/currency';
 
 interface Image {
   image_url: string;
@@ -10,20 +11,37 @@ interface Image {
   price?: number;
   width?: number;
   height?: number;
+  priceRangeV2?: {
+    minVariantPrice: {
+      amount: number;
+      currencyCode: string;
+    };
+  };
 }
 
 interface Props {
   images: Image[];
   grid?: [number, number, number];
+  carouselOnMobile?: boolean;
 }
 
-const ImageGrid: React.FC<Props> = ({ images, grid = [2, 3, 5] }) => {
+const ImageGrid: React.FC<Props> = ({
+  images,
+  grid = [2, 3, 5],
+  carouselOnMobile = false,
+}) => {
   return (
-    <Flex mx={-3}>
+    <Flex
+      mx={-2}
+      scrollBar={!carouselOnMobile}
+      maxWidth="100vw"
+      overflowX="auto"
+      flexWrap={carouselOnMobile ? ['nowrap', 'wrap'] : 'wrap'}
+    >
       {images.map((image) => (
         <Box
           key={image.href}
-          p={[1, 3]}
+          p={[2, 3]}
           flex={[
             `0 0 calc(100% / ${grid[0]})`,
             `0 0 calc(100% / ${grid[1]})`,
@@ -42,10 +60,18 @@ const ImageGrid: React.FC<Props> = ({ images, grid = [2, 3, 5] }) => {
             />
 
             <Box textAlign="center" py={3} mb={2}>
-              <h5>{image.title}</h5>
-              {image.price && isFinite(image.price) && (
-                <small>from €{image.price}</small>
-              )}
+              <h4>{image.title}</h4>
+              {image.priceRangeV2 &&
+                isFinite(image.priceRangeV2.minVariantPrice.amount) && (
+                  <Text mt={2} fontSize="small">
+                    <em>from </em>
+                    {formatPrice(
+                      image.priceRangeV2.minVariantPrice.amount,
+                      image.priceRangeV2.minVariantPrice.currencyCode,
+                    )}{' '}
+                    {image.priceRangeV2.minVariantPrice.currencyCode}
+                  </Text>
+                )}
             </Box>
           </a>
         </Box>

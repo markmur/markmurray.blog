@@ -17,17 +17,16 @@ import { getProductUrl } from '../utils/product';
 export const CollectionTemplate = ({ title, description, images }) => {
   return (
     <Content pb={4} pt={5}>
-      <Container>
-        <Box textAlign={["left", "center"]}>
-          <Subtitle>Collection</Subtitle>
+      <Container textAlign="center">
+        <Box>
+          <Subtitle>Print Collection</Subtitle>
         </Box>
 
-        <PostTitle
-          dangerouslySetInnerHTML={{ __html: title }}
-          textAlign={['left', 'center']}
-          mb={3}
-        />
-        <Description>{description}</Description>
+        <PostTitle dangerouslySetInnerHTML={{ __html: title }} mb={3} />
+
+        <Box maxWidth={800} margin="auto">
+          <Description>{description}</Description>
+        </Box>
 
         <hr />
 
@@ -37,13 +36,6 @@ export const CollectionTemplate = ({ title, description, images }) => {
   );
 };
 
-const getPriceByProductId = (prices, productId) => {
-  const amounts = prices.edges.filter(
-    ({ node }) => node.product.id === productId,
-  );
-  return Math.min(...amounts.map((x) => x.node.unit_amount)) / 100;
-};
-
 const Collection = ({ data }) => {
   const { collection } = data;
 
@@ -51,7 +43,8 @@ const Collection = ({ data }) => {
   const imageUrls = collection.products.map((product) => ({
     image_url: product.images[0].src,
     href: getProductUrl(product),
-    title: product.title
+    title: product.title,
+    ...product,
   }));
 
   const url = data.site.siteMetadata.url + `/collection/${id}`;
@@ -78,7 +71,6 @@ const Collection = ({ data }) => {
       </Helmet>
 
       <CollectionTemplate
-        id={collection.id}
         title={title}
         description={description}
         images={imageUrls}
@@ -106,6 +98,12 @@ export const pageQuery = graphql`
         handle
         images {
           src
+        }
+        priceRangeV2 {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
         }
       }
     }

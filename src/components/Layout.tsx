@@ -1,8 +1,15 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { ThemeProvider } from 'styled-components';
-import { StaticQuery, graphql } from 'gatsby';
-import { GlobalStyles, Container, Box } from '../styles';
+import { StaticQuery, graphql, Link } from 'gatsby';
+import {
+  GlobalStyles,
+  Container,
+  Box,
+  Main,
+  Banner,
+  HideOnMobile,
+} from '../styles';
 import useTheme from '../hooks/theme';
 import CartContext, { CartConsumer } from '../context/CartContext';
 import MenuContext, { MenuConsumer } from '../context/MenuContext';
@@ -13,6 +20,9 @@ import BackgroundLines from './BackgroundLines';
 import Footer from './Footer';
 import Navbar from './Navbar';
 import Cart from './Cart';
+import { ShopifyProvider } from '../hooks/use-shopify';
+import Shopify from '../utils/shopify';
+import { pathToFileURL } from 'url';
 
 const query = graphql`
   query HeadingQuery {
@@ -20,6 +30,9 @@ const query = graphql`
       siteMetadata {
         title
         description
+        bannerMessage
+        bannerLink
+        bannerInclude
       }
     }
   }
@@ -54,60 +67,74 @@ const Head = ({ site }) => (
   </Helmet>
 );
 
-const Content = ({ site, children, displayTagline = false, wide = false }) => {
-  const [theme, setTheme, themeName] = useTheme();
+const Content = ({ site, children, displayTagline = false }) => {
+  const [theme] = useTheme();
 
   return (
     <div>
-      <Head site={site} />
+      <ShopifyProvider client={new Shopify()}>
+        <Head site={site} />
 
-      <BackgroundLines />
+        <BackgroundLines />
 
-      <ThemeProvider theme={theme}>
-        <Box pt={5}>
-          <GlobalStyles />
+        <ThemeProvider theme={theme}>
+          <HideOnMobile>
+            {site.siteMetadata.bannerInclude.some((path) => {
+              return (
+                path.slice(1).includes(window.location.pathname) ||
+                path === window.location.pathname
+              );
+            }) && (
+              <Banner>
+                <Link to={site.siteMetadata.bannerLink}>
+                  {site.siteMetadata.bannerMessage}
+                </Link>
+              </Banner>
+            )}
+          </HideOnMobile>
 
-          <MenuContext initialState={{ open: false }}>
-            <CartContext initialState={{ open: false }}>
-              <CartConsumer>
-                {({ open, setCartState }) => (
-                  <React.Fragment>
-                    <Drawer open={open} onClose={() => setCartState(false)}>
-                      <Cart open={open} />
-                    </Drawer>
+          <Box pt={4}>
+            <GlobalStyles />
 
-                    <MenuConsumer>
-                      {({ open, setOpenState }) => (
-                        <React.Fragment>
-                          <MobileMenu
-                            open={open}
-                            onClose={() => setOpenState(false)}
-                          />
+            <MenuContext initialState={{ open: false }}>
+              <CartContext initialState={{ open: false }}>
+                <CartConsumer>
+                  {({ open, setCartState }) => (
+                    <React.Fragment>
+                      <Drawer open={open} onClose={() => setCartState(false)}>
+                        <Cart open={open} />
+                      </Drawer>
 
-                          <Navbar
-                            wide={wide}
-                            theme={themeName}
-                            displayTagline={displayTagline}
-                            onThemeChange={setTheme}
-                            onCartClick={() => setCartState(true)}
-                            onMenuClick={() => setOpenState(true)}
-                          />
-                        </React.Fragment>
-                      )}
-                    </MenuConsumer>
+                      <MenuConsumer>
+                        {({ open, setOpenState }) => (
+                          <React.Fragment>
+                            <MobileMenu
+                              open={open}
+                              onClose={() => setOpenState(false)}
+                            />
 
-                    {children}
+                            <Navbar
+                              displayTagline={displayTagline}
+                              onCartClick={() => setCartState(true)}
+                              onMenuClick={() => setOpenState(true)}
+                            />
+                          </React.Fragment>
+                        )}
+                      </MenuConsumer>
 
-                    <Container>
-                      <Footer />
-                    </Container>
-                  </React.Fragment>
-                )}
-              </CartConsumer>
-            </CartContext>
-          </MenuContext>
-        </Box>
-      </ThemeProvider>
+                      <Main>{children}</Main>
+
+                      <Container>
+                        <Footer />
+                      </Container>
+                    </React.Fragment>
+                  )}
+                </CartConsumer>
+              </CartContext>
+            </MenuContext>
+          </Box>
+        </ThemeProvider>
+      </ShopifyProvider>
     </div>
   );
 };

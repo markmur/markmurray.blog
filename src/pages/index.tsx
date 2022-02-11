@@ -13,13 +13,9 @@ const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);
 };
 
-const getMinPrice = (products) => {
-  return Math.min(...products.map(product => product.priceRangeV2.minVariantPrice.amount))
-}
-
 const IndexPage = (props) => {
   const { data } = props;
-  const { featuredCollection, collectionImages } = data;
+  const { featuredCollection, featuredCollectionTwo } = data;
   const posts = getNodes(data.posts);
 
   const containerRef = React.useRef(null);
@@ -27,22 +23,31 @@ const IndexPage = (props) => {
 
   return (
     <Layout wide displayTagline>
-      <Box pt={4}>
-        <Container>
-          <Box mb={4}>
-            <PageHeading>Latest Art</PageHeading>
-          </Box>
-        </Container>
-      </Box>
-
       <ErrorBoundary>
+        <Box pt={4}>
+          <Container>
+            <Box mb={4}>
+              <PageHeading>Latest Collections</PageHeading>
+            </Box>
+          </Container>
+        </Box>
+
         <CollectionCarousel
           id={featuredCollection.id}
+          handle={featuredCollection.handle}
           title={`The ${featuredCollection.title} Collection`}
           description={featuredCollection.description}
           heading={featuredCollection.title}
-          images={featuredCollection.products.map(({ id, handle, images }) => ({image_url: images?.[0].src, id, handle  }))}
-          minPrice={getMinPrice(featuredCollection.products)}
+          products={featuredCollection.products}
+        />
+
+        <CollectionCarousel
+          id={featuredCollectionTwo.id}
+          handle={featuredCollectionTwo.handle}
+          title={`The ${featuredCollectionTwo.title} Collection`}
+          description={featuredCollectionTwo.description}
+          heading={featuredCollectionTwo.title}
+          products={featuredCollectionTwo.products}
         />
       </ErrorBoundary>
 
@@ -64,28 +69,32 @@ const IndexPage = (props) => {
         </Container>
       </Box>
 
-      <Box mb={4} mt={4}>
-        <PostPreviews
-          forwardedRef={containerRef}
-          observe={observe}
-          posts={posts.sort(
-            (a, b) => b.frontmatter.pinned - a.frontmatter.pinned,
-          )}
-        />
-      </Box>
+      <Container>
+        <Box my={4}>
+          <PostPreviews
+            forwardedRef={containerRef}
+            observe={observe}
+            posts={posts.sort(
+              (a, b) => b.frontmatter.pinned - a.frontmatter.pinned,
+            )}
+          />
+        </Box>
+      </Container>
     </Layout>
   );
 };
 
 export const pageQuery = graphql`
   {
-    featuredCollection: shopifyCollection(title: {eq: "Sapphire"}) {
+    featuredCollection: shopifyCollection(title: { eq: "Sapphire" }) {
       id
       title
+      handle
       description
       products {
         id
         handle
+        title
         images {
           src
         }
@@ -97,16 +106,22 @@ export const pageQuery = graphql`
         }
       }
     }
-    collectionImages: allMarkdownRemark(
-      filter: { frontmatter: { collection: { eq: "sapphire" } } }
-      sort: { fields: [frontmatter___title] }
-    ) {
-      edges {
-        node {
-          id
-          frontmatter {
-            image_url
-            stripe_product_id
+    featuredCollectionTwo: shopifyCollection(title: { eq: "Reflections" }) {
+      id
+      title
+      handle
+      description
+      products {
+        id
+        handle
+        title
+        images {
+          src
+        }
+        priceRangeV2 {
+          minVariantPrice {
+            amount
+            currencyCode
           }
         }
       }

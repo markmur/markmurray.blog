@@ -16,19 +16,21 @@ const ProjectShowcase = ({ project }) => {
         {project.image_url && (
           <a rel="noopener noreferer" href={project.url}>
             <Image
-              boxShadow="0 12px 36px 0 rgb(44 62 80 / 35%)"
               borderRadius={8}
               mb={4}
               width="640px"
-              backgroundColor="var(--lightpink)"
+              height="auto"
+              aspectRatio={3.25 / 2}
+              backgroundColor="#eee"
               alt={project.title}
               src={project.image_url}
+              boxShadow="0 12px 36px 0 rgb(44 62 80 / 35%)"
             />
           </a>
         )}
 
         <Flex
-          flexDirection={['column', 'column', 'row']}
+          flexDirection={['column', 'row']}
           width="100%"
           mt="auto"
           alignItems="center"

@@ -2,40 +2,38 @@
 id: about
 templateKey: about
 title: Who?
-description:
-  Mark Murray is an Irish Software Engineer & Photographer living in Dublin,
-  Ireland with a passion for Art, Design, Music and Technology.
+description: Let me quickly introduce myself.
 image_url: https://firebasestorage.googleapis.com/v0/b/project-4767000521921178323.appspot.com/o/images%2Fresized%2Fmark_600x750?alt=media&token=ff0e3bd6-5225-41bf-b96b-f8e166ed92d9
 ---
 
-Irish Software Engineer living in Dublin, Ireland with a passion for Art,
-Design, Music and Technology. Since my return from startup life in San Francisco
-in 2017, I've been working predominantly as a Full Stack Engineer for Zalando,
-trying to improve the lives of 38+ million people across Europe - helping them
-to express themselves through their fashion choices.
+Hi, my name is Mark and I'm an Irish Software Engineer, Photographer and
+Musician living in Dublin, Ireland. For most of my life I've been passionate
+about Art, Design, Music and Technology and slightly obsessed with creative
+expression in general. I tend to feel most alive when I'm working on something
+creative.
 
-I'm passionate about building tactile experiences and solving problems that
-matter. This is why I've been particularly drawn to UX and front-end development
-throughout my career. I'm also fascinated by the organisational structure of
-teams and how tweaking these structures can result in high performance and
-delivery. I value impactful, purpose-driven work where I can make a real
-difference to peoples lives and I like to work on teams with a positive mindset,
-made up of a diverse mix of people from different backgrounds.
+I work for [Shopify](https://shopify.com), as a Senior Front End Developer,
+where I'm passionate about building tactile experiences, solving problems that
+matter, and empowering anyone to become an entrepreneur.
 
-When I'm not working on client-facing features/sites, I thoroughly enjoy working
-across the full stack and thankfully in my current role I have the opportunity
-to explore the different areas. I enjoy working on a team given the
-responsibility of delivering end-to-end - caring about the nitty gritty details
-of the user experience as well as the deployment and monitoring of our services.
+I started out my career working both as a designer and developer in parallel -
+both very different avenues to explore but also very complimentary to one
+another - front end development in particular. At a certain point, I made an
+unconcious decision to deviate from UX design and pivot towards engineering but
+for a couple of years it felt like there was something missing in my life. It
+took me a couple years to realise that I had sacrificed the creative, expressive
+aspect of design for a more logical engineering avenue.
 
-I care about sustainability - building a future that tackles climate change, the
-effects of global agriculture, and the housing/homeless crises in Ireland.
-Eventually I would like to work with a company who is developing solutions to
-these issues at a global scale.
+Photography and music have been crucial in helping me to regain that which I had
+lost.
 
-When I'm not working, you'll generally find me playing some sort of instrument,
-making electronic music, running, cycling, taking photos or simply discovering
-new parts of a city.
+When it comes to photography, I love the ephemeral aspect of it most - trying to
+capture fleeting moments and abstractions in nature. My second favourite aspect
+of it is have a reason to explore places I wouldn't necessarily explore
+otherwise. It has helped me to "see" - not just that which is in front of me,
+but scenes, angles, gradients, textures etc much more vividly.
 
-Graduated from Maynooth University, Ireland in 2014 with a 1.1 in B.Sc
-Multimedia and an award for the overall highest results.
+---
+
+To who all who have bought prints, thank you so much for your support. It truly
+means a lot to me for my work to be worthy of your space.

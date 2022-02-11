@@ -3,14 +3,14 @@ require('dotenv').config({
 });
 
 module.exports = {
-  // flags: {
-  //   PRESERVE_FILE_DOWNLOAD_CACHE: false,
-  //   DEV_WEBPACK_CACHE: false
-  // },
   siteMetadata: {
     title: 'Mark Murray',
     url: 'https://markmurray.co',
     description: 'Senior Developer @ Shopify',
+    featuredCollectionTitle: 'Reflections',
+    bannerMessage: 'Buy 2 prints, get the third 50% off!',
+    bannerLink: '/photography',
+    bannerInclude: ['/', '/photography', '/collections'],
   },
   plugins: [
     'gatsby-plugin-sass',
@@ -99,14 +99,14 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-source-shopify",
+      resolve: 'gatsby-source-shopify',
       options: {
         password: process.env.SHOPIFY_SHOP_PASSWORD,
         storeUrl: process.env.GATSBY_SHOPIFY_STORE_URL,
         // Not set by default. If set to true, this plugin will download and process images during the build.
         // The plugin’s default behavior is to fall back to Shopify’s CDN.
         downloadImages: false,
-        shopifyConnections: ['collections']
+        shopifyConnections: ['collections'],
       },
     },
     //   resolve: '@sentry/gatsby',

@@ -1,33 +1,22 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { Flex, Box, Button, Container, PageHeading, Text, Subtitle } from '../styles';
+import {
+  Flex,
+  Box,
+  Button,
+  Container,
+  PageHeading,
+  Text,
+  Subtitle,
+} from '../styles';
 import Layout from '../components/Layout';
 import BackgroundLines from '../components/BackgroundLines';
 import CollectionCarousel from '../components/CollectionCarousel';
 import ImageGrid from '../components/ImageGrid';
 import { getProductUrl } from '../utils/product';
 
-function getTags(edges) {
-  const allTags = {};
-
-  for (const photo of edges) {
-    const tags = [photo.node.frontmatter.collection] || [];
-
-    for (const tag of tags) {
-      const lowercaseTag = (tag || '').toLowerCase();
-      if (lowercaseTag in allTags) {
-        allTags[lowercaseTag]++;
-      } else {
-        allTags[lowercaseTag] = 1;
-      }
-    }
-  }
-
-  return allTags;
-}
-
 type Edge<T> = {
-  node: T
+  node: T;
 };
 
 type Edges<T> = {
@@ -35,83 +24,73 @@ type Edges<T> = {
 };
 
 interface ShopifyCollection {
-  id: string
-  title: string
-  handle: string
+  id: string;
+  title: string;
+  handle: string;
   products: {
-    title: string
-    handle: string
-    images: {src: string}[]
-  }[]
+    title: string;
+    handle: string;
+    images: { src: string }[];
+  }[];
 }
 
 interface Collection {
   id: string;
-  fields: {
-    slug: string;
-  };
-  frontmatter: {
-    collection_id: string;
-    stripe_product_id: string;
-    title: string;
-    heading: string;
-    templateKey: string;
-    description: string;
-    image_url: string;
-    location: string;
-    orientation: string;
-    width: string;
-    height: string;
-    minPrice: number;
-  };
-}
-
-interface CollectionImages {
-  image_url: string;
-  stripe_product_id: string;
+  title: string;
+  description: string;
+  products: {
+    id: string;
+    handle: string;
+    images: {
+      src: string;
+    }[];
+    priceRangeV2: {
+      minVariantPrice: {
+        amount: number;
+        currencyCode: string;
+      };
+    };
+  }[];
 }
 
 interface Props {
   data: {
-    collection: Collection;
+    featuredCollection: Collection;
     collections: Edges<ShopifyCollection>;
-    collectionImages: Edges<CollectionImages>;
   };
 }
 
 interface State {
-  selectedCollection: string | null
+  selectedCollection: string | null;
 }
 
-export default class PhotographyPage extends React.Component<
-  Props,
-  State
-> {
+export default class PhotographyPage extends React.Component<Props, State> {
   state = {
     selectedCollection: null,
   };
 
   _transformEdges(edges) {
     return edges
-      .reduce((state, { node }) => ([...state, ...node.products]), [])
-      .map(product => ({
+      .reduce((state, { node }) => [...state, ...node.products], [])
+      .map((product) => ({
         image_url: product.images[0].src,
         title: product.title,
-        href: getProductUrl(product)
-      }))
+        href: getProductUrl(product),
+      }));
   }
 
   _filterPhotosByCollection(
     collections: Props['data']['collections'],
     selectedCollectionTitle: string,
   ) {
-    if (!selectedCollectionTitle) return this._transformEdges(collections.edges);
+    if (!selectedCollectionTitle)
+      return this._transformEdges(collections.edges);
 
     const filtered = collections.edges.filter(
       ({ node }) => node.title == selectedCollectionTitle,
     );
 
-    return this._transformEdges(filtered)
+    return this._transformEdges(filtered);
   }
 
   _getCollections(photos: Props['data']['collections']): string[] {
@@ -142,10 +121,10 @@ export default class PhotographyPage extends React.Component<
     const collections = this._getCollections(data.collections);
 
     return (
-      <Layout wide displayTagline={false}>
+      <Layout wide>
         <BackgroundLines />
 
-        <Container py={[5, 6]} pt={[5, 5]} pb={[3, 4]}>
+        <Container py={[5, 6]} pt={[8, 5]} pb={[3, 4]}>
           <PageHeading mb={2}>Photography &amp; art</PageHeading>
 
           <Flex justifyContent="left">
@@ -186,16 +165,10 @@ export default class PhotographyPage extends React.Component<
 
         <CollectionCarousel
           id={featuredCollection.id}
+          handle={featuredCollection.handle}
           title={featuredCollection.title}
           description={featuredCollection.description}
-          images={featuredCollection.products.map(
-            (product) => ({
-              id: product.id,
-              handle: product.handle,
-              image_url: product.images[0].src
-            }),
-          )}
-          minPrice={featuredCollection.products?.[0]?.priceRangeV2.minVariantPrice.amount}
+          products={featuredCollection.products}
         />
 
         <Container>
@@ -203,18 +176,30 @@ export default class PhotographyPage extends React.Component<
 
           <div style={{ position: 'relative' }}>
             <div style={{ position: 'sticky', top: 0 }}>
-              <Flex py={5} style={{ overflow: 'auto' }} justifyContent="center">
+              <Flex py={5} overflow="hidden" justifyContent="center">
                 <Box>
                   <Subtitle textAlign="center">Shop prints</Subtitle>
-                  <Text textAlign="center" as="h1" mb={5}>
+                  <Text
+                    textAlign="center"
+                    as="h1"
+                    mb={5}
+                    mt={20}
+                    fontSize="3rem"
+                  >
                     Collections
                   </Text>
-                  <Flex flexWrap="nowrap">
+                  <Flex
+                    px={[4, 0, 0]}
+                    flexWrap="nowrap"
+                    overflowX="auto"
+                    maxWidth="100vw"
+                    scrollBar={false}
+                  >
                     <Button
                       tag
                       selected={this.state.selectedCollection === null}
                       onClick={() => this.handleCollectionClick(null)}
-                      mr={1}
+                      mr={[0, 1]}
                     >
                       All
                     </Button>
@@ -249,15 +234,15 @@ export default class PhotographyPage extends React.Component<
 
 export const pageQuery = graphql`
   {
-    featuredCollection: shopifyCollection(
-      title: { eq: "Reflections" }
-    ) {
+    featuredCollection: shopifyCollection(title: { eq: "Reflections" }) {
       id
       title
+      handle
       description
       products {
         id
         handle
+        title
         images {
           src
         }
@@ -269,7 +254,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    collections: allShopifyCollection {
+    collections: allShopifyCollection(filter: { productsCount: { gt: 0 } }) {
       edges {
         node {
           id

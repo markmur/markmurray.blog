@@ -53,9 +53,24 @@ const cursor = system({
   },
 });
 
+const textDecoration = system({
+  cursor: {
+    property: 'textDecoration',
+  },
+});
+
+const lineClamp = system({
+  lineClamp: {
+    property: 'WebkitLineClamp',
+  },
+});
+
 interface CustomDefinitions {
   cursor?: string;
   aspectRatio?: string | number | number[];
+  scrollBar?: boolean | boolean[];
+  textDecoration?: string;
+  lineClamp?: number;
 }
 
 const defaults = css`
@@ -76,8 +91,10 @@ const defaults = css`
   ${backgroundPosition};
   ${backgroundSize};
   ${backgroundImage};
+  ${textDecoration};
   ${(p: any) => (p.aspectRatio ? aspectRatio : '')};
   ${cursor};
+  ${lineClamp};
 `;
 
 export type Defaults = FlexboxProps &
@@ -99,14 +116,25 @@ export type Defaults = FlexboxProps &
   WidthProps &
   CustomDefinitions;
 
+const scrollBar = css`
+  ${(p: any) =>
+    p.scrollBar === false ? `&::-webkit-scrollbar { display: none; } ` : ''};
+`;
+
 export const Text = styled('p')<Defaults>`
   ${defaults};
+`;
+
+export const Strike = styled(Text)<Defaults>`
+  ${defaults};
+  text-decoration: line-through;
 `;
 
 export const Flex = styled('div')<Defaults>`
   display: flex;
   flex-wrap: wrap;
   ${defaults};
+  ${scrollBar};
 `;
 
 export const Box = styled('div')<Defaults>`
@@ -157,8 +185,10 @@ export const notMobile = (content) => `
   }
 `;
 
-export const HideOnMobile = ({ children }) => (
-  <Box display={['none', 'block']}>{children}</Box>
+export const HideOnMobile = ({ children, ...props }) => (
+  <Box display={['none', 'block', 'block']} {...props}>
+    {children}
+  </Box>
 );
 
 export const HideOnDesktop = ({ children }) => (
@@ -396,8 +426,29 @@ export const Link = styled(GatsbyLink)<Defaults>`
   ${defaults};
   cursor: pointer;
   font-weight: normal;
-  // padding-bottom: 6px;
-  // border-bottom: 1px solid;
+  color: #686882;
+
+  &:hover,
+  &.active {
+    color: black;
+  }
+
+  &.active {
+    font-weight: bold;
+    position: relative;
+
+    &::after {
+      content: ' ';
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: blue;
+      border-radius: 50%;
+      left: 50%;
+      bottom: -15px;
+      transform: translateX(-2.5px);
+    }
+  }
 
   svg {
     margin-left: 0.5em;
@@ -432,7 +483,7 @@ export const Tag = styled(GatsbyLink)`
 export const Container = styled(Box)<Defaults & { narrow?: boolean }>`
   ${defaults};
   margin: auto;
-  padding: 0 1.5em;
+  padding: 0 1em;
 
   @media screen and (min-width: 40em) {
     max-width: 100%;
@@ -480,6 +531,14 @@ export const Content = styled('section')<Defaults>`
     margin-right: 0;
     margin-bottom: 0;
     padding-top: 1em;
+  `)}
+`;
+
+export const Main = styled('main')<Defaults>`
+  ${defaults};
+
+  ${isMobile(`
+    padding-top: 6em;
   `)}
 `;
 
@@ -559,7 +618,7 @@ export const Title = styled.h1<Defaults>`
       bottom: -1px;
       right: -3px;
       left: -3px;
-      background: #3996ff;
+      background: #dd85ff;
       opacity: 0.2;
       z-index: -1;
       transform: rotate(-1deg);
@@ -570,19 +629,20 @@ export const Title = styled.h1<Defaults>`
 export const PostTitle = styled(Title)<Defaults>`
   ${defaults};
   font-weight: 800;
-  font-size: 3rem;
+  font-size: 3.9rem;
   line-height: 1.35;
   letter-spacing: 0.2px;
   color: ${theme('titleColor')};
   ${transition};
 
   ${isMobile(`
-    margin-top: 1em;
+    font-size: 3rem;
   `)};
 `;
 
 export const ProductTitle = styled(Text).attrs({ as: 'h2' })<Defaults>`
   ${SERIF_FONT};
+  font-size: 2.5rem;
   margin: 0;
   padding: 0;
 `;
@@ -696,7 +756,7 @@ export const Paragraph = styled(Text)`
 
 export const Description = styled(Paragraph)`
   color: ${theme('descriptionColor')};
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   margin-bottom: 2em;
   ${space};
   ${transition};
@@ -829,7 +889,7 @@ export const Drawer = styled(Box)<{
   z-index: 1000;
   // display: ${(p) => (p.open ? 'block' : 'none')};
   // opacity: ${(p) => (p.open ? '1' : '0')};
-  transform: translateX(${(p) => (p.open ? '0%' : '20%')});
+  transform: translateX(${(p) => (p.open ? '0%' : '10%')});
   box-shadow: rgb(0 0 0 / 10%) -5px 0px 20px 0px;
   transition: all 150ms ease-out 0s;
   animation: ${slideInKeyframes} 200ms ease-out;
@@ -855,6 +915,45 @@ export const Drawer = styled(Box)<{
   &.exit-active {
     opacity: 0;
     transition: opacity 250ms, transform 250ms;
+  }
+`;
+
+const rotate = keyframes`
+0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+`;
+
+export const Loader = styled.div<Defaults>`
+  ${defaults};
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+
+  div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    margin: 8px;
+    border: 4px solid;
+    border-radius: 50%;
+    animation: ${rotate} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: black transparent transparent transparent;
+  }
+  div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  div:nth-child(3) {
+    animation-delay: -0.15s;
   }
 `;
 
@@ -887,6 +986,58 @@ export const Image = styled.img<Defaults>`
   max-width: 100%;
 `;
 
+export const Sticker = styled.div<Defaults>`
+  ${defaults};
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  color: black;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 40px;
+  font-size: 12px;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+`;
+
+export const Banner = styled.div<Defaults>`
+  ${defaults};
+  background: black;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 11px;
+  padding: 1em;
+`;
+
+export const DiscountCode = styled.div<Defaults>`
+  ${defaults};
+  border: 1px solid #f2d8a9;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #735827;
+  font-weight: bold;
+  background-color: #fff6e1;
+
+  &.success {
+    border: 1px solid #518c53;
+    color: #357d37;
+    background-color: #ebfaf0;
+  }
+`;
+
+export const LineClamp = styled.div<Defaults & { value?: number }>`
+  ${defaults};
+  display: -webkit-box;
+  line-clamp: ${(p) => p.value || 2};
+  -webkit-line-clamp: ${(p) => p.value || 2};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+`;
+
 function getUnitValue(value: number | string): string {
   if (typeof value === 'number') {
     return `${value}px`;
@@ -898,6 +1049,25 @@ function getUnitValue(value: number | string): string {
 
   return value;
 }
+
+export const LinkList = styled.ul<Defaults>`
+  ${defaults};
+  list-style-type: none;
+
+  a {
+    border: none;
+    color: white;
+    text-decoration: none;
+    padding: 4px 0;
+    display: block;
+
+    &:hover {
+      border: none;
+      font-weight: bold;
+      color: white;
+    }
+  }
+`;
 
 export const BackgroundImage = styled.div<
   Defaults & { width: number; height: number; src: string }

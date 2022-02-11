@@ -13,6 +13,7 @@ import {
   Container,
   LineBreak,
   Tag,
+  LineClamp,
   PostPreview as StyledPostPreview,
   Button,
   HideOnDesktop,
@@ -21,7 +22,7 @@ import {
 const Tags = ({ tags, ...props }) =>
   tags &&
   tags.length > 0 && (
-    <Flex wrap {...props}>
+    <Flex flexWrap="wrap" {...props}>
       {tags.map((tag) => (
         <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
           {tag}
@@ -32,7 +33,7 @@ const Tags = ({ tags, ...props }) =>
 
 const Post = ({ post }) => (
   <StyledPost>
-    <Container wide>
+    <Container>
       {post.frontmatter.pinned && <Pinned />}
 
       <Link to={post.fields.slug}>
@@ -73,13 +74,15 @@ export const PostPreview = ({ post, ...props }) => (
   >
     <Flex height="100%" flexDirection="column" justifyContent="space-between">
       <div>
-        <Title mb={2} fontSize="1.25rem">
-          <Link to={post.fields.slug}>
-            <span
-              dangerouslySetInnerHTML={{ __html: post.frontmatter.title }}
-            />
-          </Link>
-        </Title>
+        <LineClamp value={3}>
+          <Title mb={2} fontSize="1.25rem">
+            <Link to={post.fields.slug}>
+              <span
+                dangerouslySetInnerHTML={{ __html: post.frontmatter.title }}
+              />
+            </Link>
+          </Title>
+        </LineClamp>
 
         <Timestamp>
           {post.frontmatter.date}
@@ -87,7 +90,7 @@ export const PostPreview = ({ post, ...props }) => (
           {post.fields.readingTime.text}
         </Timestamp>
 
-        <LineBreak mb={4} />
+        <LineBreak mb={3} />
         <Paragraph mb={3}>{post.frontmatter.description}</Paragraph>
       </div>
 

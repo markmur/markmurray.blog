@@ -1,18 +1,43 @@
 import React from 'react';
-import { FiShoppingBag } from 'react-icons/fi';
+import { FiLoader, FiShoppingBag, FiShoppingCart, FiTag } from 'react-icons/fi';
 
 import Incrementer from './Incrementer';
 import {
   Box,
   Button,
+  DiscountCode,
   Flex,
   ErrorMessage,
   Text,
+  Overlay,
   BackgroundImage,
+  Strike,
+  Loader,
 } from '../styles';
-import shopify from '../utils/shopify';
+// import { useLoadScript } from '../hooks/use-load-script';
+import { formatPrice } from '../utils/currency';
+import { useShopify } from '../hooks/use-shopify';
 
 function LineItem(props) {
+  const hasDiscounts = props.discountAllocations.length > 0;
+
+  const finalPrice = React.useMemo(() => {
+    if (!hasDiscounts) {
+      return formatPrice(
+        Number(props.variant.priceV2.amount) * (props.quantity || 1),
+        props.variant.priceV2.currencyCode,
+      );
+    }
+
+    const originalPrice = parseFloat(props.variant.priceV2.amount);
+    const finalPrice = props.discountAllocations.reduce(
+      (state, discount) =>
+        (state -= parseFloat(discount.allocatedAmount.amount)),
+      originalPrice,
+    );
+    return formatPrice(finalPrice, props.variant.priceV2.currencyCode);
+  }, [props]);
+
   return (
     <Box py={3} borderBottom="1px solid" borderColor="#eee">
       <Flex alignItems="center" justifyContent="space-between">
@@ -20,7 +45,7 @@ function LineItem(props) {
           <Flex alignItems="center">
             <Box mr={3}>
               <BackgroundImage
-                src={props.variant.image.src}
+                src={props.variant?.image?.src}
                 width={60}
                 height={90}
                 borderRadius={4}
@@ -32,7 +57,7 @@ function LineItem(props) {
               </Text>
 
               <Box mb={2}>
-                {/* <small>{props.variant.title}</small> */}
+                <small>{props.variant.title}</small>
               </Box>
 
               <Box>
@@ -58,72 +83,65 @@ function LineItem(props) {
             />
           </Box>
           <Box pl={2} textAlign="right">
+            {hasDiscounts && (
+              <Strike mb={1} fontSize="1em">
+                {formatPrice(
+                  props.variant.priceV2.amount,
+                  props.variant.priceV2.currencyCode,
+                )}
+              </Strike>
+            )}
             <Text as="strong" fontSize="1em">
-              €{Number(props.variant.price * props.quantity).toFixed(2)}
+              {finalPrice}
             </Text>
           </Box>
         </Flex>
+      </Flex>
+      <Flex justifyContent="flex-end">
+        {props.discountAllocations.length > 0 && (
+          <ul>
+            {props.discountAllocations.map((discount) => (
+              <DiscountCode key={props.discountAllocations}>
+                <FiTag /> {discount.discountApplication.title}
+              </DiscountCode>
+            ))}
+          </ul>
+        )}
       </Flex>
     </Box>
   );
 }
 
+function LoadingOverlay() {
+  return (
+    <Overlay
+      height="100vh"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Loader>
+        <div />
+        <div />
+        <div />
+      </Loader>
+    </Overlay>
+  );
+}
+
 const Cart = ({ open }: { open: boolean }) => {
-  const [loading, setLoadingState] = React.useState(false);
   const [error, setErrorState] = React.useState<string>('');
-  const [cart, setCart] = React.useState(shopify.cart)
-  const [fetching, setFetching] = React.useState(false)
+  const shopify = useShopify();
 
-  const fetchCheckout = () => {
-    setFetching(true)
-    shopify.fetchCheckout().then(cart => {
-      setFetching(false)
-      setCart(cart);
-    })
-  }
-
-  React.useEffect(fetchCheckout, [open])
-
-  React.useEffect(() => {
-    shopify.listen((value) => {
-      setFetching(value)
-
-      if (!value) setCart(shopify.cart)
-    })
-  }, [open])
-
-  const setError = () => {
-    setErrorState('Sorry, something went wrong. Please try again.');
-  };
-
-  const handleCheckout = async () => {
-    setLoadingState(true);
-    try {
-      await shopify.goToCheckout();
-    } catch (error) {
-      console.error(error);
-      setError();
-    } finally {
-      setLoadingState(false);
-    }
-  }
-
-  const incrementItem = (lineItem) => {
-    setCart(shopify.increment(lineItem.id, lineItem.quantity));
-  }
-
-  const decrementItem = (lineItem) => {
-    setCart(shopify.decrement(lineItem.id, lineItem.quantity));
-  }
-
-  const removeItem = (lineItem) => {
-    setCart(shopify.removeLineItem(lineItem.id))
-  }
-
-  const lineItems = Object.entries(cart.lineItems).map(([id, lineItem]) => lineItem)
+  // const shopPayLoadedStatus = useLoadScript(
+  //   'https://cdn.shopify.com/shopifycloud/shop-js/v0.1/client.js',
+  // );
 
   return (
-    <React.Fragment>
+    <Box position="relative">
+      {shopify.loading && <LoadingOverlay />}
+
       <Flex
         py={3}
         px={4}
@@ -141,28 +159,33 @@ const Cart = ({ open }: { open: boolean }) => {
               Your bag
             </Text>
             <small>
-              ({lineItems.length} {lineItems.length === 1 ? 'item' : 'items'})
+              ({shopify.cartCount} {shopify.cartCount === 1 ? 'item' : 'items'})
             </small>
-
-            {fetching ? "Loading..." : null}
           </Flex>
         </Flex>
 
         {/* <Box onClick={onClose}>
-            <FiX />
-          </Box> */}
+          <FiX />
+        </Box> */}
       </Flex>
 
       <Box px={4}>
-        {lineItems.map(lineItem => (
-          <LineItem
-            key={lineItem.id}
-            {...lineItem}
-            onRemove={() => removeItem(lineItem)}
-            onIncrement={() => incrementItem(lineItem)}
-            onDecrement={() => decrementItem(lineItem)}
-          />
-        ))}
+        {shopify.checkout.lineItems.length > 0 ? (
+          shopify.checkout.lineItems.map((lineItem) => (
+            <LineItem
+              key={lineItem.id}
+              {...lineItem}
+              onRemove={() => shopify.removeLineItem(lineItem.id)}
+              onIncrement={() => shopify.incrementLineItem(lineItem.id)}
+              onDecrement={() => shopify.decrementLineItem(lineItem.id)}
+            />
+          ))
+        ) : (
+          <Box textAlign="center" pt={6} pb={5}>
+            <FiShoppingCart size="40" />
+            <Text>Your cart is currently empty</Text>
+          </Box>
+        )}
       </Box>
 
       <Box
@@ -171,19 +194,25 @@ const Cart = ({ open }: { open: boolean }) => {
         mt={4}
         bg="#f4f4f7"
         borderTop="1px solid"
-        borderBottom="1px solid"
         borderColor="#e8e9ef"
       >
         <Flex justifyContent="space-between" alignItems="center">
-          <strong>Estimated Total</strong>
-          <div>
-            <strong>{Number(cart.totalPrice).toFixed(2)}</strong>
-            <div>
-              <small>
-                <em>incl. tax</em>
-              </small>
-            </div>
-          </div>
+          <strong>Subtotal</strong>
+          <Flex>
+            {shopify.checkout.taxesIncluded && (
+              <Box mr={2}>
+                <small>
+                  <em>incl. tax</em>
+                </small>
+              </Box>
+            )}
+            <strong>
+              {formatPrice(
+                shopify.checkout.subtotalPrice,
+                shopify.checkout.currencyCode,
+              )}
+            </strong>
+          </Flex>
         </Flex>
       </Box>
 
@@ -194,26 +223,88 @@ const Cart = ({ open }: { open: boolean }) => {
         borderBottom="1px solid"
         borderColor="#e8e9ef"
       >
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          textAlign="right"
+        >
           <strong>Shipping</strong>
-          <Text textAlign="right">
-            <Text as="small">
+
+          {shopify.checkout.shippingPrice ? (
+            <div>
+              <div>
+                <strong>
+                  {formatPrice(
+                    shopify.checkout.shippingPrice,
+                    shopify.checkout.currencyCode,
+                  )}
+                </strong>
+              </div>
+
+              {shopify.checkout.shippingType && (
+                <small>{shopify.checkout.shippingType}</small>
+              )}
+            </div>
+          ) : (
+            <small>
               <em>Calculated at next step</em>
-            </Text>
-          </Text>
+            </small>
+          )}
+        </Flex>
+      </Box>
+
+      <Box
+        py={3}
+        px={4}
+        bg="#f4f4f7"
+        borderBottom="1px solid"
+        borderColor="#e8e9ef"
+      >
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          textAlign="right"
+        >
+          <strong>Estimated Total</strong>
+
+          <div>
+            <div>
+              <strong>
+                {formatPrice(
+                  shopify.checkout.totalPrice,
+                  shopify.checkout.currencyCode,
+                )}
+              </strong>
+            </div>
+          </div>
         </Flex>
       </Box>
 
       <Box py={3} px={4} mt={2}>
         <Button
-          disabled={lineItems.length === 0}
+          disabled={shopify.checkout.lineItems.length === 0}
           primary
           expand
-          loading={loading}
-          onClick={handleCheckout}
+          loading={shopify.loading ? 'true' : undefined}
+          onClick={() => shopify.goToCheckout()}
         >
-          {loading ? 'Loading...' : 'Complete checkout'}
+          {shopify.loading ? 'Loading...' : 'Complete checkout'}
         </Button>
+
+        {/* {shopPayLoadedStatus === 'done' && shopify.checkout.lineItems.length > 0 && (
+          <>
+            <Box textAlign="center" my={2}>
+              <small>or</small>
+            </Box>
+
+            <Box mt={3} textAlign="center">
+              <shop-pay-button
+                store-url={`https://${process.env.GATSBY_SHOPIFY_STORE_URL}`}
+                variants={Object.keys(cart.lineItems).join(',')}
+              />
+            </Box>
+          </>
+        )} */}
 
         {error && (
           <ErrorMessage mt={2} width="100%" textAlign="center" p={2}>
@@ -221,7 +312,7 @@ const Cart = ({ open }: { open: boolean }) => {
           </ErrorMessage>
         )}
       </Box>
-    </React.Fragment>
+    </Box>
   );
 };
 

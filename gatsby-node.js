@@ -7,6 +7,12 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
+      metadata: site {
+        siteMetadata {
+          featuredCollectionTitle
+        }
+      }
+
       photos: allMarkdownRemark(
         filter: { frontmatter: { templateKey: { eq: "photo" } } }
       ) {
@@ -20,20 +26,19 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
-      products: allShopifyProduct(
-        sort: { fields: [publishedAt], order: ASC }
-      ) {
+      products: allShopifyProduct(sort: { fields: [publishedAt], order: ASC }) {
         edges {
           node {
             id
             handle
             collections {
               id
+              title
             }
           }
         }
       }
-      collections: allShopifyCollection{
+      collections: allShopifyCollection {
         edges {
           node {
             id
@@ -66,6 +71,8 @@ exports.createPages = ({ actions, graphql }) => {
     }
 
     const products = result.data.products.edges;
+    const featuredCollectionTitle =
+      result.data.metadata.siteMetadata.featuredCollectionTitle;
 
     products.forEach(({ node }) => {
       createPage({
@@ -73,7 +80,11 @@ exports.createPages = ({ actions, graphql }) => {
         component: path.resolve(`src/templates/product.tsx`),
         context: {
           id: node.id,
-          collectionId: node.collections?.[0]?.id
+          collectionId: node.collections?.[0]?.id,
+          featuredCollectionTitle:
+            node.collections?.[0]?.title !== featuredCollectionTitle
+              ? featuredCollectionTitle
+              : null,
         },
       });
     });
@@ -85,7 +96,11 @@ exports.createPages = ({ actions, graphql }) => {
         component: path.resolve(`src/templates/product.tsx`),
         context: {
           id: node.id,
-          collectionId: node.collections?.[0]?.id
+          collectionId: node.collections?.[0]?.id,
+          featuredCollectionTitle:
+            node.collections?.[0]?.title !== featuredCollectionTitle
+              ? featuredCollectionTitle
+              : null,
         },
       });
     });
@@ -110,14 +125,20 @@ exports.createPages = ({ actions, graphql }) => {
     // Create collection pages
     const collections = result.data.collections.edges;
 
-    console.log(collections)
-
     collections.forEach((edge) => {
       createPage({
         path: `/collections/${edge.node.id}`,
-        component: path.resolve(
-          `src/templates/collection.tsx`,
-        ),
+        component: path.resolve(`src/templates/collection.tsx`),
+        context: {
+          id: edge.node.id,
+        },
+      });
+    });
+
+    collections.forEach((edge) => {
+      createPage({
+        path: `/collections/${edge.node.handle}`,
+        component: path.resolve(`src/templates/collection.tsx`),
         context: {
           id: edge.node.id,
         },

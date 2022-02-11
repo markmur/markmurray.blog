@@ -7,35 +7,59 @@ import {
   CarouselItem,
   Subtitle,
   CollectionCarouselBox,
+  Link,
 } from '../../styles';
 
 import * as styles from './styles.scss';
 import { useCarousel } from '../Carousel';
 import { getProductUrl } from '../../utils/product';
+import { formatPrice } from '../../utils/currency';
 import Controls from '../Carousel/Controls';
 
-const MobileContainer = ({ children }) => <Box px={3}>{children}</Box>;
+const MobileContainer = ({ children }) => (
+  <Box px={['1em', 0, '0.5em']}>{children}</Box>
+);
 
-interface Image {
-  image_url: string;
+interface Product {
   id: string;
+  title: string;
   handle: string;
+  images: {
+    src: string;
+  }[];
+  priceRangeV2: {
+    minVariantPrice: {
+      amount: number;
+      currencyCode: string;
+    };
+  };
 }
+
 interface Props {
   id: string;
-  minPrice?: number;
+  handle: string;
   title: string;
   heading?: string;
   description?: string;
-  images: Image[];
+  products: Product[];
 }
+
+const getMinPrice = (products: Product[]): Product['priceRangeV2'] => {
+  if (!products.length) return;
+
+  return products.sort(
+    (a, b) =>
+      a.priceRangeV2.minVariantPrice.amount -
+      b.priceRangeV2.minVariantPrice.amount,
+  )[0]?.priceRangeV2;
+};
 
 const CollectionCarousel: React.FunctionComponent<Props> = ({
   id,
-  minPrice,
   title,
+  handle,
   description,
-  images,
+  products,
 }) => {
   const [loaded, setLoadedState] = React.useState(false);
 
@@ -45,6 +69,8 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
 
   const containerRef = React.useRef(null);
   const { observe, next, prev } = useCarousel(containerRef, 300);
+
+  const minPrice = getMinPrice(products);
 
   return (
     <Box
@@ -68,7 +94,9 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
             <MobileContainer>
               <Box className="description" pr={[0, 5]} mb={[3, 0]}>
                 <Box className="caption" width={['auto']}>
-                  <Subtitle>Featured Collection</Subtitle>
+                  <Link to={`/collections/${id}`}>
+                    <Subtitle>Featured Collection</Subtitle>
+                  </Link>
                   <Box my={3}>
                     <h4>{title}</h4>
                   </Box>
@@ -77,9 +105,14 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                   {minPrice && (
                     <Box py={3}>
                       <small>
-                        <em>
-                          from <strong>{minPrice}</strong>
-                        </em>
+                        <em>from </em>
+                        <strong>
+                          {formatPrice(
+                            minPrice.minVariantPrice.amount,
+                            minPrice.minVariantPrice.currencyCode,
+                          )}{' '}
+                          {minPrice.minVariantPrice.currencyCode}
+                        </strong>
                       </small>
                     </Box>
                   )}
@@ -87,7 +120,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
 
                 <Box mt={1}>
                   <Box display={['none', 'none', 'block']}>
-                    {images.length > 3 && (
+                    {products.length > 3 && (
                       <Controls mt={3} mb={4} onPrev={prev} onNext={next} />
                     )}
                     <Button href={`/collections/${id}`}>View Collection</Button>
@@ -99,22 +132,24 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
 
           <Box flex={8} overflow="hidden">
             <Carousel ref={containerRef} pr={[3, 5]}>
-              {images.map((image) => (
-                <CarouselItem ref={observe} key={image.id}>
-                  <a href={getProductUrl(image)}>
-                    <Box
-                      className={loaded ? 'item loaded' : 'item'}
-                      mr={[1, 3]}
-                      width={['40vw', '200px', '278px']}
-                      aspectRatio={[4 / 6, 5 / 8]}
-                      backgroundSize="cover"
-                      style={{
-                        backgroundImage: `url(${image.image_url})`
-                      }}
-                    />
-                  </a>
-                </CarouselItem>
-              ))}
+              {[...products]
+                .sort((a, b) => a.title?.localeCompare(b?.title))
+                .map((product) => (
+                  <CarouselItem ref={observe} key={product.id}>
+                    <a href={getProductUrl(product)}>
+                      <Box
+                        className={loaded ? 'item loaded' : 'item'}
+                        mr={[2, 3]}
+                        width={['40vw', '200px', '278px']}
+                        aspectRatio={[4 / 6, 5 / 8]}
+                        backgroundSize="cover"
+                        style={{
+                          backgroundImage: `url(${product.images[0].src})`,
+                        }}
+                      />
+                    </a>
+                  </CarouselItem>
+                ))}
             </Carousel>
 
             {/* <div className="title">
@@ -126,7 +161,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
         <MobileContainer>
           <Box display={['block', 'block', 'none']}>
             <Box mt={3}>
-              <Button href={`/collections/${id}`}>View Collection</Button>
+              <Button href={`/collections/${handle}`}>View Collection</Button>
             </Box>
           </Box>
         </MobileContainer>

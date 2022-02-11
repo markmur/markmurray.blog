@@ -25,25 +25,25 @@ const MobileMenu = ({ open = true, onClose }) => {
             >
               <div
                 style={{
-                  borderLeft: '1px solid',
+                  borderLeft: '1px solid rgba(255,255,255,0.2)',
                 }}
               >
-                <Box px={4} my={4}>
-                  <Link to="/">Index</Link>
+                <Box px={4} my={4} fontSize="1.25rem">
+                  <Link to="/">Home</Link>
                 </Box>
-                <Box px={4} my={4}>
+                <Box px={4} my={4} fontSize="1.25rem">
                   <Link to="/about">Who?</Link>
                 </Box>
-                <Box px={4} my={4}>
+                <Box px={4} my={4} fontSize="1.25rem">
                   <Link to="/posts">Articles</Link>
                 </Box>
-                <Box px={4} my={4}>
+                <Box px={4} my={4} fontSize="1.25rem">
                   <Link to="/projects">Projects</Link>
                 </Box>
-                <Box px={4} my={4}>
+                <Box px={4} my={4} fontSize="1.25rem">
                   <Link to="/photography">Photography</Link>
                 </Box>
-                <Box px={4} my={4}>
+                <Box px={4} my={4} fontSize="1.25rem">
                   <Link to="/cart"> Your cart ({cartCount})</Link>
                 </Box>
               </div>

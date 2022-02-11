@@ -1,15 +1,5 @@
+import { get } from "lodash"
 import ShopifyClient from "shopify-buy"
-
-function debounce(fn, ms: number) {
-  let timer
-  
-  return (...args) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      fn(...args)
-    }, ms)
-  }
-}
 
 interface LineItem {
     id: string
@@ -17,8 +7,14 @@ interface LineItem {
 }
 
 interface Cart {
+    subtotalPrice: string
     totalPrice: string
+    shippingPrice: string
+    shippingType: string
     lineItems: Record<string, LineItem>
+    currencyCode: string
+    taxesIncluded: boolean
+    totalTax: string
 }
 
 class Shopify {
@@ -30,197 +26,120 @@ class Shopify {
 
     cart: Cart
 
-    listeners: [] = []
+    listeners: ((value: boolean) => void)[] = []
 
     checkoutUrl: string
 
     checkoutDebounceTiming: number = 2500
 
     constructor() {
+        if (!process.env.GATSBY_SHOPIFY_STORE_URL) {
+            throw new Error("`SHOPIFY_STORE_URL` is missing")
+        }
+
+        if (!process.env.GATSBY_STOREFRONT_ACCESS_TOKEN) {
+            throw new Error("`STOREFRONT_ACCESS_TOKEN` is missing")
+        }
+
         this.client = ShopifyClient.buildClient({
             domain: process.env.GATSBY_SHOPIFY_STORE_URL,
-            storefrontAccessToken: process.env.GATSBY_SHOPIFY_ACCESS_TOKEN
+            storefrontAccessToken: process.env.GATSBY_STOREFRONT_ACCESS_TOKEN
         });
-        this.checkoutId = this.getLocalStorageCheckoutId();
 
-        this.createCheckout()
+        this.checkoutId = this.getCheckoutIdFromLocalStorage()
+    }
 
-        this.defaultCart = {
-            totalPrice: "0.00",
-            lineItems: {}
+    async init() {
+        if (this.checkoutId) {
+            return this.checkoutId
         }
 
-        this.cart = this.getLocalStorageCart()
+        return await this.createCheckout()
     }
 
-    private getLocalStorageCheckoutId() {
-        return localStorage.getItem("shopify:checkoutId")
-    }
-
-    private getLocalStorageCart() {
+    private getCheckoutIdFromLocalStorage(): string | undefined {
         try {
-            return JSON.parse(localStorage.getItem("shopify:cart")) || this.defaultCart;
+            return localStorage.getItem("shopify:checkoutId")
         } catch (error) {
-            console.error(error)
-            return this.defaultCart;
+            return undefined
         }
     }
 
-    private updateLocalStorageCart(cart: Cart) {
+    private insertToLocalStorage(key: string, value: any) {
         try {
-            this.cart = cart;
-            localStorage.setItem("shopify:cart", JSON.stringify(cart))
+            localStorage.setItem(key, typeof value === "string" ? value : JSON.stringify(value))
         } catch (error) {
             console.error(error)
         }
     }
 
-    private createCartFromCheckout(checkout) {
-        const cart: Cart = {
-            totalPrice: checkout.totalPrice,
-            lineItems: checkout.lineItems.reduce((state, item) => {
-                state[item.id] = item
-                return state
-            }, {})
-        }
-        return cart
+    private parseShopifyId(shopifyId: string) {
+        return shopifyId.slice(shopifyId.lastIndexOf("/") + 1)
     }
 
-    private recalculateTotalPrice(cart: Cart) {
-        return String(Object.values(cart.lineItems).reduce((state, item) => {
-            state += Number(item?.variant?.price) * Number(item?.quantity)
-            return state
-        }, 0))
-    }
-
-    private updateLocalStorageCartItem(id: string, property: string, value: string | number) {
-        const cart = {...this.getLocalStorageCart()}
-
-        if (!(id in cart.lineItems)) {
-            console.error(`Line item with id "${id}" not found in local cart.`)
-            return 
+    private getShopifyId(variant: { id: string | number; shopifyId?: string }) {
+        if (variant.shopifyId) {
+            return this.parseShopifyId(variant.shopifyId)
         }
 
-        cart.lineItems[id][property] = value
-        cart.totalPrice = this.recalculateTotalPrice(cart)
-        this.updateLocalStorageCart(cart)
-        return cart;
-    }
-
-    private addLocalStorageCartItem(id: string, variant) {
-        const cart = { ...this.getLocalStorageCart() }
-
-        cart.lineItems[id] = variant
-        cart.totalPrice = this.recalculateTotalPrice(cart)
-        this.updateLocalStorageCart(cart)
-        return cart;
-    }
-
-    private removeLocalStorageCartItem(id: string) {
-        const cart = { ...this.getLocalStorageCart() }
-
-        if (!(id in cart.lineItems)) {
-            console.error(`Line item with id "${id}" not found in local cart.`)
-            return 
+        try {
+            const url = new URL(atob(String(variant.id)))
+            return url.pathname.slice(url.pathname.lastIndexOf("/") + 1)
+        } catch (error) {
+            console.error("shopify.#getShopifyId :: could not find lineItem ID", error)
         }
-
-        delete cart.lineItems[id]
-        cart.totalPrice = this.recalculateTotalPrice(cart)
-        this.updateLocalStorageCart(cart)
-        return cart;
-    }
-
-    private callListeners(bool: boolean) {
-        this.listeners?.forEach(cb => cb?.(bool))
-    }
-
-    listen(cb) {
-        this.listeners.push(cb)
-    }
-
-    async goToCheckout() {
-        if (this.checkoutUrl) {
-            window.location.href = this.checkoutUrl
-            return
-        }
-
-        const checkout = await this.client.checkout.fetch(String(this.checkoutId))
-        this.checkoutUrl = checkout.webUrl
-        window.location.href = checkout.webUrl
     }
 
     async createCheckout() {
-        const localStorageCheckoutId = this.getLocalStorageCheckoutId()
-        
-        if (localStorageCheckoutId) {
-            return localStorageCheckoutId
-        }
-
         try {
             const checkout = await this.client.checkout.create()
             this.checkoutId = checkout.id
             this.checkoutUrl = checkout.webUrl
-            localStorage.setItem("shopify:checkoutId", String(checkout.id))
-            return checkout.id
+            this.insertToLocalStorage("shopify:checkoutId", this.checkoutId)
+            return checkout
         } catch (error) {
             console.error(error)
         }
     }
 
-    private debounceFetchCheckout = debounce(() => this.fetchCheckout(), this.checkoutDebounceTiming)
-
-    async fetchCheckout(): Promise<Cart> {
+    async fetchCheckout(): Promise<ShopifyClient.Cart> {
         try {
-            this.callListeners(true);
-            const checkout = await this.client.checkout.fetch(String(this.checkoutId))
-            console.log({checkout})
-            this.cart = this.createCartFromCheckout(checkout)
-            this.updateLocalStorageCart(this.cart)
-            this.callListeners(false)
+            return await this.client.checkout.fetch(String(this.checkoutId))
         } catch (error) {
-            console.error(error);
-        } finally {
-            return this.cart
+            this.checkoutId = undefined
+            localStorage.removeItem("shopify:checkoutId")
+            this.init()
         }
     }
 
-    increment(id: string, currentQuantity: number): Cart {
+    async increment(id: string | number, currentQuantity: number) {
         try {
-            this.updateLocalStorageCartItem(id, "quantity", currentQuantity + 1)
-            this.client.checkout.updateLineItems(this.checkoutId, [{
+            const checkout = await this.client.checkout.updateLineItems(this.checkoutId, [{
                 id,
                 quantity: currentQuantity + 1
-            }]).then(() => this.debounceFetchCheckout())
+            }])
+            return checkout
         } catch (error) {
             console.error(error)
-            this.updateLocalStorageCartItem(id, "quantity", currentQuantity)
-        } finally {
-            return this.cart
         }
     }
 
-    decrement(id: string, currentQuantity: number): Cart {
+    async decrement(id: string | number, currentQuantity: number) {
         try {
-            this.updateLocalStorageCartItem(id, "quantity", currentQuantity - 1)
-            this.client.checkout.updateLineItems(this.checkoutId, [{
+            const checkout = await this.client.checkout.updateLineItems(this.checkoutId, [{
                 id,
                 quantity: currentQuantity - 1
-            }]).then(() => this.debounceFetchCheckout())
+            }])
+            return checkout
         } catch (error) {
             console.error(error)
-            this.updateLocalStorageCartItem(id, "quantity", currentQuantity)
-        } finally {
-            return this.cart
-        }
+        } 
     }
 
-    addLineItem(id: string, variant) {
+    async addLineItem(shopifyId: string) {
         try {
-            this.client.checkout.addLineItems(this.checkoutId, [{ variantId: variant.shopifyId, quantity: 1 }])
-                .then((checkout) => {
-                    this.addLocalStorageCartItem(id, checkout.lineItems.find(x => x.id === id))
-                    this.fetchCheckout()
-                })
+            const checkout = await this.client.checkout.addLineItems(this.checkoutId, [{ variantId: shopifyId, quantity: 1 }])
+            return checkout
         } catch (error) {
             console.error(error)
         } finally {
@@ -228,11 +147,10 @@ class Shopify {
         }
     }
 
-    removeLineItem(id: string) {
+    async removeLineItem(id: string | number) {
         try {
-            this.removeLocalStorageCartItem(id)
-            this.client.checkout.removeLineItems(this.checkoutId, [id])
-                .then(() => this.debounceFetchCheckout())
+            const checkout = await this.client.checkout.removeLineItems(this.checkoutId, [String(id)])
+            return checkout
         } catch (error) {
             console.error(error)
         } finally {
@@ -241,6 +159,4 @@ class Shopify {
     }
 }
 
-const shopify = new Shopify()
-
-export default shopify
+export default Shopify

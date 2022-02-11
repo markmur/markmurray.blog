@@ -1,11 +1,13 @@
 import React from 'react';
 
 interface Props {
-  setCartState: ({ open: boolean }) => void;
+  open: boolean;
+  setCartState: (open: boolean) => void;
 }
 
 export const CartContext = React.createContext<Props>({
-  setCartState({ open: boolean }) {},
+  open: false,
+  setCartState: (open: boolean) => undefined,
 });
 
 const Cart = ({ initialState, children }) => {

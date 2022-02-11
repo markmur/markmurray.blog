@@ -9,9 +9,9 @@
     white-space: nowrap;
     flex-wrap: nowrap;
     scroll-snap-type: x mandatory;
-    scroll-padding-left: 85px;
-    scroll-padding-block-end: 50px;
-    padding-left: calc(50vw - 635px);
+    // scroll-padding-left: 85px;
+    // scroll-padding-block-end: 50px;
+    // padding-left: calc(50vw - 635px);
     scroll-behavior: smooth;
     overflow-x: scroll;
     position: relative;
@@ -41,8 +41,8 @@
       }
 
       &:hover {
-        box-shadow: 0 10px 30px 0 rgba(#f4f4f7, 0.9)
+        box-shadow: 0 10px 30px 0 rgba(#f4f4f7, 0.9);
       }
     }
-  }  
+  }
 }
