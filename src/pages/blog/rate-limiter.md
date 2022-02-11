@@ -1,7 +1,7 @@
 ---
 private: true
 templateKey: blog-post
-pinned: true
+pinned: false
 title: Building a rate limiter with Express
 description:
   The various ways to build a rate limiter and the pros and cons of each

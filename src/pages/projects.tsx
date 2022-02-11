@@ -20,7 +20,7 @@ export default class ProjectsPage extends React.Component {
       <Layout wide displayTagline={false}>
         <BackgroundLines />
         <Content>
-          <Container wide style={{ marginTop: 80 }}>
+          <Container style={{ marginTop: 80 }}>
             <Projects
               projects={projects}
               renderProject={(project, key) => (

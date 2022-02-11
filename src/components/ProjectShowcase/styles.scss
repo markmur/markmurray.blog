@@ -1,98 +1,26 @@
 @import '../../styles/mixins.scss';
 
-$showcase-height: 50vh;
-
 .ProjectShowcase {
   position: relative;
-  height: $showcase-height;
-  margin-bottom: 20vh;
 
   @include xs-device {
     height: auto;
-    padding: 1em 2em;
+    padding: 1em 0;
     margin-bottom: 0;
   }
 
-  &--overlay,
   &--image {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 3;
-    width: 100%;
-    height: $showcase-height;
-  }
-
-  &--image {
-    margin: 0 1em;
-    margin-left: auto;
     z-index: 2;
-    width: 56%;
     height: auto;
+    max-width: 100%;
     border-radius: 8px;
-    box-shadow: 0 12px 36px 0 rgba($navy, 0.35);
-
-    @include devices(true) {
-      display: none;
-    }
-  }
-
-  @include md-device {
-    display: flex;
-    flex-direction: column-reverse;
-    height: initial;
-    margin-bottom: 8em;
-
-    &--image {
-      top: inherit;
-      bottom: inherit;
-      position: relative;
-      display: block;
-      align-self: center;
-      width: 100%;
-      height: auto;
-    } 
-  }
-
-  .xs-device-image {
-    display: none;
-
-    @include xs-device {
-      display: block !important;
-    }
+    box-shadow: 0 12px 36px 0 rgba(#2c3e50, 0.35);
   }
 
   .content {
     position: relative;
-    max-width: 350px;
-    display: flex;
-    flex-direction: column;
     z-index: 2;
     height: 100%;
-
-    @include md-device {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 100%;
-      height: initial;
-      margin-bottom: 2.5em;
-
-      a.button {
-        padding: 0.5em 1.25em;
-        height: inherit;
-      }
-    }
-
-    @include devices(true) {
-      max-width: 100%;
-    }
-
-    a.button {
-      margin-top: 2em;
-    }
 
     small.note {
       display: block;
@@ -108,10 +36,6 @@ $showcase-height: 50vh;
       line-height: 1;
       font-weight: bolder;
       color: $primary;
-
-      @include devices(true, true) {
-        font-size: 2.325rem;
-      }
     }
 
     p {
@@ -128,9 +52,4 @@ $showcase-height: 50vh;
       }
     }
   }
-}
-
-.margin-top-auto {
-  margin-top: auto;
-  margin-bottom: 3em;
 }

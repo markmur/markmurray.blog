@@ -1,0 +1,508 @@
+{
+  "__typename": "Checkout",
+  "id": "Z2lkOi8vc2hvcGlmeS9DaGVja291dC8xNWQ4YWM3ZWFmMDY0YTkxNTI1NjdhZWMzN2U0NmI3Mz9rZXk9YjhiNGI0NThhMzRkM2Q5OWZlZWZmZjJiZTYzZjQxN2Q=",
+  "ready": true,
+  "requiresShipping": true,
+  "note": null,
+  "paymentDue": "150.00",
+  "paymentDueV2": {
+    "amount": "150.0",
+    "currencyCode": "EUR",
+    "type": {
+      "name": "MoneyV2",
+      "kind": "OBJECT",
+      "fieldBaseTypes": {
+        "amount": "Decimal",
+        "currencyCode": "CurrencyCode"
+      },
+      "implementsNode": false
+    }
+  },
+  "webUrl": "https://markmur.myshopify.com/123456/checkouts/123456",
+  "orderStatusUrl": null,
+  "taxExempt": false,
+  "taxesIncluded": true,
+  "currencyCode": "EUR",
+  "totalTax": "0.00",
+  "totalTaxV2": {
+    "amount": "0.0",
+    "currencyCode": "EUR",
+    "type": {
+      "name": "MoneyV2",
+      "kind": "OBJECT",
+      "fieldBaseTypes": {
+        "amount": "Decimal",
+        "currencyCode": "CurrencyCode"
+      },
+      "implementsNode": false
+    }
+  },
+  "lineItemsSubtotalPrice": {
+    "amount": "180.0",
+    "currencyCode": "EUR",
+    "type": {
+      "name": "MoneyV2",
+      "kind": "OBJECT",
+      "fieldBaseTypes": {
+        "amount": "Decimal",
+        "currencyCode": "CurrencyCode"
+      },
+      "implementsNode": false
+    }
+  },
+  "subtotalPrice": "150.00",
+  "subtotalPriceV2": {
+    "amount": "150.0",
+    "currencyCode": "EUR",
+    "type": {
+      "name": "MoneyV2",
+      "kind": "OBJECT",
+      "fieldBaseTypes": {
+        "amount": "Decimal",
+        "currencyCode": "CurrencyCode"
+      },
+      "implementsNode": false
+    }
+  },
+  "totalPrice": "150.00",
+  "totalPriceV2": {
+    "amount": "150.0",
+    "currencyCode": "EUR",
+    "type": {
+      "name": "MoneyV2",
+      "kind": "OBJECT",
+      "fieldBaseTypes": {
+        "amount": "Decimal",
+        "currencyCode": "CurrencyCode"
+      },
+      "implementsNode": false
+    }
+  },
+  "completedAt": null,
+  "createdAt": "2022-02-09T11:43:53Z",
+  "updatedAt": "2022-02-09T11:44:07Z",
+  "email": null,
+  "discountApplications": [
+    {
+      "__typename": "AutomaticDiscountApplication",
+      "targetSelection": "ENTITLED",
+      "allocationMethod": "EACH",
+      "targetType": "LINE_ITEM",
+      "value": {
+        "percentage": 50,
+        "type": {
+          "name": "PricingValue",
+          "kind": "UNION"
+        }
+      },
+      "title": "Buy two, get third 50% off",
+      "type": {
+        "name": "AutomaticDiscountApplication",
+        "kind": "OBJECT",
+        "fieldBaseTypes": {
+          "title": "String"
+        },
+        "implementsNode": false
+      },
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "variableValues": {
+        "id": "Z2lkOi8vc2hvcGlmeS9DaGVja291dC8xNWQ4YWM3ZWFmMDY0YTkxNTI1NjdhZWMzN2U0NmI3Mz9rZXk9YjhiNGI0NThhMzRkM2Q5OWZlZWZmZjJiZTYzZjQxN2Q="
+      }
+    }
+  ],
+  "appliedGiftCards": [],
+  "shippingAddress": null,
+  "shippingLine": null,
+  "customAttributes": [],
+  "order": null,
+  "lineItems": [
+    {
+      "id": "Z2lkOi8vc2hvcGlmeS9DaGVja291dExpbmVJdGVtLzQyMDQ0MzIzMzY0ODg2MD9jaGVja291dD0xNWQ4YWM3ZWFmMDY0YTkxNTI1NjdhZWMzN2U0NmI3Mw==",
+      "title": "Reflections #2",
+      "variant": {
+        "id": "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC80MjA0NDMyMzM2NDg4Ng==",
+        "title": "A2 (42.0 cm x 59.4 cm)",
+        "price": "60.00",
+        "priceV2": {
+          "amount": "60.0",
+          "currencyCode": "EUR",
+          "type": {
+            "name": "MoneyV2",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "amount": "Decimal",
+              "currencyCode": "CurrencyCode"
+            },
+            "implementsNode": false
+          }
+        },
+        "weight": 0,
+        "available": true,
+        "sku": "5993728-1376716",
+        "compareAtPrice": null,
+        "compareAtPriceV2": null,
+        "image": {
+          "id": "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0SW1hZ2UvMjkwNjg3MTI2NDA1MzQ=",
+          "src": "https://cdn.shopify.com/s/files/1/0597/8131/6630/products/3eaa075abc0649ad8be672bbb05785ce.jpg?v=1644269352",
+          "altText": "5993728-1376716",
+          "width": 800,
+          "height": 600,
+          "type": {
+            "name": "Image",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "altText": "String",
+              "height": "Int",
+              "id": "ID",
+              "originalSrc": "URL",
+              "src": "URL",
+              "width": "Int"
+            },
+            "implementsNode": false
+          }
+        },
+        "selectedOptions": [
+          {
+            "name": "Size",
+            "value": "A2 (42.0 cm x 59.4 cm)",
+            "type": {
+              "name": "SelectedOption",
+              "kind": "OBJECT",
+              "fieldBaseTypes": {
+                "name": "String",
+                "value": "String"
+              },
+              "implementsNode": false
+            }
+          }
+        ],
+        "unitPrice": null,
+        "unitPriceMeasurement": {
+          "measuredType": null,
+          "quantityUnit": null,
+          "quantityValue": 0,
+          "referenceUnit": null,
+          "referenceValue": 0,
+          "type": {
+            "name": "UnitPriceMeasurement",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "measuredType": "UnitPriceMeasurementMeasuredType",
+              "quantityUnit": "UnitPriceMeasurementMeasuredUnit",
+              "quantityValue": "Float",
+              "referenceUnit": "UnitPriceMeasurementMeasuredUnit",
+              "referenceValue": "Int"
+            },
+            "implementsNode": false
+          }
+        },
+        "product": {
+          "id": "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzcyMTYyNTg0MTY2NjI=",
+          "handle": "reflections-2",
+          "type": {
+            "name": "Product",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "availableForSale": "Boolean",
+              "createdAt": "DateTime",
+              "description": "String",
+              "descriptionHtml": "HTML",
+              "handle": "String",
+              "id": "ID",
+              "images": "ImageConnection",
+              "onlineStoreUrl": "URL",
+              "options": "ProductOption",
+              "productType": "String",
+              "publishedAt": "DateTime",
+              "title": "String",
+              "updatedAt": "DateTime",
+              "variants": "ProductVariantConnection",
+              "vendor": "String"
+            },
+            "implementsNode": true
+          }
+        },
+        "type": {
+          "name": "ProductVariant",
+          "kind": "OBJECT",
+          "fieldBaseTypes": {
+            "availableForSale": "Boolean",
+            "compareAtPrice": "Money",
+            "compareAtPriceV2": "MoneyV2",
+            "id": "ID",
+            "image": "Image",
+            "price": "Money",
+            "priceV2": "MoneyV2",
+            "product": "Product",
+            "selectedOptions": "SelectedOption",
+            "sku": "String",
+            "title": "String",
+            "unitPrice": "MoneyV2",
+            "unitPriceMeasurement": "UnitPriceMeasurement",
+            "weight": "Float"
+          },
+          "implementsNode": true
+        }
+      },
+      "quantity": 2,
+      "customAttributes": [],
+      "discountAllocations": [],
+      "type": {
+        "name": "CheckoutLineItem",
+        "kind": "OBJECT",
+        "fieldBaseTypes": {
+          "customAttributes": "Attribute",
+          "discountAllocations": "DiscountAllocation",
+          "id": "ID",
+          "quantity": "Int",
+          "title": "String",
+          "variant": "ProductVariant"
+        },
+        "implementsNode": true
+      },
+      "hasNextPage": {
+        "value": true
+      },
+      "hasPreviousPage": false,
+      "variableValues": {
+        "id": "Z2lkOi8vc2hvcGlmeS9DaGVja291dC8xNWQ4YWM3ZWFmMDY0YTkxNTI1NjdhZWMzN2U0NmI3Mz9rZXk9YjhiNGI0NThhMzRkM2Q5OWZlZWZmZjJiZTYzZjQxN2Q="
+      }
+    },
+    {
+      "id": "Z2lkOi8vc2hvcGlmeS9DaGVja291dExpbmVJdGVtLzQyMDQ0MzIzMzY0ODg2MT9jaGVja291dD0xNWQ4YWM3ZWFmMDY0YTkxNTI1NjdhZWMzN2U0NmI3Mw==",
+      "title": "Reflections #2",
+      "variant": {
+        "id": "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC80MjA0NDMyMzM2NDg4Ng==",
+        "title": "A2 (42.0 cm x 59.4 cm)",
+        "price": "60.00",
+        "priceV2": {
+          "amount": "60.0",
+          "currencyCode": "EUR",
+          "type": {
+            "name": "MoneyV2",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "amount": "Decimal",
+              "currencyCode": "CurrencyCode"
+            },
+            "implementsNode": false
+          }
+        },
+        "weight": 0,
+        "available": true,
+        "sku": "5993728-1376716",
+        "compareAtPrice": null,
+        "compareAtPriceV2": null,
+        "image": {
+          "id": "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0SW1hZ2UvMjkwNjg3MTI2NDA1MzQ=",
+          "src": "https://cdn.shopify.com/s/files/1/0597/8131/6630/products/3eaa075abc0649ad8be672bbb05785ce.jpg?v=1644269352",
+          "altText": "5993728-1376716",
+          "width": 800,
+          "height": 600,
+          "type": {
+            "name": "Image",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "altText": "String",
+              "height": "Int",
+              "id": "ID",
+              "originalSrc": "URL",
+              "src": "URL",
+              "width": "Int"
+            },
+            "implementsNode": false
+          }
+        },
+        "selectedOptions": [
+          {
+            "name": "Size",
+            "value": "A2 (42.0 cm x 59.4 cm)",
+            "type": {
+              "name": "SelectedOption",
+              "kind": "OBJECT",
+              "fieldBaseTypes": {
+                "name": "String",
+                "value": "String"
+              },
+              "implementsNode": false
+            }
+          }
+        ],
+        "unitPrice": null,
+        "unitPriceMeasurement": {
+          "measuredType": null,
+          "quantityUnit": null,
+          "quantityValue": 0,
+          "referenceUnit": null,
+          "referenceValue": 0,
+          "type": {
+            "name": "UnitPriceMeasurement",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "measuredType": "UnitPriceMeasurementMeasuredType",
+              "quantityUnit": "UnitPriceMeasurementMeasuredUnit",
+              "quantityValue": "Float",
+              "referenceUnit": "UnitPriceMeasurementMeasuredUnit",
+              "referenceValue": "Int"
+            },
+            "implementsNode": false
+          }
+        },
+        "product": {
+          "id": "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzcyMTYyNTg0MTY2NjI=",
+          "handle": "reflections-2",
+          "type": {
+            "name": "Product",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "availableForSale": "Boolean",
+              "createdAt": "DateTime",
+              "description": "String",
+              "descriptionHtml": "HTML",
+              "handle": "String",
+              "id": "ID",
+              "images": "ImageConnection",
+              "onlineStoreUrl": "URL",
+              "options": "ProductOption",
+              "productType": "String",
+              "publishedAt": "DateTime",
+              "title": "String",
+              "updatedAt": "DateTime",
+              "variants": "ProductVariantConnection",
+              "vendor": "String"
+            },
+            "implementsNode": true
+          }
+        },
+        "type": {
+          "name": "ProductVariant",
+          "kind": "OBJECT",
+          "fieldBaseTypes": {
+            "availableForSale": "Boolean",
+            "compareAtPrice": "Money",
+            "compareAtPriceV2": "MoneyV2",
+            "id": "ID",
+            "image": "Image",
+            "price": "Money",
+            "priceV2": "MoneyV2",
+            "product": "Product",
+            "selectedOptions": "SelectedOption",
+            "sku": "String",
+            "title": "String",
+            "unitPrice": "MoneyV2",
+            "unitPriceMeasurement": "UnitPriceMeasurement",
+            "weight": "Float"
+          },
+          "implementsNode": true
+        }
+      },
+      "quantity": 1,
+      "customAttributes": [],
+      "discountAllocations": [
+        {
+          "allocatedAmount": {
+            "amount": "30.0",
+            "currencyCode": "EUR",
+            "type": {
+              "name": "MoneyV2",
+              "kind": "OBJECT",
+              "fieldBaseTypes": {
+                "amount": "Decimal",
+                "currencyCode": "CurrencyCode"
+              },
+              "implementsNode": false
+            }
+          },
+          "discountApplication": {
+            "__typename": "AutomaticDiscountApplication",
+            "targetSelection": "ENTITLED",
+            "allocationMethod": "EACH",
+            "targetType": "LINE_ITEM",
+            "value": {
+              "percentage": 50,
+              "type": {
+                "name": "PricingValue",
+                "kind": "UNION"
+              }
+            },
+            "title": "Buy two, get third 50% off",
+            "type": {
+              "name": "AutomaticDiscountApplication",
+              "kind": "OBJECT",
+              "fieldBaseTypes": {
+                "title": "String"
+              },
+              "implementsNode": false
+            }
+          },
+          "type": {
+            "name": "DiscountAllocation",
+            "kind": "OBJECT",
+            "fieldBaseTypes": {
+              "allocatedAmount": "MoneyV2",
+              "discountApplication": "DiscountApplication"
+            },
+            "implementsNode": false
+          }
+        }
+      ],
+      "type": {
+        "name": "CheckoutLineItem",
+        "kind": "OBJECT",
+        "fieldBaseTypes": {
+          "customAttributes": "Attribute",
+          "discountAllocations": "DiscountAllocation",
+          "id": "ID",
+          "quantity": "Int",
+          "title": "String",
+          "variant": "ProductVariant"
+        },
+        "implementsNode": true
+      },
+      "hasNextPage": false,
+      "hasPreviousPage": {
+        "value": true
+      },
+      "variableValues": {
+        "id": "Z2lkOi8vc2hvcGlmeS9DaGVja291dC8xNWQ4YWM3ZWFmMDY0YTkxNTI1NjdhZWMzN2U0NmI3Mz9rZXk9YjhiNGI0NThhMzRkM2Q5OWZlZWZmZjJiZTYzZjQxN2Q="
+      }
+    }
+  ],
+  "type": {
+    "name": "Checkout",
+    "kind": "OBJECT",
+    "fieldBaseTypes": {
+      "appliedGiftCards": "AppliedGiftCard",
+      "completedAt": "DateTime",
+      "createdAt": "DateTime",
+      "currencyCode": "CurrencyCode",
+      "customAttributes": "Attribute",
+      "discountApplications": "DiscountApplicationConnection",
+      "email": "String",
+      "id": "ID",
+      "lineItems": "CheckoutLineItemConnection",
+      "lineItemsSubtotalPrice": "MoneyV2",
+      "note": "String",
+      "order": "Order",
+      "orderStatusUrl": "URL",
+      "paymentDue": "Money",
+      "paymentDueV2": "MoneyV2",
+      "ready": "Boolean",
+      "requiresShipping": "Boolean",
+      "shippingAddress": "MailingAddress",
+      "shippingLine": "ShippingRate",
+      "subtotalPrice": "Money",
+      "subtotalPriceV2": "MoneyV2",
+      "taxExempt": "Boolean",
+      "taxesIncluded": "Boolean",
+      "totalPrice": "Money",
+      "totalPriceV2": "MoneyV2",
+      "totalTax": "Money",
+      "totalTaxV2": "MoneyV2",
+      "updatedAt": "DateTime",
+      "webUrl": "URL"
+    },
+    "implementsNode": true
+  }
+}

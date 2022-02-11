@@ -1,0 +1,48 @@
+@import '../../styles/mixins.scss';
+
+.postPreviews {
+  max-width: 100%;
+
+  ul {
+    display: flex;
+    list-style: none;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    scroll-snap-type: x mandatory;
+    // scroll-padding-left: 85px;
+    // scroll-padding-block-end: 50px;
+    // padding-left: calc(50vw - 635px);
+    scroll-behavior: smooth;
+    overflow-x: scroll;
+    position: relative;
+
+    @include xs-device {
+      scroll-padding-left: 1.5em;
+      padding-left: 1.5em;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    li {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      flex-direction: column;
+      height: auto;
+      border: 1px solid #eaeaea;
+      margin-right: 2.5em;
+      transition: box-shadow 100ms ease;
+      background: white;
+
+      @include xs-device {
+        margin-right: 1em;
+        scroll-snap-align: center;
+      }
+
+      &:hover {
+        box-shadow: 0 10px 30px 0 rgba(#f4f4f7, 0.9);
+      }
+    }
+  }
+}

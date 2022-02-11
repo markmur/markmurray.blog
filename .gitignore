@@ -7,3 +7,11 @@ public/
 static/admin/*.bundle.*
 .DS_Store
 yarn-error.log
+
+
+# dotenv environment variables files
+.env
+.env.development
+.env.production
+# Local Netlify folder
+.netlify

@@ -1,4 +1,5 @@
 ---
+slug: projects/boxfish-explore
 order: 7
 templateKey: project
 title: 'Boxfish: Explore'

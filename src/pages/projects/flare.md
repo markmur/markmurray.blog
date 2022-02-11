@@ -1,4 +1,5 @@
 ---
+slug: projects/flare
 hidden: true
 order: 4
 templateKey: project

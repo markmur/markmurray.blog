@@ -100,7 +100,7 @@ Create a new route by creating a `/api/auth/login.ts` file:
 
 ```tsx
 // pages/api/auth/login.ts
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // These are the application scopes you will be request from each user logging in
 const scopes = [
@@ -111,10 +111,10 @@ const scopes = [
   'playlist-read-private',
   'playlist-modify-private',
   'playlist-modify-public',
-]
+];
 
 // Pull the values defined in your .env file
-const { CLIENT_ID, REDIRECT_URI } = process.env
+const { CLIENT_ID, REDIRECT_URI } = process.env;
 
 const buildURL = (scopes: string[], callback: string) => {
   return (
@@ -122,13 +122,13 @@ const buildURL = (scopes: string[], callback: string) => {
     `&client_id=${CLIENT_ID}` +
     `&scope=${encodeURIComponent(scopes.join(' '))}` +
     `&redirect_uri=${encodeURIComponent(callback)}`
-  )
-}
+  );
+};
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Redirect all requests to Spotify auth
-  return res.redirect(buildURL(scopes, REDIRECT_URI))
-}
+  return res.redirect(buildURL(scopes, REDIRECT_URI));
+};
 ```
 
 ### Setup the Spotify SDK
@@ -139,7 +139,7 @@ reuse:
 
 ```tsx
 // utils/spotify.ts
-import Spotify from 'spotify-web-api-node'
+import Spotify from 'spotify-web-api-node';
 
 // Create a new instance of the Spotify API
 const createSpotifyApi = (token: string) => {
@@ -147,14 +147,14 @@ const createSpotifyApi = (token: string) => {
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     redirectUri: process.env.REDIRECT_URI,
-  })
+  });
 
-  spotify.setAccessToken(token)
+  spotify.setAccessToken(token);
 
-  return spotify
-}
+  return spotify;
+};
 
-export default createSpotifyApi
+export default createSpotifyApi;
 ```
 
 ### Authentication route
@@ -166,27 +166,27 @@ handle redirects from Spotify back to our application - via an
 ```tsx
 // pages/api/auth/callback.ts
 
-import axios from 'axios'
-import querystring from 'querystring'
-import { NextApiRequest, NextApiResponse } from 'next'
+import axios from 'axios';
+import querystring from 'querystring';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-import createSpotifyApi from '../../../utils/spotify'
+import createSpotifyApi from '../../../utils/spotify';
 
 // We'll describe this function in the next section
-import { setAuthCookie } from '../../../utils/cookies'
+import { setAuthCookie } from '../../../utils/cookies';
 
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
 
 const sendRefreshRedirect = (res: NextApiResponse, path = '/') => {
-  res.status(200)
+  res.status(200);
   // Send a 200 response and refresh the page
   return res.send(
     `<html><head><meta http-equiv="refresh" content=1;url="${path}"></head></html>`,
-  )
-}
+  );
+};
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { code } = req.query
+  const { code } = req.query;
 
   try {
     const { data } = await axios.post(
@@ -198,33 +198,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         client_secret: CLIENT_SECRET,
         redirect_uri: REDIRECT_URI,
       }),
-    )
+    );
 
-    const spotify = createSpotifyApi(data.access_token)
+    const spotify = createSpotifyApi(data.access_token);
 
-    const profile = await spotify.getMe()
+    const profile = await spotify.getMe();
 
     const session = {
       user: profile,
       token: data,
-    }
+    };
 
     // Send the session information to our user in the form of a cookie header.
     // We'll describe this function in the next step
     await setAuthCookie(res, session, {
       maxAge: data.expires_in * 1000,
-    })
+    });
 
     // Send 200 response to set cookies and refresh the page
-    return sendRefreshRedirect(res)
+    return sendRefreshRedirect(res);
   } catch (error) {
     // You might want to log the error here
     res.status(500).json({
       statusCode: 500,
       message: 'Something went wrong',
-    })
+    });
   }
-}
+};
 ```
 
 Now when Spotify returns users to our site, we'll authenticate them and fetch
@@ -239,22 +239,22 @@ the browser.
 
 export interface UserSession {
   user: {
-    id: string
-    display_name: string
-    email: string
+    id: string;
+    display_name: string;
+    email: string;
     images: {
-      width: number
-      height: number
-      url: string
-    }[]
-  }
+      width: number;
+      height: number;
+      url: string;
+    }[];
+  };
   token: {
-    access_token: string
-    token_type: string
-    expires_in: number
-    refresh_token: string
-    scope: string
-  }
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+    refresh_token: string;
+    scope: string;
+  };
 }
 
 export const setAuthCookie = async (
@@ -268,8 +268,8 @@ export const setAuthCookie = async (
     secure: true,
     sameSite: 'strict',
     path: '/',
-  }
-  const opts: CookieSerializeOptions = { ...defaults, ...options }
+  };
+  const opts: CookieSerializeOptions = { ...defaults, ...options };
 
   try {
     // We're encrypting our session here using the SESSION_SECRET defined in our
@@ -278,25 +278,25 @@ export const setAuthCookie = async (
       session,
       SESSION_SECRET,
       Iron.defaults,
-    )
+    );
 
     const stringValue =
       typeof signedSession === 'object'
         ? 'j:' + JSON.stringify(signedSession)
-        : String(signedSession)
+        : String(signedSession);
 
     if ('maxAge' in opts) {
-      opts.expires = new Date(Date.now() + opts.maxAge)
-      opts.maxAge /= 1000
+      opts.expires = new Date(Date.now() + opts.maxAge);
+      opts.maxAge /= 1000;
     }
 
     // Set the cookie in the header of the response
-    res.setHeader('Set-Cookie', serialize('auth.session', stringValue, opts))
+    res.setHeader('Set-Cookie', serialize('auth.session', stringValue, opts));
   } catch (error) {
-    console.error('Failed to seal session object', error)
-    return
+    console.error('Failed to seal session object', error);
+    return;
   }
-}
+};
 ```
 
 ## Update our render route to parse the auth cookie
@@ -307,19 +307,19 @@ in every time they use the site. To do so, we'll need to update our
 `pages/index.tsx` file:
 
 ```tsx
-import cookie from 'cookie'
-import { GetServerSideProps } from 'next'
+import cookie from 'cookie';
+import { GetServerSideProps } from 'next';
 
-import App from '../src/App'
-import { UserSession } from '../utils/cookies'
+import App from '../src/App';
+import { UserSession } from '../utils/cookies';
 
 export const getSessionCookie = async (
   cookies: Record<string, string>,
 ): Promise<UserSession> => {
-  const cookie = cookies['auth.session']
+  const cookie = cookies['auth.session'];
 
   if (!cookie) {
-    throw new Error('Auth session not found')
+    throw new Error('Auth session not found');
   }
 
   // Decrypt the auth cookie
@@ -327,30 +327,30 @@ export const getSessionCookie = async (
     cookie,
     process.env.SESSION_SECRET,
     Iron.defaults,
-  )
+  );
 
-  return decoded
-}
+  return decoded;
+};
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
-    const cookies = cookie.parse(req.headers.cookie || '')
-    const session = await getSessionCookie(cookies)
+    const cookies = cookie.parse(req.headers.cookie || '');
+    const session = await getSessionCookie(cookies);
 
     return {
       props: {
         user: session.user,
       },
-    }
+    };
   } catch {
     return {
       props: {},
-    }
+    };
   }
-}
+};
 
 export default function IndexPage(props) {
-  return <App user={props.user} />
+  return <App user={props.user} />;
 }
 ```
 
@@ -360,7 +360,7 @@ Great, now it's just a matter of adding a "Login with Spotify" button to our
 application to facilitate the login flow.
 
 ```tsx
-import React from 'react'
+import React from 'react';
 
 const App = ({ user }) => {
   return (
@@ -371,10 +371,10 @@ const App = ({ user }) => {
         <a href="/api/auth/login">Login with Spotify</a>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 ```
 
 and there we have it. Social authentication with NextJS.

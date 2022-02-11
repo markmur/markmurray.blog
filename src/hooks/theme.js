@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 // #004b38 - nice mint green
+
+const lightText = '#7e859b';
 
 export const themes = {
   minimal: {
@@ -19,7 +21,7 @@ export const themes = {
     tagHoverBackground: 'rgba(133, 180, 255, 0.4)',
     blockquoteBackground: '#f4f4f7',
     blockquoteBorder: '#eeedf3',
-    linkColor: '#0087ff',
+    linkColor: 'var(--primary)',
     linkBorder: '#eee',
     hrColor: 'rgb(223, 224, 238)',
     bullet: '#7b778e',
@@ -40,7 +42,7 @@ export const themes = {
     tagHoverBackground: 'rgba(217, 156, 174, 0.2)',
     blockquoteBackground: '#f4f4f7',
     blockquoteBorder: '#eeedf3',
-    linkColor: '#0087ff',
+    linkColor: 'var(--primary)',
     linkBorder: '#eee',
     hrColor: 'black',
     hrWidth: '2px',
@@ -69,21 +71,21 @@ export const themes = {
     inlineCodeColor: 'white',
     codeBackground: '#1f2529',
   },
-}
+};
 
 const useTheme = defaultTheme => {
-  let themeName = defaultTheme || 'minimal'
-  const [theme, setTheme] = useState(themes[themeName] || {})
+  let themeName = defaultTheme || 'minimal';
+  const [theme, setTheme] = useState(themes[themeName] || {});
 
   function changeTheme(newTheme) {
     if (typeof window !== 'undefined' && 'localStorage' in window)
-      localStorage.setItem('theme', newTheme)
+      localStorage.setItem('theme', newTheme);
 
-    setTheme(themes[newTheme])
-    themeName = newTheme
+    setTheme(themes[newTheme]);
+    themeName = newTheme;
   }
 
-  return [theme, changeTheme, themeName]
-}
+  return [theme, changeTheme, themeName];
+};
 
-export default useTheme
+export default useTheme;

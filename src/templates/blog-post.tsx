@@ -1,13 +1,14 @@
-import React from 'react'
-import { DiscussionEmbed } from 'disqus-react'
-import { kebabCase } from 'lodash'
-import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import React from 'react';
+import { DiscussionEmbed } from 'disqus-react';
+import { kebabCase } from 'lodash';
+import Helmet from 'react-helmet';
+import { graphql } from 'gatsby';
 
-import Layout from '../components/Layout'
-import { HTMLContent } from '../components/Content'
+import Layout from '../components/Layout';
+import { HTMLContent } from '../components/Content';
 import {
   Flex,
+  Box,
   Bullet,
   Comments,
   Container,
@@ -17,18 +18,18 @@ import {
   PostTitle,
   Tag,
   Timestamp,
-} from '../styles'
+} from '../styles';
 
 const Tags = ({ tags }) =>
   tags && tags.length > 0 ? (
-    <Flex wrap>
+    <Flex>
       {tags.map(tag => (
         <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
           {tag}
         </Tag>
       ))}
     </Flex>
-  ) : null
+  ) : null;
 
 export const BlogPostTemplate = ({
   id,
@@ -41,12 +42,14 @@ export const BlogPostTemplate = ({
   postContent = HTMLContent,
   showComments = true,
 }) => {
-  const PostContent = postContent
+  const PostContent = postContent;
   return (
-    <Content pb={4}>
-      <Container>
-        <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
-        <Description>{description}</Description>
+    <Content pt={[4, 5]} pb={4}>
+      <Container narrow>
+        <Box mt={4}>
+          <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
+          <Description>{description}</Description>
+        </Box>
 
         <Timestamp>
           {date}
@@ -73,16 +76,16 @@ export const BlogPostTemplate = ({
         )}
       </Container>
     </Content>
-  )
-}
+  );
+};
 
 const BlogPost = ({ data }) => {
-  const { markdownRemark: post } = data
-  const domain = data.site.siteMetadata.url
+  const { markdownRemark: post } = data;
+  const domain = data.site.siteMetadata.url;
 
-  const { slug } = post.fields
-  const { title, description, tags, date, image } = post.frontmatter
-  const url = `${domain}${slug}`
+  const { slug } = post.fields;
+  const { title, description, tags, date, image } = post.frontmatter;
+  const url = `${domain}${slug}`;
 
   return (
     <Layout>
@@ -115,10 +118,10 @@ const BlogPost = ({ data }) => {
         readingTime={post.fields.readingTime.text}
       />
     </Layout>
-  )
-}
+  );
+};
 
-export default BlogPost
+export default BlogPost;
 
 export const pageQuery = graphql`
   query BlogPostByID($id: String!) {
@@ -146,4 +149,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

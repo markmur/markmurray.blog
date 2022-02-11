@@ -1,26 +1,26 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
-import Layout from '../components/Layout'
-import { Content, Container } from '../styles'
-import Post from '../components/post'
+import React from 'react';
+import Helmet from 'react-helmet';
+import { graphql, PageProps } from 'gatsby';
+import Layout from '../components/Layout';
+import { Content, Container } from '../styles';
+import Post from '../components/post';
 
-class TagRoute extends React.Component {
+class TagRoute extends React.Component<PageProps> {
   render() {
-    const { pageContext } = this.props
-    const { allMarkdownRemark, site } = this.props.data
-    const posts = this.props.data.allMarkdownRemark.edges
+    const { pageContext } = this.props;
+    const { allMarkdownRemark, site } = this.props.data;
+    const posts = this.props.data.allMarkdownRemark.edges;
 
-    const { tag } = pageContext
-    const { title } = site.siteMetadata
-    const { totalCount } = allMarkdownRemark
+    const { tag } = pageContext;
+    const { title } = site.siteMetadata;
+    const { totalCount } = allMarkdownRemark;
 
     return (
       <Layout wide>
         <section>
           <Helmet title={`${tag} | ${title}`} />
           <Content>
-            <Container wide>
+            <Container>
               <h3>
                 {totalCount} post{totalCount === 1 ? '' : 's'} tagged with “
                 {tag}”
@@ -32,11 +32,11 @@ class TagRoute extends React.Component {
           </Content>
         </section>
       </Layout>
-    )
+    );
   }
 }
 
-export default TagRoute
+export default TagRoute;
 
 export const tagPageQuery = graphql`
   query TagPage($tag: String) {
@@ -72,4 +72,4 @@ export const tagPageQuery = graphql`
       }
     }
   }
-`
+`;

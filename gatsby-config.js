@@ -1,10 +1,16 @@
-const GA_TRACKING_ID = 'UA-76403737-3'
+const GA_TRACKING_ID = 'UA-76403737-3';
+
+require('dotenv').config();
 
 module.exports = {
   siteMetadata: {
     title: 'Mark Murray',
     url: 'https://markmurray.co',
-    description: 'Senior Developer @ Shopify, Dublin',
+    description: 'Senior Developer @ Shopify',
+    featuredCollectionTitle: 'Reflections',
+    bannerMessage: 'Buy 2 prints, get the third 50% off!',
+    bannerLink: '/photography',
+    bannerInclude: ['/', '/photography', '/collections'],
   },
   plugins: [
     'gatsby-plugin-sass',
@@ -29,6 +35,7 @@ module.exports = {
     },
     'gatsby-plugin-styled-components',
     'gatsby-plugin-react-helmet',
+    'gatsby-plugin-image',
     {
       resolve: 'gatsby-plugin-google-fonts',
       options: {
@@ -37,6 +44,7 @@ module.exports = {
           'Source Code Pro:400,500',
           'PT Serif:700',
           'Reenie Beanie',
+          'Inter:200,300,400,500,600,700,900',
         ],
       },
     },
@@ -62,19 +70,11 @@ module.exports = {
         name: 'images',
       },
     },
-    // 'gatsby-plugin-sharp',
-    // 'gatsby-transformer-sharp',
     {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
           'gatsby-remark-autolink-headers',
-          {
-            resolve: 'gatsby-remark-relative-images',
-            options: {
-              name: 'uploads',
-            },
-          },
           {
             resolve: 'gatsby-remark-images',
             options: {
@@ -101,11 +101,25 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-netlify-cms',
+      resolve: 'gatsby-source-shopify',
       options: {
-        modulePath: `${__dirname}/src/cms/cms.js`,
+        password: process.env.SHOPIFY_SHOP_PASSWORD,
+        storeUrl: process.env.GATSBY_SHOPIFY_STORE_URL,
+        // Not set by default. If set to true, this plugin will download and process images during the build.
+        // The plugin’s default behavior is to fall back to Shopify’s CDN.
+        downloadImages: false,
+        shopifyConnections: ['collections'],
       },
     },
-    'gatsby-plugin-netlify', // make sure to keep it last in the array
+    //   resolve: '@sentry/gatsby',
+    //   options: {
+    //     dsn: process.env.SENTRY_DSN,
+    //     sampleRate: 0.7,
+    //   },
+    // },
+    'gatsby-plugin-typescript',
+
+    // "gatsby-plugin-netlify" should come last here
+    'gatsby-plugin-netlify',
   ],
-}
+};

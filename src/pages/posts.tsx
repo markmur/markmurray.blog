@@ -1,24 +1,21 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { PageHeading, Container, Content } from '../styles'
 import Layout from '../components/Layout'
 import Post from '../components/post'
+import { Content } from '../styles'
 
 const getNodes = entity => {
   return entity.edges.map(({ node }) => node)
 }
 
-export default class IndexPage extends React.Component {
+export default class PostsPage extends React.Component {
   render() {
     const { data } = this.props
     const posts = getNodes(data.posts)
 
     return (
-      <Layout displayTagline wide>
+      <Layout wide>
         <Content wide>
-          <Container wide>
-            <PageHeading>Latest Posts</PageHeading>
-          </Container>
           {posts
             .sort((a, b) => b.frontmatter.pinned - a.frontmatter.pinned)
             .map(post => (

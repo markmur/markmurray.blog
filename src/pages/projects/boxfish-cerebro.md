@@ -1,4 +1,5 @@
 ---
+slug: projects/boxfish-cerebro
 order: 8
 templateKey: project
 title: 'Boxfish: Cerebro'

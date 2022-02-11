@@ -1,14 +1,38 @@
-const path = require('path')
-const { get, uniq, kebabCase } = require('lodash')
-const { createFilePath } = require('gatsby-source-filesystem')
-const { fmImagesToRelative } = require('gatsby-remark-relative-images')
+const path = require('path');
+const { get, uniq, kebabCase } = require('lodash');
+const { createFilePath } = require('gatsby-source-filesystem');
 
 exports.createPages = ({ actions, graphql }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
 
   return graphql(`
     {
-      allMarkdownRemark(
+      metadata: site {
+        siteMetadata {
+          featuredCollectionTitle
+        }
+      }
+      products: allShopifyProduct(sort: { fields: [publishedAt], order: ASC }) {
+        edges {
+          node {
+            id
+            handle
+            collections {
+              id
+              title
+            }
+          }
+        }
+      }
+      collections: allShopifyCollection {
+        edges {
+          node {
+            id
+            handle
+          }
+        }
+      }
+      posts: allMarkdownRemark(
         limit: 1000
         filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
       ) {
@@ -26,74 +50,131 @@ exports.createPages = ({ actions, graphql }) => {
         }
       }
     }
-  `).then(result => {
+  `).then((result) => {
     if (result.errors) {
-      result.errors.forEach(e => console.error(e.toString()))
-      return Promise.reject(result.errors)
+      result.errors.forEach((e) => console.error(e.toString()));
+      return Promise.reject(result.errors);
     }
 
-    const posts = result.data.allMarkdownRemark.edges
+    const products = result.data.products.edges;
+    const featuredCollectionTitle =
+      result.data.metadata.siteMetadata.featuredCollectionTitle;
 
-    posts.forEach(edge => {
-      const { id } = edge.node
+    products.forEach(({ node }) => {
+      createPage({
+        path: `/photography/${node.id}/`,
+        component: path.resolve(`src/templates/product.tsx`),
+        context: {
+          id: node.id,
+          collectionId: node.collections?.[0]?.id,
+          featuredCollectionTitle:
+            node.collections?.[0]?.title !== featuredCollectionTitle
+              ? featuredCollectionTitle
+              : null,
+        },
+      });
+    });
+
+    // product: alias ("handle")
+    products.forEach(({ node }) => {
+      createPage({
+        path: `/photography/${node.handle}/`,
+        component: path.resolve(`src/templates/product.tsx`),
+        context: {
+          id: node.id,
+          collectionId: node.collections?.[0]?.id,
+          featuredCollectionTitle:
+            node.collections?.[0]?.title !== featuredCollectionTitle
+              ? featuredCollectionTitle
+              : null,
+        },
+      });
+    });
+
+    const posts = result.data.posts.edges;
+
+    posts.forEach((edge) => {
+      const { id } = edge.node;
+
       createPage({
         path: edge.node.fields.slug,
         tags: edge.node.frontmatter.tags,
         component: path.resolve(
-          `src/templates/${String(edge.node.frontmatter.templateKey)}.js`,
+          `src/templates/${String(edge.node.frontmatter.templateKey)}.tsx`,
         ),
-        // additional data can be passed via context
         context: {
           id,
         },
-      })
-    })
+      });
+    });
+
+    // Create collection pages
+    const collections = result.data.collections.edges;
+
+    collections.forEach((edge) => {
+      createPage({
+        path: `/collections/${edge.node.id}`,
+        component: path.resolve(`src/templates/collection.tsx`),
+        context: {
+          id: edge.node.id,
+        },
+      });
+    });
+
+    collections.forEach((edge) => {
+      createPage({
+        path: `/collections/${edge.node.handle}`,
+        component: path.resolve(`src/templates/collection.tsx`),
+        context: {
+          id: edge.node.id,
+        },
+      });
+    });
 
     // Tag pages:
-    let tags = []
+    let tags = [];
     // Iterate through each post, putting all found tags into `tags`
-    posts.forEach(edge => {
+    posts.forEach((edge) => {
       if (get(edge, `node.frontmatter.tags`)) {
-        tags = tags.concat(edge.node.frontmatter.tags)
+        tags = tags.concat(edge.node.frontmatter.tags);
       }
-    })
+    });
     // Eliminate duplicate tags
-    tags = uniq(tags)
+    tags = uniq(tags);
 
     // Make tag pages
-    tags.forEach(tag => {
-      const tagPath = `/tags/${kebabCase(tag)}/`
+    tags.forEach((tag) => {
+      const tagPath = `/tags/${kebabCase(tag)}/`;
 
       createPage({
         path: tagPath,
-        component: path.resolve(`src/templates/tags.js`),
+        component: path.resolve(`src/templates/tags.tsx`),
         context: {
           tag,
         },
-      })
-    })
-  })
-}
+      });
+    });
+  });
+};
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
-  fmImagesToRelative(node) // convert image paths for gatsby images
+  const { createNodeField } = actions;
 
   if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
+    const value = createFilePath({ node, getNode });
 
     // Create `slug` field
     createNodeField({
       name: 'slug',
       node,
       value,
-    })
+    });
 
     // Create `pinned` field
     createNodeField({
       name: 'pinned',
       node,
       value: Boolean(get(node, 'frontmatter.pinned', false)),
-    })
+    });
   }
-}
+};
