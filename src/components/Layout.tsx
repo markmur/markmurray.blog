@@ -79,18 +79,19 @@ const Content = ({ site, children, displayTagline = false }) => {
 
         <ThemeProvider theme={theme}>
           <HideOnMobile>
-            {site.siteMetadata.bannerInclude.some((path) => {
-              return (
-                path.slice(1).includes(window.location.pathname) ||
-                path === window.location.pathname
-              );
-            }) && (
-              <Banner>
-                <Link to={site.siteMetadata.bannerLink}>
-                  {site.siteMetadata.bannerMessage}
-                </Link>
-              </Banner>
-            )}
+            {typeof window !== 'undefined' &&
+              site.siteMetadata.bannerInclude.some((path) => {
+                return (
+                  path.slice(1).includes(window.location.pathname) ||
+                  path === window.location.pathname
+                );
+              }) && (
+                <Banner>
+                  <Link to={site.siteMetadata.bannerLink}>
+                    {site.siteMetadata.bannerMessage}
+                  </Link>
+                </Banner>
+              )}
           </HideOnMobile>
 
           <Box pt={4}>

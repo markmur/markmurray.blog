@@ -100,7 +100,7 @@ const ShopifyProvider = ({ client, children }: Props) => {
 
   function goToCheckout() {
     setLoading(true);
-    window.location.href = checkout.webUrl;
+    if (typeof window !== 'undefined') window.location.href = checkout.webUrl;
   }
 
   async function fetchCheckout() {

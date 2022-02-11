@@ -1,8 +1,6 @@
 const GA_TRACKING_ID = 'UA-76403737-3';
 
-require('dotenv').config({
-  path: `.env.${process.env.NODE_ENV}`,
-});
+require('dotenv').config();
 
 module.exports = {
   siteMetadata: {

@@ -132,7 +132,10 @@ const Navbar = ({ displayTagline, onCartClick, onMenuClick }) => {
                 Who?
               </Link>
               <Link
-                partiallyActive={window.location.href.includes('/posts')}
+                partiallyActive={
+                  typeof window !== 'undefined' &&
+                  window.location.href.includes('/posts')
+                }
                 activeClassName="active"
                 mr={4}
                 to="/posts"
@@ -153,9 +156,10 @@ const Navbar = ({ displayTagline, onCartClick, onMenuClick }) => {
                 }}
               >
                 <Link
-                  partiallyActive={window.location.href.includes(
-                    '/photography',
-                  )}
+                  partiallyActive={
+                    typeof window !== 'undefined' &&
+                    window.location.href.includes('/photography')
+                  }
                   activeClassName="active"
                   to="/photography"
                 >
