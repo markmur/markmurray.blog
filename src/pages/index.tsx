@@ -24,9 +24,9 @@ const IndexPage = (props) => {
   return (
     <Layout wide displayTagline>
       <ErrorBoundary>
-        <Box pt={4}>
+        <Box pt={[0, 4]}>
           <Container>
-            <Box mb={4}>
+            <Box mb={[3, 4]}>
               <PageHeading>Latest Collections</PageHeading>
             </Box>
           </Container>
