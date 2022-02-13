@@ -557,7 +557,7 @@ export const PageHeading = styled(Text).attrs({ as: 'h1' })<Defaults>`
   `)}
 `;
 
-export const Carousel = styled(Flex)<Defaults>`
+export const Carousel = styled(Flex)<Defaults & { scrollPadding?: boolean }>`
   ${defaults};
   list-style: none;
   white-space: nowrap;
@@ -576,10 +576,13 @@ export const Carousel = styled(Flex)<Defaults>`
     display: none;
   }
 
-  @media screen and (max-width: 52em) {
-    scroll-padding-left: 1em;
-    padding-left: 1em;
-  }
+  ${(p) =>
+    p.scrollPadding === false
+      ? ``
+      : `@media screen and (max-width: 52em) {
+      scroll-padding-left: 1em;
+      padding-left: 1em;
+    }`}
 `;
 
 export const CarouselItem = styled(Box)<Defaults>`

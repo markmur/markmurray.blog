@@ -17,7 +17,9 @@ import { formatPrice } from '../../utils/currency';
 import Controls from '../Carousel/Controls';
 
 const MobileContainer = ({ children }) => (
-  <Box px={['1em', 0, '0.5em']}>{children}</Box>
+  <Box pl={[1, 0, 0]} px={['1em', 0, '0.5em']}>
+    {children}
+  </Box>
 );
 
 interface Product {

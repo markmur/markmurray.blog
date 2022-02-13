@@ -1,7 +1,15 @@
 import React from 'react';
 import './styles.scss';
 
-import { Flex, Box, HideOnMobile, HideOnDesktop, Sticker } from '../../styles';
+import {
+  Flex,
+  Box,
+  HideOnMobile,
+  HideOnDesktop,
+  Sticker,
+  Carousel,
+  CarouselItem,
+} from '../../styles';
 
 interface Image {
   src: string;
@@ -17,7 +25,7 @@ function Tag({ value }) {
   return (
     <Sticker
       position="absolute"
-      bottom={['4em', '0']}
+      bottom={['0']}
       right={['0']}
       margin="1.5em"
       zIndex="100"
@@ -50,30 +58,27 @@ const ImageGallery = ({ images }: Props) => {
 
       {/* Mobile */}
       <HideOnDesktop>
-        <Flex
-          position="relative"
-          mb="1em"
-          className="imageGallery"
-          flexDirection="row"
-          flexWrap="nowrap"
-          overflowX="auto"
-          scrollBar={false}
-        >
+        <Carousel scrollPadding={false}>
           {images.map((image) => (
-            <Box position="relative" key={image.src} flex="1 0 auto">
-              {image.tag && <Tag value={image.tag} />}
-              <img
-                src={image.src}
-                style={{
-                  backgroundImage: `-webkit-image-set(url(${image}) 1x, url(${image}) 2x)`,
-                  height: 'auto',
-                  maxHeight: '75vw',
-                  maxWidth: '100vw',
-                }}
-              />
-            </Box>
+            <CarouselItem
+              display="inline-block"
+              margin="auto"
+              position="relative"
+              key={image.src}
+              flex="1 0 auto"
+            >
+              <Box backgroundColor="#eee">
+                {image.tag && <Tag value={image.tag} />}
+                <img
+                  src={image.src}
+                  style={{
+                    width: 'calc(100vw - 2em)',
+                  }}
+                />
+              </Box>
+            </CarouselItem>
           ))}
-        </Flex>
+        </Carousel>
       </HideOnDesktop>
     </React.Fragment>
   );

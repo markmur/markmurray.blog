@@ -157,13 +157,13 @@ function ProductTemplate(props: Props) {
 
   return (
     <>
-      <HideOnDesktop>
-        <Box mt={-4}>
-          <ImageGallery images={getProductImages(product)} />
-        </Box>
-      </HideOnDesktop>
-
       <Container>
+        <HideOnDesktop>
+          <Box mt={-2}>
+            <ImageGallery images={getProductImages(product)} />
+          </Box>
+        </HideOnDesktop>
+
         <Flex
           mt={[3, 4, 4]}
           width="100%"
@@ -280,13 +280,13 @@ function ProductTemplate(props: Props) {
             <Box pt={2} textAlign="center">
               <small>Photos are printed on high-quality Fuji Matt paper.</small>
             </Box>
-            <Box pt={2} textAlign="center">
+            {/* <Box pt={2} textAlign="center">
               <small>
                 All prints come with a 10mm white border. This is for easier
                 handling and better mounting options. If you would like
                 borderless prints, please get in touch.
               </small>
-            </Box>
+            </Box> */}
           </Box>
         </Flex>
 
