@@ -67,8 +67,8 @@ const ImageGallery = ({ images }: Props) => {
                 style={{
                   backgroundImage: `-webkit-image-set(url(${image}) 1x, url(${image}) 2x)`,
                   height: 'auto',
-                  maxHeight: '60vw',
-                  maxWidth: '80vw',
+                  maxHeight: '75vw',
+                  maxWidth: '100vw',
                 }}
               />
             </Box>
