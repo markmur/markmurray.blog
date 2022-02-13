@@ -165,7 +165,7 @@ function ProductTemplate(props: Props) {
 
       <Container>
         <Flex
-          mt={4}
+          mt={[3, 4, 4]}
           width="100%"
           justifyContent={['center', 'flex-start']}
           alignItems={['inherit', 'flex-start']}
@@ -178,10 +178,10 @@ function ProductTemplate(props: Props) {
           <Box
             ref={detailsRef}
             border="2px solid"
-            py={[5, 5]}
+            py={[4, 5, 5]}
             px={[4, 5]}
             flex={[1, '1 0 55%']}
-            top={['-5em', 0, '2em']}
+            top={[0, 0, '2em']}
             backgroundColor="white"
             boxShadow={2}
             position={['relative', 'relative', 'sticky']}
