@@ -30,7 +30,7 @@ export const CollectionTemplate = ({ title, description, images }) => {
 
         <hr />
 
-        <ImageGrid images={images} grid={[2, 3, 4]} />
+        <ImageGrid center images={images} grid={[2, 3, 4]} />
       </Container>
     </Content>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { EntypoGithub as GithubIcon } from 'react-entypo';
-import { Button, Flex, Box, Text, Image } from '../../styles';
+import { Button, Flex, Box, Text, BackgroundImage } from '../../styles';
 
 import './styles.scss';
 
@@ -14,19 +14,15 @@ const ProjectShowcase = ({ project }) => {
         </Box>
 
         {project.image_url && (
-          <a rel="noopener noreferer" href={project.url}>
-            <Image
-              borderRadius={8}
-              mb={4}
-              width="640px"
-              height="auto"
-              aspectRatio={3.25 / 2}
-              backgroundColor="#eee"
-              alt={project.title}
-              src={project.image_url}
-              boxShadow="0 12px 36px 0 rgb(44 62 80 / 35%)"
-            />
-          </a>
+          <BackgroundImage
+            borderRadius={8}
+            mb={4}
+            aspectRatio={3.5 / 2}
+            maxHeight={400}
+            backgroundColor="#eee"
+            src={project.image_url}
+            boxShadow="0 12px 36px 0 rgb(44 62 80 / 35%)"
+          />
         )}
 
         <Flex

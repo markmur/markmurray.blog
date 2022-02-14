@@ -1073,14 +1073,14 @@ export const LinkList = styled.ul<Defaults>`
 `;
 
 export const BackgroundImage = styled.div<
-  Defaults & { width: number; height: number; src: string }
+  Defaults & { maxHeight: number | string; src: string }
 >`
   ${defaults};
-  // width: ${(p) => getUnitValue(p.width)};
-  // height: ${(p) => getUnitValue(p.height)};
+  width: 100%;
+  max-height: ${(p) => getUnitValue(p.maxHeight)};
   background-image: url(${(p) => p.src});
   background-size: cover;
-  background-position: center center;
+  background-position: top left;
 `;
 
 /** Max sure this one is last */

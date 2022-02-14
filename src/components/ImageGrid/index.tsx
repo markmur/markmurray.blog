@@ -23,12 +23,14 @@ interface Props {
   images: Image[];
   grid?: [number, number, number];
   carouselOnMobile?: boolean;
+  center?: boolean;
 }
 
 const ImageGrid: React.FC<Props> = ({
   images,
   grid = [2, 3, 5],
   carouselOnMobile = false,
+  center = false,
 }) => {
   return (
     <Flex
@@ -36,6 +38,7 @@ const ImageGrid: React.FC<Props> = ({
       scrollBar={!carouselOnMobile}
       maxWidth="100vw"
       overflowX="auto"
+      justifyContent={center ? 'center' : 'flex-start'}
       flexWrap={carouselOnMobile ? ['nowrap', 'wrap'] : 'wrap'}
     >
       {images.map((image) => (
