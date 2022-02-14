@@ -1076,8 +1076,7 @@ export const BackgroundImage = styled.div<
   Defaults & { maxHeight: number | string; src: string }
 >`
   ${defaults};
-  width: 100%;
-  max-height: ${(p) => getUnitValue(p.maxHeight)};
+
   background-image: url(${(p) => p.src});
   background-size: cover;
   background-position: top left;

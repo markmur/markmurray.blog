@@ -19,6 +19,7 @@ const ProjectShowcase = ({ project }) => {
             mb={4}
             aspectRatio={3.5 / 2}
             maxHeight={400}
+            width="100%"
             backgroundColor="#eee"
             src={project.image_url}
             boxShadow="0 12px 36px 0 rgb(44 62 80 / 35%)"
