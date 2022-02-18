@@ -10,11 +10,12 @@ const Incrementer = ({
 }) => (
   <React.Fragment>
     <Flex
+      display="inline-flex"
       flexWrap="nowrap"
       alignItems="center"
-      p={2}
+      p="5px"
       borderRadius={3}
-      backgroundColor="#e4e8eb"
+      backgroundColor="#f4f4f7"
     >
       <Box>
         <Button

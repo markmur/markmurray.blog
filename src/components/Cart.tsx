@@ -1,5 +1,10 @@
 import React from 'react';
-import { FiLoader, FiShoppingBag, FiShoppingCart, FiTag } from 'react-icons/fi';
+import {
+  FiTrash2 as Trash,
+  FiShoppingBag,
+  FiShoppingCart,
+  FiTag,
+} from 'react-icons/fi';
 
 import Incrementer from './Incrementer';
 import {
@@ -40,17 +45,18 @@ function LineItem(props) {
 
   return (
     <Box py={3} borderBottom="1px solid" borderColor="#eee">
-      <Flex alignItems="center" justifyContent="space-between">
-        <Box>
-          <Flex alignItems="center">
-            <Box mr={3}>
-              <BackgroundImage
-                src={props.variant?.image?.src}
-                width={60}
-                height={90}
-                borderRadius={4}
-              />
-            </Box>
+      <Flex>
+        <Box mr={3}>
+          <BackgroundImage
+            src={props.variant?.image?.src}
+            width={60}
+            height={90}
+            borderRadius={4}
+          />
+        </Box>
+
+        <Flex flex="1" justifyContent="space-between">
+          <Flex flex="1" justifyContent="space-between">
             <Box>
               <Text as="h4" mb={2}>
                 {props.title}
@@ -59,45 +65,45 @@ function LineItem(props) {
               <Box mb={2}>
                 <small>{props.variant.title}</small>
               </Box>
+            </Box>
 
-              <Box>
-                <Text
-                  fontSize="12px"
-                  as="small"
-                  cursor="pointer"
-                  onClick={props.onRemove}
-                >
-                  Remove
-                </Text>
-              </Box>
+            <Box pl={2} textAlign="right">
+              {hasDiscounts && (
+                <Strike mb={1} fontSize="1em">
+                  {formatPrice(
+                    props.variant.priceV2.amount,
+                    props.variant.priceV2.currencyCode,
+                  )}
+                </Strike>
+              )}
+              <Text as="strong" fontSize="1em">
+                {finalPrice}
+              </Text>
             </Box>
           </Flex>
-        </Box>
 
-        <Flex alignItems="center" justifyContent="space-between">
-          <Box p={2}>
+          <Flex width="100%" alignItems="center" justifyContent="space-between">
             <Incrementer
               value={props.quantity}
               onIncrement={props.onIncrement}
               onDecrement={props.onDecrement}
             />
-          </Box>
-          <Box pl={2} textAlign="right">
-            {hasDiscounts && (
-              <Strike mb={1} fontSize="1em">
-                {formatPrice(
-                  props.variant.priceV2.amount,
-                  props.variant.priceV2.currencyCode,
-                )}
-              </Strike>
-            )}
-            <Text as="strong" fontSize="1em">
-              {finalPrice}
-            </Text>
-          </Box>
+
+            <Box textAlign="right">
+              <Text
+                fontSize="12px"
+                as="small"
+                cursor="pointer"
+                onClick={props.onRemove}
+              >
+                <Trash size={20} />
+              </Text>
+            </Box>
+          </Flex>
         </Flex>
       </Flex>
-      <Flex justifyContent="flex-end">
+
+      <Flex mt={2}>
         {props.discountAllocations.length > 0 && (
           <ul>
             {props.discountAllocations.map((discount) => (

@@ -128,6 +128,7 @@ export const Text = styled('p')<Defaults>`
 export const Strike = styled(Text)<Defaults>`
   ${defaults};
   text-decoration: line-through;
+  margin: 0;
 `;
 
 export const Flex = styled('div')<Defaults>`
@@ -363,16 +364,15 @@ export const Button = styled('button').attrs({
     `
     font-size: 16px;
     font-weight: normal;
-    padding: 4px 14px;
+    padding: 4px 10px;
     background: white;
     border: 0;
     margin: 0;
-    background: white;
-    opacity: 0.6;
+    background: #f4f4f7;
 
 
     &:hover {
-      opacity: 1;
+      background: white;
     }
   `}
 `;
