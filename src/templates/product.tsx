@@ -215,15 +215,28 @@ function ProductTemplate(props: Props) {
                   <em>Taken with</em>
                 </div>
 
-                <strong>{getMetafield(product, 'camera')}</strong>
-
-                <div>
-                  <strong>{getMetafield(product, 'lens')}</strong>
-                </div>
+                <strong>
+                  {getMetafield(product, 'camera')} -{' '}
+                  {getMetafield(product, 'lens')}
+                </strong>
               </small>
             </Box>
 
-            <Box mt={4} mb={3}>
+            {
+              <Box my={4}>
+                <small>
+                  <div>
+                    <em>Printed on</em>
+                  </div>
+
+                  <strong>
+                    {getMetafield(product, 'paper') || 'C-Type - Fuji Matt'}
+                  </strong>
+                </small>
+              </Box>
+            }
+
+            {/* <Box mt={4} mb={3}>
               <small>
                 <strong>Sizes available</strong>
                 <Box pt={1} pb={3} pl={4}>
@@ -241,7 +254,7 @@ function ProductTemplate(props: Props) {
                   for custom print sizes.
                 </small>
               </small>
-            </Box>
+            </Box> */}
 
             <Box mb={1}>
               <small>
@@ -277,9 +290,12 @@ function ProductTemplate(props: Props) {
               </Button>
             </Box>
 
-            <Box pt={2} textAlign="center">
-              <small>Photos are printed on high-quality Fuji Matt paper.</small>
-            </Box>
+            <small>
+              <strong>
+                <a href="mailto:mark@markmurray.co">Get in touch</a>
+              </strong>{' '}
+              for custom print sizes.
+            </small>
             {/* <Box pt={2} textAlign="center">
               <small>
                 All prints come with a 10mm white border. This is for easier
