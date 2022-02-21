@@ -1,5 +1,6 @@
 import React from 'react';
-import { FiShoppingBag, FiMenu } from 'react-icons/fi';
+import cx from 'classnames';
+import { FiShoppingBag, FiMenu, FiX } from 'react-icons/fi';
 import {
   Flex,
   Box,
@@ -109,20 +110,32 @@ const LinkDropdown = ({
   );
 };
 
-const Navbar = ({ displayTagline, onCartClick, onMenuClick }) => {
+const Navbar: React.FC<{
+  displayTagline?: boolean;
+  open: boolean;
+  className?: string;
+  onCartClick: () => void;
+  onMenuClick: () => void;
+}> = ({ open, displayTagline, onCartClick, onMenuClick }) => {
   const { cartCount } = useShopify();
 
+  const MenuIcon = open ? FiX : FiMenu;
+
   return (
-    <Nav role="navigation" aria-label="main-navigation">
+    <Nav
+      className={cx({ active: open })}
+      role="navigation"
+      aria-label="main-navigation"
+    >
       <Container>
         <Flex alignItems="center" justifyContent={['space-between']}>
           <HideOnDesktop>
-            <FiMenu fontSize={24} onClick={onMenuClick} />
+            <MenuIcon fontSize={24} onClick={onMenuClick} />
           </HideOnDesktop>
 
           <div>
             <Link to="/">
-              <Logo>Mark.</Logo>
+              <Logo active={open}>Mark.</Logo>
             </Link>
           </div>
 
@@ -178,7 +191,11 @@ const Navbar = ({ displayTagline, onCartClick, onMenuClick }) => {
 
           <HideOnDesktop>
             <Link style={{ cursor: 'pointer' }} to="/cart">
-              <FiShoppingBag size={20} style={{ verticalAlign: 'bottom' }} />{' '}
+              <FiShoppingBag
+                color={open ? 'white' : 'initial'}
+                size={20}
+                style={{ verticalAlign: 'bottom' }}
+              />{' '}
               {cartCount > 0 ? <CartCount>{cartCount}</CartCount> : null}
             </Link>
           </HideOnDesktop>

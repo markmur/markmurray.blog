@@ -1,125 +1,17 @@
 import React from 'react';
 import { Link as GatsbyLink } from 'gatsby';
 import { EntypoPin } from 'react-entypo-icons';
+import { space } from 'styled-system';
 import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
 import {
-  backgroundImage,
-  BackgroundImageProps,
-  backgroundPosition,
-  BackgroundPositionProps,
-  backgroundSize,
-  BackgroundSizeProps,
-  border,
-  BorderProps,
-  boxShadow,
-  BoxShadowProps,
-  color,
-  ColorProps,
-  display,
-  DisplayProps,
-  flexbox,
-  FlexboxProps,
-  fontSize,
-  FontSizeProps,
-  fontWeight,
-  FontWeightProps,
-  height,
-  HeightProps,
-  layout,
-  LayoutProps,
-  maxWidth,
-  MaxWidthProps,
-  position,
-  PositionProps,
-  space,
-  SpaceProps,
-  system,
-  textAlign,
-  TextAlignProps,
-  width,
-  WidthProps,
-} from 'styled-system';
-
-const aspectRatio = system({
-  aspectRatio: {
-    property: 'aspectRatio',
-    transform: (val) => `${val}`,
-  },
-});
-
-const cursor = system({
-  cursor: {
-    property: 'cursor',
-  },
-});
-
-const textDecoration = system({
-  cursor: {
-    property: 'textDecoration',
-  },
-});
-
-const lineClamp = system({
-  lineClamp: {
-    property: 'WebkitLineClamp',
-  },
-});
-
-interface CustomDefinitions {
-  cursor?: string;
-  aspectRatio?: string | number | number[];
-  scrollBar?: boolean | boolean[];
-  textDecoration?: string;
-  lineClamp?: number;
-}
-
-const defaults = css`
-  ${position};
-  ${border};
-  ${boxShadow};
-  ${flexbox};
-  ${space};
-  ${layout};
-  ${display};
-  ${color};
-  ${height};
-  ${fontSize};
-  ${fontWeight};
-  ${maxWidth};
-  ${width};
-  ${textAlign};
-  ${backgroundPosition};
-  ${backgroundSize};
-  ${backgroundImage};
-  ${textDecoration};
-  ${(p: any) => (p.aspectRatio ? aspectRatio : '')};
-  ${cursor};
-  ${lineClamp};
-`;
-
-export type Defaults = FlexboxProps &
-  BackgroundImageProps &
-  BackgroundPositionProps &
-  BackgroundSizeProps &
-  BorderProps &
-  BoxShadowProps &
-  ColorProps &
-  DisplayProps &
-  FontSizeProps &
-  FontWeightProps &
-  HeightProps &
-  PositionProps &
-  LayoutProps &
-  MaxWidthProps &
-  SpaceProps &
-  TextAlignProps &
-  WidthProps &
-  CustomDefinitions;
-
-const scrollBar = css`
-  ${(p: any) =>
-    p.scrollBar === false ? `&::-webkit-scrollbar { display: none; } ` : ''};
-`;
+  slideInKeyframes,
+  fadeInKeyframes,
+  fadeUpInKeyframes,
+  fadeOutKeyframes,
+} from './styles/keyframes';
+import { MAIN_FONT, LOGO_FONT, SERIF_FONT } from './styles/constants';
+import { defaults, Defaults, scrollBar } from './styles/system';
+import { isMobile, notMobile } from './styles/devices';
 
 export const Text = styled('p')<Defaults>`
   ${defaults};
@@ -144,47 +36,13 @@ export const Box = styled('div')<Defaults>`
 
 export const CollectionCarouselBox = styled(Box)<Defaults>`
   ${defaults};
-
   @media screen and (min-width: 1320px) {
     margin-left: calc(50vw - 668px);
   }
 `;
 
-// const LOGO_FONT = 'PT Serif, serif'
-const font = (family) => `font-family: ${family}`;
-
-const MAIN_FONT = font(
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-);
-const LOGO_FONT = font('Reenie Beanie');
-const SERIF_FONT = font('Merriweather, serif');
-
 const theme = (key: string, fallback?: any) => (props) =>
   props.theme[key] || fallback || 'initial';
-
-export const isMobile = (content) => `
-  @media screen and (max-width: 40em) {
-    ${content}
-  }
-`;
-
-export const isTablet = (content) => `
-  @media screen and (min-width: 52em) {
-    ${content};
-  }
-`;
-
-export const isDesktop = (content) => `
-  @media screen and (min-width: 60em) {
-    ${content};
-  }
-`;
-
-export const notMobile = (content) => `
-  @media screen and (min-width: 41em) {
-    ${content}
-  }
-`;
 
 export const HideOnMobile = ({ children, ...props }) => (
   <Box display={['none', 'block', 'block']} {...props}>
@@ -227,11 +85,17 @@ export const Nav = styled('nav')<Defaults>`
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 100;
+    z-index: 10000;
     background: rgba(245, 245, 247, 0.75);
     border-bottom: 1px solid #eaeaea;
     backdrop-filter: blur(10px) saturate(150%);
   `)}
+
+  &.active {
+    color: white;
+    background: transparent;
+    border-bottom: none;
+  }
 `;
 
 export const Pinned = (props) => (
@@ -241,23 +105,6 @@ export const Pinned = (props) => (
 );
 
 const borderWidth = 10;
-
-// const VerticalBorder = styled("div")<Defaults>`
-//   position: absolute;
-//   z-index: 100;
-//   ${space};
-//   width: 20px;
-//   height: ${typeof document === 'undefined'
-//     ? '100%'
-//     : `${document.body.offsetHeight}px`};
-//   opacity: 1;
-//   top: 0;
-//   bottom: 0;
-
-//   ${notMobile(`
-//     background: linear-gradient(to bottom, black, blue);
-//   `)}
-// `
 
 interface ButtonProps {
   expand?: boolean;
@@ -410,7 +257,9 @@ export const imageBackground = css`
   -webkit-background-clip: text;
 `;
 
-export const Logo = styled(Text).attrs({ as: 'h2' })<Defaults>`
+export const Logo = styled(Text).attrs({ as: 'h2' })<
+  { active: boolean } & Defaults
+>`
   ${LOGO_FONT};
   color: ${theme('logoColor', theme('color'))};
   font-size: 3.5rem;
@@ -419,7 +268,7 @@ export const Logo = styled(Text).attrs({ as: 'h2' })<Defaults>`
   letter-spacing: 0.75px;
   font-weight: lighter;
   ${transition};
-  color: blue;
+  color: ${(p) => (p.active ? 'white' : 'blue')};
 `;
 
 export const Link = styled(GatsbyLink)<Defaults>`
@@ -453,10 +302,6 @@ export const Link = styled(GatsbyLink)<Defaults>`
   svg {
     margin-left: 0.5em;
   }
-
-  // &:hover {
-  //   border-bottom: 2px solid;
-  // }
 `;
 
 export const Tag = styled(GatsbyLink)`
@@ -852,64 +697,62 @@ export const Select = styled('select')<Defaults>`
   border: 1px solid;
 `;
 
-const slideInKeyframes = keyframes`
- from { transform: translateX(200px) }
- to { transform: translate(0) }
-`;
-
-const slideOutKeyframes = keyframes`
- from { transform: translate(0) }
- to { transform: translateX(200px) }
-`;
-
-const fadeInKeyframes = keyframes`
-  from { opacity: 0 }
-  to { opacity: 1 }
-`;
-
-const fadeOutKeyframes = keyframes`
-  from { opacity: 1 }
-  to { opacity: 0 }
-`;
-
-const animations = (...animations) => css`
-  animation: ${animations.join(', ')};
-`;
-
-export const Drawer = styled(Box)<{
-  open?: boolean;
-}>`
-  ${defaults};
+export const Drawer = styled(Box)<
+  {
+    open?: boolean;
+    blur?: boolean;
+  } & Defaults
+>`
   position: fixed;
   right: 0;
   top: 0;
   bottom: 0;
-  max-width: 90%;
-  width: 500px;
+  max-width: 100%;
+  width: ${(p) => p.width ?? '500px'};
   height: 100vh;
   overflow-y: auto;
   padding-bottom: 5em;
   z-index: 1000;
-  // display: ${(p) => (p.open ? 'block' : 'none')};
-  // opacity: ${(p) => (p.open ? '1' : '0')};
   transform: translateX(${(p) => (p.open ? '0%' : '10%')});
   box-shadow: rgb(0 0 0 / 10%) -5px 0px 20px 0px;
   transition: all 150ms ease-out 0s;
   animation: ${slideInKeyframes} 200ms ease-out;
+  ${(p) => p.blur && `backdrop-filter: blur(10px) saturate(150%)`};
+  ${defaults};
 
-  a {
+  .link {
+    display: block;
+    position: relative;
     transition: all 200ms ease;
-    opacity: 0.8;
+    opacity: 0;
+    animation: ${fadeUpInKeyframes} 700ms ease-out forwards;
+
+    &:nth-of-type(1) {
+      animation-delay: 0s;
+    }
+    &:nth-of-type(2) {
+      animation-delay: 100ms;
+    }
+    &:nth-of-type(3) {
+      animation-delay: 200ms;
+    }
+    &:nth-of-type(4) {
+      animation-delay: 300ms;
+    }
+    &:nth-of-type(5) {
+      animation-delay: 400ms;
+    }
+
+    &:hover {
+      text-indent: 0.25em;
+      opacity: 1;
+    }
   }
 
   a[aria-current='page'] {
     opacity: 1;
     font-weight: bold;
-  }
-
-  a:hover {
-    padding-left: 0.25em;
-    opacity: 1;
+    color: blue;
   }
 
   &.exit {
@@ -968,7 +811,6 @@ export const Overlay = styled(Box)`
   left: 0;
   background: rgba(63, 63, 106, 0.42);
   z-index: 999;
-  // transition: all 10s ease;
   animation: ${fadeInKeyframes} 200ms ease;
 
   &.close {
@@ -1115,7 +957,6 @@ export const GlobalStyles = createGlobalStyle`
   html,
   body {
     ${MAIN_FONT};
-    // font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
     font-size: 100%;

@@ -5,45 +5,36 @@ import { FiX } from 'react-icons/fi';
 import Drawer from './Drawer';
 import { Box, Overlay, Flex } from '../styles';
 
+const NavLink: React.FC<{ to: string }> = ({ to, children }) => {
+  return (
+    <Box px={4} my={5} fontSize="1.5rem" className="link">
+      <Link to={to}>{children}</Link>
+    </Box>
+  );
+};
+
 const MobileMenu = ({ open = true, onClose }) => {
   return (
     <React.Fragment>
-      <Drawer open={open} backgroundColor="black">
+      <Drawer blur open={open} backgroundColor="rgba(0,0,0,0.9)" width="100vw">
         <Box m={4} onClick={onClose}>
           <FiX color="white" size={24} />
         </Box>
 
         <Flex color="white">
-          <Box p={4} pl={6}>
+          <Box p={4} pl={5}>
             <Flex
               flexDirection="column"
-              color="white"
               justifyContent="center"
+              color="white"
               height="70vh"
             >
-              <div
-                style={{
-                  borderLeft: '1px solid rgba(255,255,255,0.2)',
-                }}
-              >
-                <Box px={4} my={4} fontSize="1.25rem">
-                  <Link to="/">Home</Link>
-                </Box>
-                <Box px={4} my={4} fontSize="1.25rem">
-                  <Link to="/about">Who?</Link>
-                </Box>
-                <Box px={4} my={4} fontSize="1.25rem">
-                  <Link to="/posts">Articles</Link>
-                </Box>
-                <Box px={4} my={4} fontSize="1.25rem">
-                  <Link to="/projects">Projects</Link>
-                </Box>
-                <Box px={4} my={4} fontSize="1.25rem">
-                  <Link to="/photography">Photography</Link>
-                </Box>
-                <Box px={4} my={4} fontSize="1.25rem">
-                  <Link to="/cart"> Your cart</Link>
-                </Box>
+              <div>
+                <NavLink to="/">Home</NavLink>
+                <NavLink to="/about">Who?</NavLink>
+                <NavLink to="/posts">Articles</NavLink>
+                <NavLink to="/projects">Projects</NavLink>
+                <NavLink to="/photography">Photography</NavLink>
               </div>
             </Flex>
           </Box>

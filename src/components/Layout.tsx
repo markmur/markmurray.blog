@@ -105,13 +105,13 @@ const Content = ({ site, children, displayTagline = false }) => {
                           <React.Fragment>
                             <MobileMenu
                               open={open}
-                              onClose={() => setOpenState(false)}
+                              onClose={() => setOpenState(!open)}
                             />
-
                             <Navbar
+                              open={open}
                               displayTagline={displayTagline}
                               onCartClick={() => setCartState(true)}
-                              onMenuClick={() => setOpenState(true)}
+                              onMenuClick={() => setOpenState(!open)}
                             />
                           </React.Fragment>
                         )}

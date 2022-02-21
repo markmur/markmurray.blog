@@ -142,7 +142,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                       <Box
                         className={loaded ? 'item loaded' : 'item'}
                         mr={[2, 3]}
-                        width={['40vw', '200px', '278px']}
+                        width={['60vw', '200px', '278px']}
                         aspectRatio={[4 / 6, 5 / 8]}
                         backgroundSize="cover"
                         style={{

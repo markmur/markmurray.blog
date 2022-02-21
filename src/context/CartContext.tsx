@@ -10,7 +10,10 @@ export const CartContext = React.createContext<Props>({
   setCartState: (open: boolean) => undefined,
 });
 
-const Cart = ({ initialState, children }) => {
+const Cart: React.FC<{ initialState: { open: boolean } }> = ({
+  initialState,
+  children,
+}) => {
   const [state, setState] = React.useState(initialState);
 
   const setCartState = (value: boolean) => {

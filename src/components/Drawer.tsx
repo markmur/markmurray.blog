@@ -5,7 +5,8 @@ import { CSSTransition } from 'react-transition-group';
 
 interface Props {
   open: boolean;
-  onClose: () => void;
+  blur?: boolean;
+  onClose?: () => void;
 }
 
 const Drawer: React.FC<Props & Defaults> = ({

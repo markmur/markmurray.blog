@@ -2,15 +2,18 @@ import React from 'react';
 
 interface Props {
   open: boolean;
-  setOpenState: (value: boolean) => undefined;
+  setOpenState: (value: boolean) => void;
 }
 
 const { Provider, Consumer } = React.createContext<Props>({
   open: false,
-  setOpenState: () => undefined,
+  setOpenState: () => {},
 });
 
-const MenuContext = ({ initialState, children }) => {
+const MenuContext: React.FC<{ initialState: { open: boolean } }> = ({
+  initialState,
+  children,
+}) => {
   const [state, setState] = React.useState(initialState);
 
   const setOpenState = (value: boolean) => {
