@@ -118,6 +118,8 @@ module.exports = {
     //   },
     // },
     'gatsby-plugin-typescript',
+    'gatsby-plugin-sharp',
+    'gatsby-transformer-sharp',
 
     // "gatsby-plugin-netlify" should come last here
     'gatsby-plugin-netlify',
