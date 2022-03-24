@@ -161,7 +161,10 @@ const Navbar: React.FC<{
 
               <LinkDropdown
                 links={{
-                  '': [{ text: 'All', to: '/photography' }],
+                  '': [
+                    { text: 'All', to: '/photography' },
+                    { text: 'Film', to: '/photography/film' },
+                  ],
                   Collections: [
                     { text: 'Sapphire', to: '/collections/sapphire' },
                     { text: 'Reflections', to: '/collections/reflections' },
