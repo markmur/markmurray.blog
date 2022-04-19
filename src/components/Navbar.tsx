@@ -163,9 +163,9 @@ const Navbar: React.FC<{
                 links={{
                   '': [
                     { text: 'All', to: '/photography' },
-                    { text: 'Film', to: '/photography/film' },
                   ],
                   Collections: [
+                    { text: 'Film', to: '/photography/film' },
                     { text: 'Sapphire', to: '/collections/sapphire' },
                     { text: 'Reflections', to: '/collections/reflections' },
                   ],
