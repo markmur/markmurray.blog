@@ -1,0 +1,20 @@
+fragment Collection on ShopifyCollection {
+  id
+  title
+  handle
+  description
+  products {
+    id
+    handle
+    title
+    images {
+      src
+    }
+    priceRangeV2 {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+  }
+}

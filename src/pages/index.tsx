@@ -32,23 +32,27 @@ const IndexPage = (props) => {
           </Container>
         </Box>
 
-        <CollectionCarousel
-          id={featuredCollection.id}
-          handle={featuredCollection.handle}
-          title={`The ${featuredCollection.title} Collection`}
-          description={featuredCollection.description}
-          heading={featuredCollection.title}
-          products={featuredCollection.products}
-        />
+        {featuredCollection && (
+          <CollectionCarousel
+            id={featuredCollection.id}
+            handle={featuredCollection.handle}
+            title={`The ${featuredCollection.title} Collection`}
+            description={featuredCollection.description}
+            heading={featuredCollection.title}
+            products={featuredCollection.products}
+          />
+        )}
 
-        <CollectionCarousel
-          id={featuredCollectionTwo.id}
-          handle={featuredCollectionTwo.handle}
-          title={`The ${featuredCollectionTwo.title} Collection`}
-          description={featuredCollectionTwo.description}
-          heading={featuredCollectionTwo.title}
-          products={featuredCollectionTwo.products}
-        />
+        {featuredCollectionTwo && (
+          <CollectionCarousel
+            id={featuredCollectionTwo.id}
+            handle={featuredCollectionTwo.handle}
+            title={`The ${featuredCollectionTwo.title} Collection`}
+            description={featuredCollectionTwo.description}
+            heading={featuredCollectionTwo.title}
+            products={featuredCollectionTwo.products}
+          />
+        )}
       </ErrorBoundary>
 
       <Box pt={4}>
@@ -85,47 +89,37 @@ const IndexPage = (props) => {
 };
 
 export const pageQuery = graphql`
-  {
-    featuredCollection: shopifyCollection(title: { eq: "Sapphire" }) {
-      id
-      title
-      handle
-      description
-      products {
-        id
-        handle
-        title
-        images {
-          src
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-    featuredCollectionTwo: shopifyCollection(title: { eq: "Reflections" }) {
-      id
-      title
-      handle
-      description
-      products {
-        id
-        handle
-        title
-        images {
-          src
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
+  # fragment Collection on shopifyCollection {
+  #   id
+  #   title
+  #   handle
+  #   description
+  #   products {
+  #     id
+  #     handle
+  #     title
+  #     images {
+  #       src
+  #     }
+  #     priceRangeV2 {
+  #       minVariantPrice {
+  #         amount
+  #         currencyCode
+  #       }
+  #     }
+  #   }
+  # }
+
+  query IndexPageQuery {
+    # featuredCollection: shopifyCollection(title: { eq: "Sapphire" }) {
+    #   ...Collection
+    # }
+    # featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
+    #   ...Collection
+    # }
+    # featuredCollectionThree: shopifyCollection(title: { eq: "Reflections" }) {
+    #   ...Collection
+    # }
     posts: allMarkdownRemark(
       sort: { fields: [frontmatter___date], order: [DESC] }
       filter: {
