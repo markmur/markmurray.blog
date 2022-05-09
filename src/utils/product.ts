@@ -31,13 +31,11 @@ export function toCartProduct(product: Product, price: Price): CartProduct {
   };
 }
 
-export function getProductUrl({
-  id,
-  handle
-}: {
-  id: string;
-  handle: string;
-}) {
+export function getProductUrl({ id, handle }: { id: string; handle: string }) {
+  if (!handle && !id) {
+    return undefined;
+  }
+
   if (!handle) {
     return `/photography/${id}`;
   }
