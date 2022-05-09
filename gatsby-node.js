@@ -3,7 +3,7 @@ const { get, uniq, kebabCase } = require('lodash');
 const { createFilePath } = require('gatsby-source-filesystem');
 
 exports.createPages = ({ actions, graphql }) => {
-  const { createPage } = actions;
+  const { createPage, createRedirect } = actions;
 
   return graphql(`
     {
@@ -153,6 +153,12 @@ exports.createPages = ({ actions, graphql }) => {
           tag,
         },
       });
+    });
+
+    // Redirects
+    createRedirect({
+      fromPath: '/collections/film',
+      toPath: '/photography/film',
     });
   });
 };

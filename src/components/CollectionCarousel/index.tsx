@@ -29,7 +29,8 @@ interface Product {
   images: {
     src: string;
   }[];
-  priceRangeV2: {
+  to?: string;
+  priceRangeV2?: {
     minVariantPrice: {
       amount: number;
       currencyCode: string;
@@ -39,6 +40,7 @@ interface Product {
 
 interface Props {
   id: string;
+  to?: string;
   handle: string;
   title: string;
   heading?: string;
@@ -46,8 +48,16 @@ interface Props {
   products: Product[];
 }
 
-const getMinPrice = (products: Product[]): Product['priceRangeV2'] => {
+const getMinPrice = (
+  products: Product[],
+): Product['priceRangeV2'] | undefined => {
   if (!products.length) return;
+
+  if (
+    products.every((product) => typeof product.priceRangeV2 === 'undefined')
+  ) {
+    return undefined;
+  }
 
   return products.sort(
     (a, b) =>
@@ -58,6 +68,7 @@ const getMinPrice = (products: Product[]): Product['priceRangeV2'] => {
 
 const CollectionCarousel: React.FunctionComponent<Props> = ({
   id,
+  to,
   title,
   handle,
   description,
@@ -109,11 +120,12 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                       <small>
                         <em>from </em>
                         <strong>
-                          {formatPrice(
-                            minPrice.minVariantPrice.amount,
-                            minPrice.minVariantPrice.currencyCode,
-                          )}{' '}
-                          {minPrice.minVariantPrice.currencyCode}
+                          {minPrice &&
+                            formatPrice(
+                              minPrice.minVariantPrice.amount,
+                              minPrice.minVariantPrice.currencyCode,
+                            )}{' '}
+                          {minPrice?.minVariantPrice.currencyCode}
                         </strong>
                       </small>
                     </Box>
@@ -125,7 +137,9 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                     {products.length > 3 && (
                       <Controls mt={3} mb={4} onPrev={prev} onNext={next} />
                     )}
-                    <Button href={`/collections/${id}`}>View Collection</Button>
+                    <Button href={to ?? `/collections/${id}`}>
+                      View Collection
+                    </Button>
                   </Box>
                 </Box>
               </Box>
@@ -138,7 +152,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                 .sort((a, b) => a.title?.localeCompare(b?.title))
                 .map((product) => (
                   <CarouselItem ref={observe} key={product.id}>
-                    <a href={getProductUrl(product)}>
+                    <a href={product.to ?? getProductUrl(product)}>
                       <Box
                         className={loaded ? 'item loaded' : 'item'}
                         mr={[2, 3]}

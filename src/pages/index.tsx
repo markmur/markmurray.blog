@@ -15,7 +15,8 @@ const getNodes = (entity) => {
 
 const IndexPage = (props) => {
   const { data } = props;
-  const { featuredCollection, featuredCollectionTwo } = data;
+  const { featuredCollection, featuredCollectionTwo, featuredFilmCollection } =
+    data;
   const posts = getNodes(data.posts);
 
   const containerRef = React.useRef(null);
@@ -31,6 +32,24 @@ const IndexPage = (props) => {
             </Box>
           </Container>
         </Box>
+
+        <CollectionCarousel
+          id="film"
+          handle="film"
+          to="/photography/film"
+          title="Lomo XP Redscale Film"
+          description="A collection of photos taken in Dublin with expired
+            Lomography Redscale XP 50-200 film in a Canon AE-1."
+          products={featuredFilmCollection.edges.map(({ node }, index) => ({
+            id: index,
+            title: `${node.title}`,
+            handle: `${node.title}`,
+            images: [
+              { src: node.childImageSharp.gatsbyImageData.images.fallback.src },
+            ],
+            to: '/photography/film',
+          }))}
+        />
 
         <CollectionCarousel
           id={featuredCollection.id}
@@ -86,6 +105,20 @@ const IndexPage = (props) => {
 
 export const pageQuery = graphql`
   {
+    featuredFilmCollection: allFile(
+      filter: { relativeDirectory: { eq: "film" } }
+      sort: { fields: name, order: [ASC] }
+      limit: 8
+    ) {
+      edges {
+        node {
+          id
+          childImageSharp {
+            gatsbyImageData(width: 500, placeholder: DOMINANT_COLOR)
+          }
+        }
+      }
+    }
     featuredCollection: shopifyCollection(title: { eq: "Sapphire" }) {
       id
       title
