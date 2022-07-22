@@ -10,7 +10,7 @@ const ProjectShowcase = ({ project }) => {
       <Flex>
         <Box height={130}>
           <Text as="h2">{project.title}</Text>
-          <p>{project.description}</p>
+          <p dangerouslySetInnerHTML={{ __html: project.description }} />
         </Box>
 
         {project.image_url && (
