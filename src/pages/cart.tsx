@@ -6,7 +6,7 @@ import { Container } from '../styles';
 const CartPage = () => {
   return (
     <Layout displayTagline={false}>
-      <Container>
+      <Container p={0}>
         <Cart open />
       </Container>
     </Layout>
