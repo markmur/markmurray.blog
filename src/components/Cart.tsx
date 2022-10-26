@@ -57,7 +57,7 @@ function LineItem(props) {
 
         <Flex flex="1" justifyContent="space-between">
           <Flex flex="1" justifyContent="space-between">
-            <Box>
+            <Box maxWidth="70%">
               <Text as="h4" mb={2}>
                 {props.title}
               </Text>
@@ -162,7 +162,7 @@ const Cart = ({ open }: { open: boolean }) => {
           </Box>{' '}
           <Flex alignItems="center">
             <Text as="h3" mr={2}>
-              Your bag
+              Your cart
             </Text>
             <small>
               ({shopify.cartCount} {shopify.cartCount === 1 ? 'item' : 'items'})

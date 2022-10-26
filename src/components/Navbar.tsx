@@ -16,6 +16,7 @@ import {
   Text,
 } from '../styles';
 import { useShopify } from '../hooks/use-shopify';
+import { graphql, useStaticQuery } from 'gatsby';
 
 interface Link {
   text: string;
@@ -60,7 +61,7 @@ const LinkDropdown = ({
 
     if (typeof links === 'object') {
       return Object.entries(links).map(([collectionName, links]) => (
-        <LinkList>
+        <LinkList key={collectionName}>
           <Text as="small" color="#686882" fontSize="10px">
             {collectionName}
           </Text>
@@ -121,6 +122,20 @@ const Navbar: React.FC<{
 
   const MenuIcon = open ? FiX : FiMenu;
 
+  const data = useStaticQuery(graphql`
+    {
+      allShopifyCollection {
+        edges {
+          node {
+            id
+            title
+            handle
+          }
+        }
+      }
+    }
+  `);
+
   return (
     <Nav
       className={cx({ active: open })}
@@ -161,13 +176,13 @@ const Navbar: React.FC<{
 
               <LinkDropdown
                 links={{
-                  '': [
-                    { text: 'All', to: '/photography' },
-                  ],
+                  // '': [{ text: 'All', to: '/photography' }],
                   Collections: [
                     { text: 'Film', to: '/photography/film' },
-                    { text: 'Sapphire', to: '/collections/sapphire' },
-                    { text: 'Reflections', to: '/collections/reflections' },
+                    ...data.allShopifyCollection.edges.map(({ node }) => ({
+                      text: node.title,
+                      to: `/collections/${node.handle}`,
+                    })),
                   ],
                 }}
               >
@@ -186,7 +201,7 @@ const Navbar: React.FC<{
               <Box ml={4}>
                 <a style={{ cursor: 'pointer' }} onClick={onCartClick}>
                   <FiShoppingBag style={{ verticalAlign: 'bottom' }} />{' '}
-                  {cartCount > 0 ? <CartCount>{cartCount}</CartCount> : null}
+                  <CartCount>{cartCount}</CartCount>
                 </a>
               </Box>
             </Flex>
@@ -199,7 +214,7 @@ const Navbar: React.FC<{
                 size={20}
                 style={{ verticalAlign: 'bottom' }}
               />{' '}
-              {cartCount > 0 ? <CartCount>{cartCount}</CartCount> : null}
+              <CartCount>{cartCount}</CartCount>
             </Link>
           </HideOnDesktop>
         </Flex>

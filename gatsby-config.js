@@ -1,3 +1,4 @@
+/* eslint-disable */
 const GA_TRACKING_ID = 'UA-76403737-3';
 
 require('dotenv').config();
@@ -8,7 +9,8 @@ module.exports = {
     url: 'https://markmurray.co',
     description: 'Senior Developer @ Shopify',
     featuredCollectionTitle: 'Reflections',
-    bannerMessage: 'Buy 2 prints, get the third 50% off!',
+    bannerMessage:
+      'Use code "MATESRATES" for 50% off all prints. Limited time only.',
     bannerLink: '/photography',
     bannerInclude: ['/', '/photography', '/collections'],
   },

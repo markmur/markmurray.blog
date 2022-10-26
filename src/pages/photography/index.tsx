@@ -73,6 +73,7 @@ export default class PhotographyPage extends React.Component<Props, State> {
     return edges
       .reduce((state, { node }) => [...state, ...node.products], [])
       .map((product) => ({
+        ...product,
         image_url: product.images[0].src,
         title: product.title,
         href: getProductUrl(product),
@@ -266,6 +267,12 @@ export const pageQuery = graphql`
             handle
             images {
               src
+            }
+            priceRangeV2 {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
             }
           }
         }

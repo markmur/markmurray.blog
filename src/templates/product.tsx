@@ -19,7 +19,7 @@ import {
 } from '../styles';
 import { get } from 'lodash';
 import ImageGrid from '../components/ImageGrid';
-import { getProductUrl } from '../utils/product';
+import { getProductSize, getProductUrl } from '../utils/product';
 import { formatPrice } from '../utils/currency';
 import { useShopify } from '../hooks/use-shopify';
 
@@ -115,7 +115,21 @@ function getPageSizeFromVariant(variant: Variant): string | undefined {
   return matches && matches.length ? matches[0] : undefined;
 }
 
-function getProductImages(product: Product) {
+interface Image {
+  src: string;
+  tag?: string;
+  featured?: boolean;
+}
+
+function isOrientationLandscape(product) {
+  return Boolean(
+    product.metafields.find(
+      (field) => field?.key === 'orientation' && field?.value === 'landscape',
+    ),
+  );
+}
+
+function getProductImages(product: Product): Image[] {
   const images = [];
 
   images.push({ src: product.featuredImage.originalSrc, featured: true });
@@ -154,13 +168,24 @@ function ProductTemplate(props: Props) {
   };
 
   const handleVariantChange = (event) => setSelectedVariant(event.target.value);
+  const productImages = getProductImages(product);
+  const isProductLandscape = isOrientationLandscape(product);
+  const isCollectionLandscape = props.collection.products.every(
+    isOrientationLandscape,
+  );
 
   return (
     <>
       <Container>
+        {isProductLandscape && (
+          <Box>
+            <img src={productImages[0].src} />
+          </Box>
+        )}
+
         <HideOnDesktop>
           <Box mt={-2}>
-            <ImageGallery images={getProductImages(product)} />
+            <ImageGallery images={productImages} />
           </Box>
         </HideOnDesktop>
 
@@ -172,7 +197,11 @@ function ProductTemplate(props: Props) {
           flexDirection={['column', 'row', 'row']}
         >
           <HideOnMobile flex={[1, '1 0 45%', '1 0 45%']}>
-            <ImageGallery images={getProductImages(product)} />
+            <ImageGallery
+              images={
+                isProductLandscape ? productImages.reverse() : productImages
+              }
+            />
           </HideOnMobile>
 
           <Box
@@ -264,7 +293,7 @@ function ProductTemplate(props: Props) {
             <Select value={selectedVariant} onChange={handleVariantChange}>
               {product.variants.map((variant) => (
                 <option key={variant.shopifyId} value={variant.shopifyId}>
-                  {variant.title} -{' '}
+                  {getProductSize(variant.title)} -{' '}
                   {formatPrice(
                     Number(variant.price),
                     product.priceRangeV2.minVariantPrice.currencyCode,
@@ -319,8 +348,10 @@ function ProductTemplate(props: Props) {
 
             <ImageGrid
               carouselOnMobile
+              orientation={isCollectionLandscape ? 'landscape' : 'portrait'}
               images={props.collection.products
                 .filter((x) => x.id !== props.product.id)
+                .slice(0, isCollectionLandscape ? 3 : 6)
                 .sort((a, b) => a.title.localeCompare(b.title))
                 .map((x) => ({
                   image_url: x.images?.[0].src,
@@ -347,6 +378,7 @@ function ProductTemplate(props: Props) {
               <ImageGrid
                 carouselOnMobile
                 images={props.featuredCollection.products
+                  .slice(0, 6)
                   .filter((x) => x.id !== props.product.id)
                   .sort((a, b) => a.title.localeCompare(b.title))
                   .map((x) => ({
@@ -426,6 +458,8 @@ export const pageQuery = graphql`
         }
       }
       metafields {
+        key
+        value
         product {
           metafields {
             key
@@ -444,6 +478,10 @@ export const pageQuery = graphql`
         title
         images {
           src
+        }
+        metafields {
+          key
+          value
         }
         collections {
           title

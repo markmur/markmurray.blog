@@ -24,14 +24,22 @@ interface Props {
   grid?: [number, number, number];
   carouselOnMobile?: boolean;
   center?: boolean;
+  orientation?: 'portrait' | 'landscape';
 }
 
 const ImageGrid: React.FC<Props> = ({
   images,
-  grid = [2, 3, 5],
+  grid,
   carouselOnMobile = false,
   center = false,
+  orientation = 'portrait',
 }) => {
+  const imageGrid = grid
+    ? grid
+    : orientation === 'landscape'
+    ? [2, 3, 3]
+    : [2, 3, 4];
+  const aspectRatio = orientation === 'landscape' ? [4 / 2.5] : [2 / 3];
   return (
     <Flex
       mx={-2}
@@ -46,14 +54,14 @@ const ImageGrid: React.FC<Props> = ({
           key={image.href}
           p={[2, 3]}
           flex={[
-            `0 0 calc(100% / ${grid[0]})`,
-            `0 0 calc(100% / ${grid[1]})`,
-            `0 0 calc(100% / ${grid[2]})`,
+            `0 0 calc(100% / ${imageGrid[0]})`,
+            `0 0 calc(100% / ${imageGrid[1]})`,
+            `0 0 calc(100% / ${imageGrid[2]})`,
           ]}
         >
           <a href={image.href}>
             <Box
-              aspectRatio={[2 / 3]}
+              aspectRatio={aspectRatio}
               className="image"
               backgroundSize="cover"
               backgroundPosition="center center"
@@ -71,8 +79,8 @@ const ImageGrid: React.FC<Props> = ({
                     {formatPrice(
                       image.priceRangeV2.minVariantPrice.amount,
                       image.priceRangeV2.minVariantPrice.currencyCode,
-                    )}{' '}
-                    {image.priceRangeV2.minVariantPrice.currencyCode}
+                    )}
+                    {/* {image.priceRangeV2.minVariantPrice.currencyCode} */}
                   </Text>
                 )}
             </Box>

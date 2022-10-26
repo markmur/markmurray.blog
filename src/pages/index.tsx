@@ -34,6 +34,15 @@ const IndexPage = (props) => {
         </Box>
 
         <CollectionCarousel
+          id={featuredCollection.id}
+          handle={featuredCollection.handle}
+          title={`${featuredCollection.title} Collection`}
+          description={featuredCollection.description}
+          heading={featuredCollection.title}
+          products={featuredCollection.products}
+        />
+
+        <CollectionCarousel
           id="film"
           handle="film"
           to="/photography/film"
@@ -52,18 +61,9 @@ const IndexPage = (props) => {
         />
 
         <CollectionCarousel
-          id={featuredCollection.id}
-          handle={featuredCollection.handle}
-          title={`The ${featuredCollection.title} Collection`}
-          description={featuredCollection.description}
-          heading={featuredCollection.title}
-          products={featuredCollection.products}
-        />
-
-        <CollectionCarousel
           id={featuredCollectionTwo.id}
           handle={featuredCollectionTwo.handle}
-          title={`The ${featuredCollectionTwo.title} Collection`}
+          title={`${featuredCollectionTwo.title} Collection`}
           description={featuredCollectionTwo.description}
           heading={featuredCollectionTwo.title}
           products={featuredCollectionTwo.products}
@@ -119,7 +119,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    featuredCollection: shopifyCollection(title: { eq: "Sapphire" }) {
+    featuredCollection: shopifyCollection(title: { eq: "Iceland" }) {
       id
       title
       handle
@@ -139,7 +139,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    featuredCollectionTwo: shopifyCollection(title: { eq: "Reflections" }) {
+    featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
       id
       title
       handle

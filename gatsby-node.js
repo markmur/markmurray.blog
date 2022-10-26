@@ -1,6 +1,23 @@
+/* eslint-disable */
 const path = require('path');
 const { get, uniq, kebabCase } = require('lodash');
 const { createFilePath } = require('gatsby-source-filesystem');
+
+function isOrientationLandscape(product) {
+  return Boolean(
+    product.metafields.find(
+      (field) => field?.key === 'orientation' && field?.value === 'landscape',
+    ),
+  );
+}
+
+function isOrientationPortrait(product) {
+  return Boolean(
+    product.metafields.find(
+      (field) => field?.key === 'orientation' && field?.value === 'portrait',
+    ),
+  );
+}
 
 exports.createPages = ({ actions, graphql }) => {
   const { createPage, createRedirect } = actions;
@@ -29,6 +46,12 @@ exports.createPages = ({ actions, graphql }) => {
           node {
             id
             handle
+            products {
+              metafields {
+                key
+                value
+              }
+            }
           }
         }
       }
@@ -110,6 +133,15 @@ exports.createPages = ({ actions, graphql }) => {
 
     // Create collection pages
     const collections = result.data.collections.edges;
+    const landscapeCollections = [];
+
+    result.data.collections.edges.forEach((edge) => {
+      if (edge.node.products.every(isOrientationLandscape)) {
+        edge.node.orientation = 'landscape';
+      }
+    });
+
+    console.log(landscapeCollections);
 
     collections.forEach((edge) => {
       createPage({
@@ -117,6 +149,7 @@ exports.createPages = ({ actions, graphql }) => {
         component: path.resolve(`src/templates/collection.tsx`),
         context: {
           id: edge.node.id,
+          orientation: edge.node.orientation ?? 'portrait',
         },
       });
     });
@@ -127,6 +160,7 @@ exports.createPages = ({ actions, graphql }) => {
         component: path.resolve(`src/templates/collection.tsx`),
         context: {
           id: edge.node.id,
+          orientation: edge.node.orientation ?? 'portrait',
         },
       });
     });

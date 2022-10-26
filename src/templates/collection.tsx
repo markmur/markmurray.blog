@@ -14,7 +14,16 @@ import {
 import ImageGrid from '../components/ImageGrid';
 import { getProductUrl } from '../utils/product';
 
-export const CollectionTemplate = ({ title, description, images }) => {
+export const CollectionTemplate = ({
+  title,
+  description,
+  images,
+  orientation,
+}) => {
+  console.log({ orientation });
+  const grid: [number, number, number] =
+    orientation === 'landscape' ? [1, 1, 1] : [2, 3, 4];
+
   return (
     <Content pb={4} pt={5}>
       <Container textAlign="center">
@@ -30,14 +39,15 @@ export const CollectionTemplate = ({ title, description, images }) => {
 
         <hr />
 
-        <ImageGrid center images={images} grid={[2, 3, 4]} />
+        <ImageGrid grid={grid} images={images} orientation={orientation} />
       </Container>
     </Content>
   );
 };
 
-const Collection = ({ data }) => {
+const Collection = ({ data, pageContext }) => {
   const { collection } = data;
+  const { orientation } = pageContext;
 
   const { id, title, description } = collection;
   const imageUrls = collection.products.map((product) => ({
@@ -74,6 +84,7 @@ const Collection = ({ data }) => {
         title={title}
         description={description}
         images={imageUrls}
+        orientation={orientation}
       />
     </Layout>
   );

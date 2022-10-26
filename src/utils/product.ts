@@ -42,3 +42,24 @@ export function getProductUrl({ id, handle }: { id: string; handle: string }) {
 
   return `/photography/${handle}`;
 }
+
+const RE_A4 = /30\s?cm\s?x\s?42\s?cm/i;
+const RE_A3 = /42\s?cm\s?x\s?59\s?cm/i;
+
+export enum Size {
+  A3 = 'A3 (297mm x 420mm) | Print only',
+  A4 = 'A4 (420mm x 594mm) | Print only',
+}
+
+export function getProductSize(variantSize: string) {
+  console.log('getProductSize', variantSize);
+  if (RE_A4.test(variantSize)) {
+    return Size.A4;
+  }
+
+  if (RE_A3.test(variantSize)) {
+    return Size.A3;
+  }
+
+  return variantSize;
+}
