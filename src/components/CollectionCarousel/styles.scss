@@ -11,7 +11,7 @@ $description-size: 400px;
     position: absolute;
     bottom: 2em;
     left: 90px;
-    z-index: 0;
+    z-index: -1;
 
     h1 {
       font-size: 8rem;

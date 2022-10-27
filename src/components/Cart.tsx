@@ -4,6 +4,7 @@ import {
   FiShoppingBag,
   FiShoppingCart,
   FiTag,
+  FiX,
 } from 'react-icons/fi';
 
 import Incrementer from './Incrementer';
@@ -136,7 +137,7 @@ function LoadingOverlay() {
   );
 }
 
-const Cart = ({ open }: { open: boolean }) => {
+const Cart = ({ onClose }: { onClose?: () => void }) => {
   const [error, setErrorState] = React.useState<string>('');
   const shopify = useShopify();
 
@@ -170,9 +171,9 @@ const Cart = ({ open }: { open: boolean }) => {
           </Flex>
         </Flex>
 
-        {/* <Box onClick={onClose}>
-          <FiX />
-        </Box> */}
+        <Box p={1} mr={-2}>
+          <FiX size="22px" onClick={onClose} />
+        </Box>
       </Flex>
 
       <Box px={4}>

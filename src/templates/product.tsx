@@ -19,7 +19,11 @@ import {
 } from '../styles';
 import { get } from 'lodash';
 import ImageGrid from '../components/ImageGrid';
-import { getProductSize, getProductUrl } from '../utils/product';
+import {
+  getProductSize,
+  getProductUrl,
+  isOrientationLandscape,
+} from '../utils/product';
 import { formatPrice } from '../utils/currency';
 import { useShopify } from '../hooks/use-shopify';
 
@@ -121,14 +125,6 @@ interface Image {
   featured?: boolean;
 }
 
-function isOrientationLandscape(product) {
-  return Boolean(
-    product.metafields.find(
-      (field) => field?.key === 'orientation' && field?.value === 'landscape',
-    ),
-  );
-}
-
 function getProductImages(product: Product): Image[] {
   const images = [];
 
@@ -178,7 +174,7 @@ function ProductTemplate(props: Props) {
     <>
       <Container>
         {isProductLandscape && (
-          <Box>
+          <Box mb={[3, 0, 0]}>
             <img src={productImages[0].src} />
           </Box>
         )}

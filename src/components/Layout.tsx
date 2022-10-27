@@ -96,8 +96,12 @@ const Content = ({ site, children, displayTagline = false }) => {
                 <CartConsumer>
                   {({ open, setCartState }) => (
                     <React.Fragment>
-                      <Drawer open={open} onClose={() => setCartState(false)}>
-                        <Cart open={open} />
+                      <Drawer
+                        open={open}
+                        onClose={() => setCartState(false)}
+                        zIndex={[100000, 1000, 1000]}
+                      >
+                        <Cart onClose={() => setCartState(false)} open={open} />
                       </Drawer>
 
                       <MenuConsumer>

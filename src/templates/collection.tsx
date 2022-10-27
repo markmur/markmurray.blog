@@ -20,7 +20,6 @@ export const CollectionTemplate = ({
   images,
   orientation,
 }) => {
-  console.log({ orientation });
   const grid: [number, number, number] =
     orientation === 'landscape' ? [1, 1, 1] : [2, 3, 4];
 

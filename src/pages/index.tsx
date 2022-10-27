@@ -137,6 +137,10 @@ export const pageQuery = graphql`
             currencyCode
           }
         }
+        metafields {
+          key
+          value
+        }
       }
     }
     featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
@@ -156,6 +160,10 @@ export const pageQuery = graphql`
             amount
             currencyCode
           }
+        }
+        metafields {
+          key
+          value
         }
       }
     }

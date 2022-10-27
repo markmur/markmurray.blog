@@ -125,7 +125,7 @@ export default class PhotographyPage extends React.Component<Props, State> {
       <Layout wide>
         <BackgroundLines />
 
-        <Container py={[5, 6]} pt={[8, 5]} pb={[3, 4]}>
+        <Container py={[5, 6]} pt={[3, 5]} pb={[3, 4]}>
           <PageHeading mb={2}>Photography &amp; art</PageHeading>
 
           <Flex justifyContent="left">
@@ -235,7 +235,7 @@ export default class PhotographyPage extends React.Component<Props, State> {
 
 export const pageQuery = graphql`
   {
-    featuredCollection: shopifyCollection(title: { eq: "Reflections" }) {
+    featuredCollection: shopifyCollection(title: { eq: "Sapphire" }) {
       id
       title
       handle
@@ -252,6 +252,10 @@ export const pageQuery = graphql`
             amount
             currencyCode
           }
+        }
+        metafields {
+          key
+          value
         }
       }
     }
@@ -273,6 +277,10 @@ export const pageQuery = graphql`
                 amount
                 currencyCode
               }
+            }
+            metafields {
+              key
+              value
             }
           }
         }

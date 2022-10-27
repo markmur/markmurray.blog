@@ -1,5 +1,4 @@
 import React from 'react';
-import cx from 'classnames';
 import { Defaults, Drawer as StyledDrawer, Overlay } from '../styles';
 import { CSSTransition } from 'react-transition-group';
 

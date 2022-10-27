@@ -141,8 +141,6 @@ exports.createPages = ({ actions, graphql }) => {
       }
     });
 
-    console.log(landscapeCollections);
-
     collections.forEach((edge) => {
       createPage({
         path: `/collections/${edge.node.id}`,

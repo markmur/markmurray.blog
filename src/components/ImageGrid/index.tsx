@@ -3,6 +3,7 @@ import './styles.scss';
 
 import { Flex, Box, Text } from '../../styles';
 import { formatPrice } from '../../utils/currency';
+import { isOrientationLandscape } from '../../utils/product';
 
 interface Image {
   image_url: string;
@@ -16,6 +17,10 @@ interface Image {
       amount: number;
       currencyCode: string;
     };
+  };
+  metafields?: {
+    key?: string;
+    value?: string;
   };
 }
 
@@ -34,12 +39,14 @@ const ImageGrid: React.FC<Props> = ({
   center = false,
   orientation = 'portrait',
 }) => {
+  const portraitGrid = [2, 3, 4];
+  const landscapeGrid = [2, 3, 2];
+
   const imageGrid = grid
     ? grid
     : orientation === 'landscape'
-    ? [2, 3, 3]
-    : [2, 3, 4];
-  const aspectRatio = orientation === 'landscape' ? [4 / 2.5] : [2 / 3];
+    ? landscapeGrid
+    : portraitGrid;
   return (
     <Flex
       mx={-2}
@@ -49,44 +56,49 @@ const ImageGrid: React.FC<Props> = ({
       justifyContent={center ? 'center' : 'flex-start'}
       flexWrap={carouselOnMobile ? ['nowrap', 'wrap'] : 'wrap'}
     >
-      {images.map((image) => (
-        <Box
-          key={image.href}
-          p={[2, 3]}
-          flex={[
-            `0 0 calc(100% / ${imageGrid[0]})`,
-            `0 0 calc(100% / ${imageGrid[1]})`,
-            `0 0 calc(100% / ${imageGrid[2]})`,
-          ]}
-        >
-          <a href={image.href}>
-            <Box
-              aspectRatio={aspectRatio}
-              className="image"
-              backgroundSize="cover"
-              backgroundPosition="center center"
-              style={{
-                backgroundImage: `url(${image.image_url})`,
-              }}
-            />
+      {images.map((image) => {
+        const isLandscape = isOrientationLandscape(image);
+        const grid = isLandscape ? landscapeGrid : portraitGrid;
+        const aspectRatio = isLandscape ? [4 / 2.85] : [2 / 3];
+        return (
+          <Box
+            key={image.href}
+            p={[2, 3]}
+            flex={[
+              `0 0 calc(100% / ${grid[0]})`,
+              `0 0 calc(100% / ${grid[1]})`,
+              `0 0 calc(100% / ${grid[2]})`,
+            ]}
+          >
+            <a href={image.href}>
+              <Box
+                aspectRatio={aspectRatio}
+                className="image"
+                backgroundSize="cover"
+                backgroundPosition="center center"
+                style={{
+                  backgroundImage: `url(${image.image_url})`,
+                }}
+              />
 
-            <Box textAlign="center" py={3} mb={2}>
-              <h4>{image.title}</h4>
-              {image.priceRangeV2 &&
-                isFinite(image.priceRangeV2.minVariantPrice.amount) && (
-                  <Text mt={2} fontSize="small">
-                    <em>from </em>
-                    {formatPrice(
-                      image.priceRangeV2.minVariantPrice.amount,
-                      image.priceRangeV2.minVariantPrice.currencyCode,
-                    )}
-                    {/* {image.priceRangeV2.minVariantPrice.currencyCode} */}
-                  </Text>
-                )}
-            </Box>
-          </a>
-        </Box>
-      ))}
+              <Box textAlign="center" py={3} mb={2}>
+                <h4>{image.title}</h4>
+                {image.priceRangeV2 &&
+                  isFinite(image.priceRangeV2.minVariantPrice.amount) && (
+                    <Text mt={2} fontSize="small">
+                      <em>from </em>
+                      {formatPrice(
+                        image.priceRangeV2.minVariantPrice.amount,
+                        image.priceRangeV2.minVariantPrice.currencyCode,
+                      )}{' '}
+                      {image.priceRangeV2.minVariantPrice.currencyCode}
+                    </Text>
+                  )}
+              </Box>
+            </a>
+          </Box>
+        );
+      })}
     </Flex>
   );
 };

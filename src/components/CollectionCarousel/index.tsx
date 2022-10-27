@@ -12,7 +12,7 @@ import {
 
 import * as styles from './styles.scss';
 import { useCarousel } from '../Carousel';
-import { getProductUrl } from '../../utils/product';
+import { getProductUrl, isOrientationLandscape } from '../../utils/product';
 import { formatPrice } from '../../utils/currency';
 import Controls from '../Carousel/Controls';
 
@@ -156,8 +156,16 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                       <Box
                         className={loaded ? 'item loaded' : 'item'}
                         mr={[2, 3]}
-                        width={['60vw', '200px', '278px']}
-                        aspectRatio={[4 / 6, 5 / 8]}
+                        width={
+                          isOrientationLandscape(product)
+                            ? ['90vw', '480px']
+                            : ['60vw', '200px', '278px']
+                        }
+                        aspectRatio={
+                          isOrientationLandscape(product)
+                            ? [3 / 2]
+                            : [4 / 6, 5 / 8]
+                        }
                         backgroundSize="cover"
                         style={{
                           backgroundImage: `url(${product.images[0].src})`,
@@ -168,9 +176,9 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                 ))}
             </Carousel>
 
-            {/* <div className="title">
-              <h1 style={{ zIndex: -1 }}>#{heading}</h1>
-            </div> */}
+            <Box className="title">
+              <h1 style={{ zIndex: -1 }}>{title}</h1>
+            </Box>
           </Box>
         </Flex>
 

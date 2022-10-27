@@ -62,3 +62,11 @@ export function getProductSize(variantSize: string) {
 
   return variantSize;
 }
+
+export function isOrientationLandscape(product) {
+  return Boolean(
+    product.metafields?.find(
+      (field) => field?.key === 'orientation' && field?.value === 'landscape',
+    ),
+  );
+}
