@@ -20,9 +20,6 @@ export const CollectionTemplate = ({
   images,
   orientation,
 }) => {
-  const grid: [number, number, number] =
-    orientation === 'landscape' ? [1, 1, 1] : [2, 3, 4];
-
   return (
     <Content pb={4} pt={5}>
       <Container textAlign="center">

@@ -43,12 +43,26 @@ export function getProductUrl({ id, handle }: { id: string; handle: string }) {
   return `/photography/${handle}`;
 }
 
-const RE_A4 = /30\s?cm\s?x\s?42\s?cm/i;
-const RE_A3 = /42\s?cm\s?x\s?59\s?cm/i;
+const RE_A4 = /(21\s?cm\s?x\s?29\s?cm|21(\.0)?\s?cm\s?x\s?29(\.7)?\s?cm)/i;
+const RE_A3 = /(30\s?cm\s?x\s?42\s?cm|29(\.7)?\s?cm\s?x\s?42(\.0)?\s?cm)/i;
+const RE_A2 = /(42\s?cm\s?x\s?59\s?cm|42(\.0)?\s?cm\s?x\s?59(\.4)?\s?cm)/i;
+
+export function isA2(size: string) {
+  return RE_A2.test(size);
+}
+
+export function isA3(size: string) {
+  return RE_A3.test(size);
+}
+
+export function isA4(size: string) {
+  return RE_A4.test(size);
+}
 
 export enum Size {
-  A4 = 'A4 (297mm x 420mm) | Print only',
-  A3 = 'A3 (420mm x 594mm) | Print only',
+  A4 = 'A4 (210mm x 297mm) | Print only',
+  A3 = 'A3 (297mm x 420mm) | Print only',
+  A2 = 'A2 (420mm x 594mm) | Print only',
 }
 
 export function getProductSize(variantSize: string) {
@@ -58,6 +72,10 @@ export function getProductSize(variantSize: string) {
 
   if (RE_A3.test(variantSize)) {
     return Size.A3;
+  }
+
+  if (RE_A2.test(variantSize)) {
+    return Size.A2;
   }
 
   return variantSize;

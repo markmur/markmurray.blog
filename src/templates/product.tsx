@@ -114,7 +114,8 @@ interface Props {
 }
 
 function getPageSizeFromVariant(variant: Variant): string | undefined {
-  const matches = variant.title.match(/(A[0-9]{1})/i);
+  const size = getProductSize(variant.title);
+  const matches = size.match(/(A[0-9]{1})/i);
 
   return matches && matches.length ? matches[0] : undefined;
 }
