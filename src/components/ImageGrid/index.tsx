@@ -41,12 +41,6 @@ const ImageGrid: React.FC<Props> = ({
 }) => {
   const portraitGrid = [2, 3, 4];
   const landscapeGrid = [2, 3, 2];
-
-  const imageGrid = grid
-    ? grid
-    : orientation === 'landscape'
-    ? landscapeGrid
-    : portraitGrid;
   return (
     <Flex
       mx={-2}
@@ -58,16 +52,20 @@ const ImageGrid: React.FC<Props> = ({
     >
       {images.map((image) => {
         const isLandscape = isOrientationLandscape(image);
-        const grid = isLandscape ? landscapeGrid : portraitGrid;
         const aspectRatio = isLandscape ? [4 / 2.85] : [2 / 3];
+        const imageGrid = grid
+          ? grid
+          : isLandscape
+          ? landscapeGrid
+          : portraitGrid;
         return (
           <Box
             key={image.href}
             p={[2, 3]}
             flex={[
-              `0 0 calc(100% / ${grid[0]})`,
-              `0 0 calc(100% / ${grid[1]})`,
-              `0 0 calc(100% / ${grid[2]})`,
+              `0 0 calc(100% / ${imageGrid[0]})`,
+              `0 0 calc(100% / ${imageGrid[1]})`,
+              `0 0 calc(100% / ${imageGrid[2]})`,
             ]}
           >
             <a href={image.href}>

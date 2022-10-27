@@ -38,7 +38,7 @@ export const CollectionTemplate = ({
 
         <hr />
 
-        <ImageGrid grid={grid} images={images} orientation={orientation} />
+        <ImageGrid images={images} orientation={orientation} />
       </Container>
     </Content>
   );
@@ -114,6 +114,10 @@ export const pageQuery = graphql`
             amount
             currencyCode
           }
+        }
+        metafields {
+          key
+          value
         }
       }
     }
