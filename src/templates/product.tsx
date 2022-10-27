@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
 
@@ -141,6 +141,12 @@ function getProductImages(product: Product): Image[] {
   return images;
 }
 
+function useScrollToTop() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+}
+
 function ProductTemplate(props: Props) {
   const product: Product = props.product;
   const shopify = useShopify();
@@ -150,6 +156,8 @@ function ProductTemplate(props: Props) {
   );
   const [addedToCart, setAddedToCart] = React.useState(false);
   const { setCartState } = React.useContext(CartContext);
+
+  useScrollToTop();
 
   const handleAddToCart = () => {
     shopify.addLineItem(selectedVariant);
@@ -348,13 +356,12 @@ function ProductTemplate(props: Props) {
               orientation={isCollectionLandscape ? 'landscape' : 'portrait'}
               images={props.collection.products
                 .filter((x) => x.id !== props.product.id)
-                .slice(0, isCollectionLandscape ? 3 : 6)
+                .slice(0, isCollectionLandscape ? 4 : 6)
                 .sort((a, b) => a.title.localeCompare(b.title))
                 .map((x) => ({
+                  ...x,
                   image_url: x.images?.[0].src,
                   href: getProductUrl(x),
-                  title: x.title,
-                  ...x,
                 }))}
             />
           </Box>
@@ -379,10 +386,9 @@ function ProductTemplate(props: Props) {
                   .filter((x) => x.id !== props.product.id)
                   .sort((a, b) => a.title.localeCompare(b.title))
                   .map((x) => ({
+                    ...x,
                     image_url: x.images?.[0].src,
                     href: getProductUrl(x),
-                    title: x.title,
-                    ...x,
                   }))}
               />
             </Box>

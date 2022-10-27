@@ -138,11 +138,11 @@ export default class PhotographyPage extends React.Component<Props, State> {
               <p>
                 Below is a collection of photos taken with my{' '}
                 <strong>DJI Mavic Air 2</strong> drone and{' '}
-                <strong>Fujifilm XT-30</strong> DSLR. Prints are available for
-                all photos listed here and on my Instagram. All photos are
-                printed on high quality Fuji Matt Paper and come in a variety of
-                sizes. Don't see a particular size listed? Feel free to reach
-                out to me to arrange a custom order at no extra cost.
+                <strong>Fujifilm XT-30</strong>. Prints are available for all
+                photos listed here and on my Instagram. All photos are printed
+                on high quality paper and come in a variety of sizes. If you
+                don't see a particular size listed, reach out to arrange a
+                custom order at no extra cost.
               </p>
 
               <p>
@@ -158,7 +158,7 @@ export default class PhotographyPage extends React.Component<Props, State> {
                 <a target="_blank" href="https://instagram.com/markmur">
                   @markmur
                 </a>
-                )
+                ).
               </p>
             </Box>
           </Flex>

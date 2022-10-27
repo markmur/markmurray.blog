@@ -5,6 +5,7 @@ import {
   Box,
   Carousel,
   CarouselItem,
+  Container,
   Subtitle,
   CollectionCarouselBox,
   Link,
@@ -158,7 +159,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                         mr={[2, 3]}
                         width={
                           isOrientationLandscape(product)
-                            ? ['90vw', '480px']
+                            ? ['90vw', '40vw']
                             : ['60vw', '200px', '278px']
                         }
                         aspectRatio={
@@ -177,7 +178,9 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
             </Carousel>
 
             <Box className="title">
-              <h1 style={{ zIndex: -1 }}>{title}</h1>
+              <Container>
+                <h1 style={{ zIndex: -1 }}>{title}</h1>
+              </Container>
             </Box>
           </Box>
         </Flex>

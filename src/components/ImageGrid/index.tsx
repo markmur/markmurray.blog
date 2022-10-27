@@ -37,10 +37,9 @@ const ImageGrid: React.FC<Props> = ({
   grid,
   carouselOnMobile = false,
   center = false,
-  orientation = 'portrait',
 }) => {
   const portraitGrid = [2, 3, 4];
-  const landscapeGrid = [2, 3, 2];
+  const landscapeGrid = [1, 2, 2];
   return (
     <Flex
       mx={-2}
