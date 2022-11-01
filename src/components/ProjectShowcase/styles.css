@@ -1,0 +1,55 @@
+@media (max-width: 767px) {
+  .ProjectShowcase {
+    height: auto;
+    padding: 1em 0;
+    margin-bottom: 0;
+  }
+}
+
+.ProjectShowcase {
+  position: relative;
+}
+
+.ProjectShowcase .content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+}
+
+.Projectshowcase .content small.note {
+  display: block;
+  text-align: left;
+  margin-bottom: 1em;
+  font-style: italic;
+  opacity: 0.6;
+  font-size: 0.7rem;
+}
+
+.Projectshowcase .content h2 {
+  font-size: 2.65rem;
+  line-height: 1;
+  font-weight: bolder;
+  color: $primary;
+}
+
+.Projectshowcase .content p {
+  color: #7e859b;
+  line-height: 1.65;
+}
+
+.Projectshowcase .content .link {
+  padding-bottom: 4px;
+  transition: border 100ms;
+}
+
+.Projectshowcase .content .link:hover {
+  border-bottom: 2px solid;
+}
+
+.ProjectShowcase--image {
+  z-index: 2;
+  height: auto;
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 12px 36px 0 rgba(#2c3e50, 0.35);
+}

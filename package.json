@@ -24,7 +24,6 @@
     "disqus-react": "^1.1.2",
     "dotenv": "^10.0.0",
     "gatsby-plugin-image": "^2.10.1",
-    "gatsby-plugin-sass": "^5.2.0",
     "gatsby-plugin-web-vitals": "^1.0.3",
     "gatsby-source-graphql": "^4.6.0",
     "gatsby-source-shopify": "^6.6.0",
@@ -90,7 +89,6 @@
     "gatsby-transformer-sharp": "^4.6.0",
     "lint-staged": "^12.1.2",
     "lodash-webpack-plugin": "^0.11.6",
-    "node-sass": "^6",
     "pre-commit": "^1.2.2",
     "prettier": "^2.5.1",
     "prettier-eslint": "^13.0.0",
@@ -140,8 +138,7 @@
   "lint-staged": {
     "**/*.js": [
       "prettier --write",
-      "git add",
-      "xo"
+      "git add"
     ]
   },
   "precommit": {

@@ -11,7 +11,7 @@ import {
   Link,
 } from '../../styles';
 
-import * as styles from './styles.scss';
+import * as styles from './styles.css';
 import { useCarousel } from '../Carousel';
 import { getProductUrl, isOrientationLandscape } from '../../utils/product';
 import { formatPrice } from '../../utils/currency';
@@ -62,8 +62,8 @@ const getMinPrice = (
 
   return products.sort(
     (a, b) =>
-      a.priceRangeV2.minVariantPrice.amount -
-      b.priceRangeV2.minVariantPrice.amount,
+      a.priceRangeV2!.minVariantPrice.amount -
+      b.priceRangeV2!.minVariantPrice.amount,
   )[0]?.priceRangeV2;
 };
 

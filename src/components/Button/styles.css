@@ -1,10 +1,8 @@
-@import '../../styles/mixins.scss';
-
 .button {
   display: flex;
   align-items: center;
   border-radius: 4px;
-  background: $primary;
+  background: black;
   color: white;
   text-align: right;
   text-transform: uppercase;
@@ -16,25 +14,27 @@
   cursor: pointer;
   max-width: 300px;
   transition: padding 200ms, background 200ms;
+}
 
-  @include xs-device {
+.button:hover {
+  padding-left: 2em;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.button:hover svg {
+  margin-right: 2em;
+}
+
+.button svg {
+  fill: white;
+  margin-left: auto;
+  margin-right: 1.5em;
+  width: 16px;
+  transition: margin 200ms;
+}
+
+@media (max-width: 767px) {
+  .button {
     max-width: 100%;
-  }
-
-  &:hover {
-    padding-left: 2em;
-    background: darken($primary, 7.5%);
-
-    svg {
-      margin-right: 2em;
-    }
-  }
-
-  svg {
-    fill: darken(white, 10%);
-    margin-left: auto;
-    margin-right: 1.5em;
-    width: 16px;
-    transition: margin 200ms;
   }
 }

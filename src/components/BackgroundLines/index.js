@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import './styles.scss'
+import './styles.css';
 
 const Lines = () => (
   <div className="lines">
@@ -10,6 +10,6 @@ const Lines = () => (
     <div className="line" />
     <div className="line" />
   </div>
-)
+);
 
-export default Lines
+export default Lines;

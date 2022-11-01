@@ -15,7 +15,6 @@ module.exports = {
     bannerInclude: ['/', '/photography', '/collections'],
   },
   plugins: [
-    'gatsby-plugin-sass',
     'gatsby-remark-reading-time',
     'gatsby-plugin-offline',
     {
