@@ -2,7 +2,7 @@ import React from 'react';
 import { EntypoGithub as GithubIcon } from 'react-entypo';
 import { Button, Flex, Box, Text, BackgroundImage } from '../../styles';
 
-import './styles.scss';
+import './styles.css';
 
 const ProjectShowcase = ({ project }) => {
   return (

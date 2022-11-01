@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles.scss';
+import './styles.css';
 
 import { Flex, Box, Text } from '../../styles';
 import { formatPrice } from '../../utils/currency';

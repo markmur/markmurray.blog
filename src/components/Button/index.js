@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import './styles.scss'
+import './styles.css';
 
 const RightArrow = () => (
   <svg
@@ -12,12 +12,12 @@ const RightArrow = () => (
   >
     <path d="M27.728 16.024l-8.485 8.482-2.828-2.835 3.656-3.671h-14.071v-4h14.071l-3.657-3.644 2.828-2.816 8.486 8.484z" />
   </svg>
-)
+);
 
 const Button = ({ href, children, ...props }) => (
   <a className="button" rel="noopener noreferrer" href={href} {...props}>
     {children} <RightArrow />
   </a>
-)
+);
 
-export default Button
+export default Button;

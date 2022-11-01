@@ -1,0 +1,92 @@
+#content {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+#content .title {
+  position: absolute;
+  bottom: 2em;
+  left: 90px;
+  z-index: -1;
+}
+
+#content .title h1 {
+  font-size: 8rem;
+  padding: 0;
+  margin: 0;
+  opacity: 0.05;
+}
+
+#content .description {
+  background: transparent;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+#content .description .caption {
+  color: #333;
+  white-space: pre-wrap;
+}
+
+#content .description h4 {
+  margin-bottom: 6px;
+  font-size: 20px;
+}
+
+#content .description p {
+  font-size: 13px;
+}
+
+#content ul {
+  list-style: none;
+  display: flex;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  will-change: transform;
+  transition: transform 300ms ease-out;
+}
+
+#content a {
+  text-decoration: none;
+  border: none;
+}
+
+#content::-webkit-scrollbar {
+  display: none;
+}
+
+#content li {
+  display: flex;
+  cursor: pointer;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+#content li:hover img {
+  filter: grayscale(0);
+}
+
+/* @for $i from 0 through 10 {
+        &:nth-of-type(#{$i}) img {
+          transition-delay: 200ms * $i;
+        }
+      } */
+
+#content li img {
+  transition: opacity 500ms ease-in-out, transform 600ms ease-out;
+  transform: translateY(60px);
+  opacity: 0;
+}
+
+#content .loaded {
+  transform: translateY(0);
+  opacity: 1;
+}
