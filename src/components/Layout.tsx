@@ -63,7 +63,7 @@ const Head = ({ site }) => (
     <meta property="twitter:image" content="/img/meta.png" />
 
     <link rel="icon" type="image/png" href="/img/favicon.png" sizes="32x32" />
-    <meta name="theme-color" content="#000" />
+    <meta name="theme-color" content="#f8f8f9" />
   </Helmet>
 );
 
