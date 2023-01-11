@@ -85,7 +85,7 @@
     "gatsby-remark-reading-time": "^1.1.0",
     "gatsby-remark-relative-images": "^2.0.2",
     "gatsby-source-filesystem": "^4.6.0",
-    "gatsby-transformer-remark": "^5.6.0",
+    "gatsby-transformer-remark": "^5.25.1",
     "gatsby-transformer-sharp": "^4.6.0",
     "lint-staged": "^12.1.2",
     "lodash-webpack-plugin": "^0.11.6",
