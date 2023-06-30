@@ -8,11 +8,7 @@ module.exports = {
     title: 'Mark Murray',
     url: 'https://markmurray.co',
     description: 'Senior Developer @ Shopify',
-    featuredCollectionTitle: 'Reflections',
-    bannerMessage:
-      'Use code "MATESRATES" for 50% off all prints. Limited time only.',
-    bannerLink: '/photography',
-    bannerInclude: ['/', '/photography', '/collections'],
+    featuredCollectionTitle: 'Reflections'
   },
   plugins: [
     'gatsby-remark-reading-time',
