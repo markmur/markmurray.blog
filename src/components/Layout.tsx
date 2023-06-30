@@ -30,9 +30,6 @@ const query = graphql`
       siteMetadata {
         title
         description
-        bannerMessage
-        bannerLink
-        bannerInclude
       }
     }
   }
@@ -78,16 +75,6 @@ const Content = ({ site, children, displayTagline = false }) => {
         <BackgroundLines />
 
         <ThemeProvider theme={theme}>
-          <HideOnMobile>
-            {site.siteMetadata.bannerMessage && (
-              <Banner>
-                <Link to={site.siteMetadata.bannerLink}>
-                  {site.siteMetadata.bannerMessage}
-                </Link>
-              </Banner>
-            )}
-          </HideOnMobile>
-
           <Box pt={4}>
             <GlobalStyles />
 
