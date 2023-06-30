@@ -8,7 +8,10 @@ module.exports = {
     title: 'Mark Murray',
     url: 'https://markmurray.co',
     description: 'Senior Developer @ Shopify',
-    featuredCollectionTitle: 'Reflections'
+    featuredCollectionTitle: 'Reflections',
+    bannerMessage: '',
+    bannerLink: '',
+    bannerInclude: []
   },
   plugins: [
     'gatsby-remark-reading-time',
