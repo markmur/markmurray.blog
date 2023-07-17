@@ -168,7 +168,7 @@ const Navbar: React.FC<{
                 mr={4}
                 to="/posts"
               >
-                Articles
+                Writing
               </Link>
               <Link activeClassName="active" mr={4} to="/projects">
                 Projects

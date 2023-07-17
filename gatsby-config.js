@@ -11,7 +11,7 @@ module.exports = {
     featuredCollectionTitle: 'Reflections',
     bannerMessage: '',
     bannerLink: '',
-    bannerInclude: []
+    bannerInclude: [],
   },
   plugins: [
     'gatsby-remark-reading-time',
@@ -74,6 +74,8 @@ module.exports = {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
+          // NOTE: this plugin must be listed before prismjs
+          'gatsby-remark-prismjs-title',
           'gatsby-remark-autolink-headers',
           {
             resolve: 'gatsby-remark-images',

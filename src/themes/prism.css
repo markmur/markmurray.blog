@@ -1,3 +1,15 @@
+.gatsby-code-title {
+  background: #333a48;
+  color: white;
+  margin-bottom: -11px;
+  font-size: 12px;
+  color: #aaa;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  padding: 1em;
+  overflow: hidden;
+}
+
 .gatsby-highlight-code-line {
   display: block;
   margin: 0 -2em;
