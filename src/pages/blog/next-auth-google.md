@@ -2,7 +2,7 @@
 templateKey: blog-post
 title: Google Auth with <strong>Next 13</strong>
 description: Implementing Google Authentication with NextJS Server Actions
-date: 2023-07-17T00:00:00.000Z
+date: 2023-10-06T13:00:00.000Z
 tags:
   - Serverless
   - NextJS
@@ -11,14 +11,12 @@ tags:
 
 ---
 
-1. [Install dependencies](#install-dependencies)
-1. [Create a new app on Google Developer Console](#create-a-new-app-on-google-developer-console)
-1. [Update `.env` file with environment variables](#update-env-file-with-environment-variables)
-1. [Create a custom Iron implementation](#create-a-custom-iron-implementation)
-1. [Handle sessions](#handle-sessions)
-1. [Create API routes for login redirects](#create-api-routes-for-login-redirects)
-1. [Create authentication helpers](#create-authentication-helpers)
-1. [Authenticate routes](#authenticate-routes)
+- [Update env file with environment variables](#update-env-file-with-environment-variables)
+  - [Create a custom Iron implementation](#create-a-custom-iron-implementation)
+  - [Handle sessions](#handle-sessions)
+  - [Create API routes for login redirects](#create-api-routes-for-login-redirects)
+  - [Create authentication helpers](#create-authentication-helpers)
+  - [Authenticate routes](#authenticate-routes)
 
 ---
 
