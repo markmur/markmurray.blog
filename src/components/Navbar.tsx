@@ -219,7 +219,7 @@ const Navbar: React.FC<{
           </HideOnDesktop>
         </Flex>
 
-        <HideOnMobile>
+        {/* <HideOnMobile>
           <Box textAlign={['center', 'left']}>
             {displayTagline && (
               <Timestamp fontSize={['11px', '13px']}>
@@ -227,7 +227,7 @@ const Navbar: React.FC<{
               </Timestamp>
             )}
           </Box>
-        </HideOnMobile>
+        </HideOnMobile> */}
       </Container>
     </Nav>
   );

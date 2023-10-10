@@ -78,7 +78,22 @@ export const CartCount = styled(Box)<Defaults>`
 
 export const Nav = styled('nav')<Defaults>`
   ${defaults};
-  padding: 2.25em 0 1.35em;
+  padding: 1em 1.35em;
+  // background: hsla(0, 0%, 100%, 0.3);
+  background: hsl(218.86deg 24.16% 83.66% / 30%);
+  box-shadow: 0 0 5rem hsl(0, 0%, 5%, 0.1);
+  backdrop-filter: saturate(180%) blur(1rem);
+  position: fixed;
+  width: calc(100% - 4em);
+  z-index: 100;
+  left: 2em;
+  right: 2em;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  will-change: all;
+  transition-duration: 0.15s;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
   ${isMobile(`
     padding: 1.25em 0;
@@ -275,7 +290,9 @@ export const Link = styled(GatsbyLink)<Defaults>`
   ${defaults};
   cursor: pointer;
   font-weight: normal;
-  color: #686882;
+  // color: #686882;
+  color: black;
+  font-weight: 600;
 
   &:hover,
   &.active {
