@@ -170,19 +170,26 @@ const Navbar: React.FC<{
               >
                 Writing
               </Link>
-              <Link activeClassName="active" mr={4} to="/projects">
+              {/* <Link activeClassName="active" mr={4} to="/projects">
                 Projects
-              </Link>
+              </Link> */}
 
               <LinkDropdown
                 links={{
                   // '': [{ text: 'All', to: '/photography' }],
                   Collections: [
-                    { text: 'Film', to: '/photography/film' },
                     ...data.allShopifyCollection.edges.map(({ node }) => ({
                       text: node.title,
                       to: `/collections/${node.handle}`,
                     })),
+                    {
+                      text: 'Canon AE-1',
+                      to: '/photography/film/canon-ae-1',
+                    },
+                    {
+                      text: 'Olympus mju III',
+                      to: '/photography/film/olympus-mju-iii',
+                    },
                   ],
                 }}
               >

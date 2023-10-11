@@ -76,6 +76,18 @@ export const CartCount = styled(Box)<Defaults>`
   left: -25%;
 `;
 
+export const Avatar = styled('img')<Defaults>`
+  ${defaults};
+  aspect-ratio: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px blue;
+`;
+
 export const Nav = styled('nav')<Defaults>`
   ${defaults};
   padding: 2.25em 0 1.35em;
@@ -512,7 +524,6 @@ export const Timestamp = styled(Text)`
   font-weight: 500;
   font-size: 15px;
   color: ${theme('descriptionColor')};
-  margin-bottom: 1.5em;
 `;
 
 export const Photo = styled(Box)`

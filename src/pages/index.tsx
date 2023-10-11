@@ -1,12 +1,8 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { FiArrowRight } from 'react-icons/fi';
-import { Flex, Box, Link, PageHeading, Container } from '../styles';
+import { Box, PageHeading, Container } from '../styles';
 import Layout from '../components/Layout';
 import CollectionCarousel from '../components/CollectionCarousel';
-import PostPreviews from '../components/PostPreviews';
-import { useCarousel } from '../components/Carousel';
-import Controls from '../components/Carousel/Controls';
 import ErrorBoundary from '../components/ErrorBoundary';
 
 const getNodes = (entity) => {
@@ -17,10 +13,6 @@ const IndexPage = (props) => {
   const { data } = props;
   const { featuredCollection, featuredCollectionTwo, featuredFilmCollection } =
     data;
-  const posts = getNodes(data.posts);
-
-  const containerRef = React.useRef(null);
-  const { observe, next, prev } = useCarousel(containerRef, 300);
 
   return (
     <Layout wide displayTagline>
@@ -45,10 +37,10 @@ const IndexPage = (props) => {
         <CollectionCarousel
           id="film"
           handle="film"
-          to="/photography/film"
-          title="Lomo XP Redscale Film"
-          description="A collection of photos taken in Dublin with expired
-            Lomography Redscale XP 50-200 film in a Canon AE-1."
+          to="/photography/film/olympus-mju-iii"
+          title="Olympus mju III"
+          description="A collection of photos taken in Greece on
+            Portra 400 film with an Olympus mju III."
           products={featuredFilmCollection.edges.map(({ node }, index) => ({
             id: index,
             title: `${node.title}`,
@@ -56,7 +48,8 @@ const IndexPage = (props) => {
             images: [
               { src: node.childImageSharp.gatsbyImageData.images.fallback.src },
             ],
-            to: '/photography/film',
+            to: '/photography/film/olympus-mju-iii',
+            metafields: [{ key: 'orientation', value: 'landscape' }],
           }))}
         />
 
@@ -69,36 +62,6 @@ const IndexPage = (props) => {
           products={featuredCollectionTwo.products}
         />
       </ErrorBoundary>
-
-      <Box pt={4}>
-        <Container mb="40px">
-          <Flex justifyContent="space-between" alignItems="flex-end">
-            <div>
-              <Box mb={3}>
-                <PageHeading>Latest Tech</PageHeading>
-              </Box>
-
-              <Link to="/posts">
-                See all posts <FiArrowRight />
-              </Link>
-            </div>
-
-            <Controls onNext={next} onPrev={prev} />
-          </Flex>
-        </Container>
-      </Box>
-
-      <Container>
-        <Box my={4}>
-          <PostPreviews
-            forwardedRef={containerRef}
-            observe={observe}
-            posts={posts.sort(
-              (a, b) => b.frontmatter.pinned - a.frontmatter.pinned,
-            )}
-          />
-        </Box>
-      </Container>
     </Layout>
   );
 };
@@ -106,15 +69,15 @@ const IndexPage = (props) => {
 export const pageQuery = graphql`
   {
     featuredFilmCollection: allFile(
-      filter: { relativeDirectory: { eq: "film" } }
-      sort: { fields: name, order: [ASC] }
+      filter: { relativeDirectory: { eq: "film-two" } }
+      sort: { fields: name, order: [DESC] }
       limit: 8
     ) {
       edges {
         node {
           id
           childImageSharp {
-            gatsbyImageData(width: 500, placeholder: DOMINANT_COLOR)
+            gatsbyImageData(width: 636, placeholder: DOMINANT_COLOR)
           }
         }
       }
@@ -164,33 +127,6 @@ export const pageQuery = graphql`
         metafields {
           key
           value
-        }
-      }
-    }
-    posts: allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: [DESC] }
-      filter: {
-        frontmatter: { private: { ne: true }, templateKey: { eq: "blog-post" } }
-      }
-    ) {
-      edges {
-        node {
-          id
-          fields {
-            slug
-            readingTime {
-              text
-            }
-          }
-          frontmatter {
-            title
-            tags
-            templateKey
-            description
-            pinned
-            private
-            date(formatString: "MMMM DD, YYYY")
-          }
         }
       }
     }

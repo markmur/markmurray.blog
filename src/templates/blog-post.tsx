@@ -18,12 +18,13 @@ import {
   PostTitle,
   Tag,
   Timestamp,
+  Avatar,
 } from '../styles';
 
 const Tags = ({ tags }) =>
   tags && tags.length > 0 ? (
     <Flex>
-      {tags.map(tag => (
+      {tags.map((tag) => (
         <Tag key={tag} to={`/tags/${kebabCase(tag)}/`}>
           {tag}
         </Tag>
@@ -51,11 +52,20 @@ export const BlogPostTemplate = ({
           <Description>{description}</Description>
         </Box>
 
-        <Timestamp>
-          {date}
-          <Bullet />
-          {readingTime}
-        </Timestamp>
+        <Flex alignItems="center" mb={4}>
+          <Avatar
+            src="https://firebasestorage.googleapis.com/v0/b/project-4767000521921178323.appspot.com/o/images%2Fresized%2Fmark_600x750?alt=media&token=ff0e3bd6-5225-41bf-b96b-f8e166ed92d9"
+            width="40"
+            height="40"
+          />
+          <Timestamp>
+            by <a href="https://twitter.com/markmur">Mark Murray</a>
+            <Bullet />
+            {date}
+            <Bullet />
+            {readingTime}
+          </Timestamp>
+        </Flex>
 
         <Tags tags={tags} />
 
