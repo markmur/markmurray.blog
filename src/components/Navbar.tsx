@@ -95,6 +95,8 @@ const LinkDropdown = ({
           color="white"
           p="1.5em"
           zIndex={100}
+          borderRadius={6}
+          boxShadow={`0 12px 20px 0 rgb(44 62 80 / 50%)`}
         >
           <Box mb={3} color="white" fontWeight="bold">
             <Link mr={4} to="/photography">
@@ -170,19 +172,28 @@ const Navbar: React.FC<{
               >
                 Writing
               </Link>
-              <Link activeClassName="active" mr={4} to="/projects">
+              {/* <Link activeClassName="active" mr={4} to="/projects">
                 Projects
-              </Link>
+              </Link> */}
 
               <LinkDropdown
                 links={{
                   // '': [{ text: 'All', to: '/photography' }],
                   Collections: [
-                    { text: 'Film', to: '/photography/film' },
                     ...data.allShopifyCollection.edges.map(({ node }) => ({
                       text: node.title,
                       to: `/collections/${node.handle}`,
                     })),
+                  ],
+                  Film: [
+                    {
+                      text: 'Canon AE-1',
+                      to: '/photography/film/canon-ae-1',
+                    },
+                    {
+                      text: 'Olympus mju III',
+                      to: '/photography/film/olympus-mju-iii',
+                    },
                   ],
                 }}
               >
