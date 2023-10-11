@@ -59,7 +59,7 @@ export const BlogPostTemplate = ({
             height="40"
           />
           <Timestamp>
-            by <a href="https://twitter.com/markmur">Mark Murray</a>
+            by <a href="https://twitter.com/mrkmur">Mark Murray</a>
             <Bullet />
             {date}
             <Bullet />
