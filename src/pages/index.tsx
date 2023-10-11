@@ -25,6 +25,11 @@ const IndexPage = (props) => {
           </Container>
         </Box>
 
+        {console.log(
+          featuredFilmCollection.edges[0].node.childImageSharp.gatsbyImageData
+            .images,
+        )}
+
         <CollectionCarousel
           id="film"
           handle="film"
@@ -37,7 +42,12 @@ const IndexPage = (props) => {
             title: `${node.title}`,
             handle: `${node.title}`,
             images: [
-              { src: node.childImageSharp.gatsbyImageData.images.fallback.src },
+              {
+                gatsbyImageData: node.childImageSharp.gatsbyImageData,
+                src: node.childImageSharp.gatsbyImageData.images.fallback.src,
+                backgroundColor:
+                  node.childImageSharp.gatsbyImageData.backgroundColor,
+              },
             ],
             to: '/photography/film/olympus-mju-iii',
             metafields: [{ key: 'orientation', value: 'landscape' }],
@@ -96,6 +106,10 @@ export const pageQuery = graphql`
         handle
         title
         images {
+          gatsbyImageData(
+            placeholder: DOMINANT_COLOR
+            formats: [AUTO, WEBP, AVIF]
+          )
           src
         }
         priceRangeV2 {
@@ -120,6 +134,10 @@ export const pageQuery = graphql`
         handle
         title
         images {
+          gatsbyImageData(
+            placeholder: DOMINANT_COLOR
+            formats: [AUTO, WEBP, AVIF]
+          )
           src
         }
         priceRangeV2 {

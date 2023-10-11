@@ -109,7 +109,7 @@ module.exports = {
         storeUrl: process.env.GATSBY_SHOPIFY_STORE_URL,
         // Not set by default. If set to true, this plugin will download and process images during the build.
         // The plugin’s default behavior is to fall back to Shopify’s CDN.
-        downloadImages: false,
+        downloadImages: true,
         shopifyConnections: ['collections'],
       },
     },
@@ -125,6 +125,11 @@ module.exports = {
       resolve: 'gatsby-plugin-sharp',
       options: {
         failOn: 'warning',
+        defaults: {
+          quality: 75,
+          formats: ['auto', 'webp', 'avif'],
+          placeholder: 'dominantColor',
+        },
       },
     },
 

@@ -16,6 +16,7 @@ import { useCarousel } from '../Carousel';
 import { getProductUrl, isOrientationLandscape } from '../../utils/product';
 import { formatPrice } from '../../utils/currency';
 import Controls from '../Carousel/Controls';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 
 const MobileContainer = ({ children }) => (
   <Box pl={[1, 0, 0]} px={['1em', 0, '0.5em']}>
@@ -29,6 +30,8 @@ interface Product {
   handle: string;
   images: {
     src: string;
+    backgroundColor?: string;
+    gatsbyImageData?: any;
   }[];
   to?: string;
   priceRangeV2?: {
@@ -150,30 +153,45 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
             <Carousel ref={containerRef} pr={[3, 5]}>
               {[...products]
                 .sort((a, b) => a.title?.localeCompare(b?.title))
-                .map((product) => (
-                  <CarouselItem ref={observe} key={product.id}>
-                    <a href={product.to ?? getProductUrl(product)}>
-                      <Box
-                        className={loaded ? 'item loaded' : 'item'}
-                        mr={[2, 3]}
-                        width={
-                          isOrientationLandscape(product)
-                            ? ['90vw', '40vw']
-                            : ['60vw', '200px', '278px']
-                        }
-                        aspectRatio={
-                          isOrientationLandscape(product)
-                            ? [3 / 2]
-                            : [4 / 6, 5 / 8]
-                        }
-                        backgroundSize="cover"
-                        style={{
-                          backgroundImage: `url(${product.images[0].src})`,
-                        }}
-                      />
-                    </a>
-                  </CarouselItem>
-                ))}
+                .map((product) => {
+                  const image = product.images[0];
+
+                  const sharedContainerProps = {
+                    mr: [2, 3],
+                    width: isOrientationLandscape(product)
+                      ? ['90vw', '40vw']
+                      : ['60vw', '200px', '278px'],
+                    aspectRatio: isOrientationLandscape(product)
+                      ? [3 / 2]
+                      : [4 / 6, 5 / 8],
+                    style: { overflow: 'hidden' },
+                  };
+
+                  return (
+                    <CarouselItem ref={observe} key={product.id}>
+                      <a href={product.to ?? getProductUrl(product)}>
+                        {image.gatsbyImageData ? (
+                          <Box {...sharedContainerProps}>
+                            <GatsbyImage
+                              loading="lazy"
+                              alt={product.title}
+                              image={getImage(image.gatsbyImageData)!}
+                            />
+                          </Box>
+                        ) : (
+                          <Box
+                            {...sharedContainerProps}
+                            className={loaded ? 'item loaded' : 'item'}
+                            backgroundSize="cover"
+                            style={{
+                              backgroundImage: `url(${image.src})`,
+                            }}
+                          />
+                        )}
+                      </a>
+                    </CarouselItem>
+                  );
+                })}
             </Carousel>
 
             <Box className="title">

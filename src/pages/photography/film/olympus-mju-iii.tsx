@@ -17,12 +17,6 @@ function Photos(props) {
     marginBottom: '1em',
   };
 
-  const imageProps = {
-    loading: 'lazy' as any,
-    alt: '',
-    placeholder: 'dominantColor' as any,
-  };
-
   const images = props.data.film.edges.map(({ node }) => node);
 
   return (
@@ -71,7 +65,7 @@ function Photos(props) {
         >
           {images.map((image) => (
             <figure style={imageStyles} key={image.id}>
-              <GatsbyImage {...imageProps} image={getImage(image)} />
+              <GatsbyImage alt="" loading="lazy" image={getImage(image)!} />
             </figure>
           ))}
         </Masonry>
@@ -94,7 +88,7 @@ export const pageQuery = graphql`
               quality: 75
               width: 636
               placeholder: DOMINANT_COLOR
-              formats: [AUTO, WEBP, AVIF, JPG, PNG]
+              formats: [AUTO, WEBP, AVIF]
             )
           }
         }
