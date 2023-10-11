@@ -34,33 +34,29 @@ export default class ProjectsPage extends React.Component {
   }
 }
 
-export const pageQuery = graphql`
-  {
-    projects: allMarkdownRemark(
-      filter: {
-        frontmatter: { templateKey: { eq: "project" }, hidden: { ne: true } }
-      }
-      sort: { fields: [frontmatter___order] }
-    ) {
-      edges {
-        node {
-          id
-          fields {
-            slug
-          }
-          frontmatter {
-            title
-            tags
-            templateKey
-            description
-            image_url
-            url
-            cta
-            github_url
-            date(formatString: "MMMM DD, YYYY")
-          }
+export const pageQuery = graphql`{
+  projects: allMarkdownRemark(
+    filter: {frontmatter: {templateKey: {eq: "project"}, hidden: {ne: true}}}
+    sort: {frontmatter: {order: ASC}}
+  ) {
+    edges {
+      node {
+        id
+        fields {
+          slug
+        }
+        frontmatter {
+          title
+          tags
+          templateKey
+          description
+          image_url
+          url
+          cta
+          github_url
+          date(formatString: "MMMM DD, YYYY")
         }
       }
     }
   }
-`
+}`
