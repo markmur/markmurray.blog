@@ -88,7 +88,6 @@ export const pageQuery = graphql`
               quality: 75
               width: 636
               placeholder: DOMINANT_COLOR
-              formats: [AUTO, WEBP, AVIF]
             )
           }
         }

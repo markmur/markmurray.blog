@@ -87,11 +87,7 @@ export const pageQuery = graphql`
         node {
           id
           childImageSharp {
-            gatsbyImageData(
-              quality: 75
-              placeholder: DOMINANT_COLOR
-              formats: [AUTO, WEBP, AVIF]
-            )
+            gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
           }
         }
       }
@@ -106,10 +102,7 @@ export const pageQuery = graphql`
         handle
         title
         images {
-          gatsbyImageData(
-            placeholder: DOMINANT_COLOR
-            formats: [AUTO, WEBP, AVIF]
-          )
+          gatsbyImageData(placeholder: DOMINANT_COLOR)
           src
         }
         priceRangeV2 {
@@ -134,10 +127,7 @@ export const pageQuery = graphql`
         handle
         title
         images {
-          gatsbyImageData(
-            placeholder: DOMINANT_COLOR
-            formats: [AUTO, WEBP, AVIF]
-          )
+          gatsbyImageData(placeholder: DOMINANT_COLOR)
           src
         }
         priceRangeV2 {
