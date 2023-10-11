@@ -26,15 +26,6 @@ const IndexPage = (props) => {
         </Box>
 
         <CollectionCarousel
-          id={featuredCollection.id}
-          handle={featuredCollection.handle}
-          title={`${featuredCollection.title} Collection`}
-          description={featuredCollection.description}
-          heading={featuredCollection.title}
-          products={featuredCollection.products}
-        />
-
-        <CollectionCarousel
           id="film"
           handle="film"
           to="/photography/film/olympus-mju-iii"
@@ -51,6 +42,15 @@ const IndexPage = (props) => {
             to: '/photography/film/olympus-mju-iii',
             metafields: [{ key: 'orientation', value: 'landscape' }],
           }))}
+        />
+
+        <CollectionCarousel
+          id={featuredCollection.id}
+          handle={featuredCollection.handle}
+          title={`${featuredCollection.title} Collection`}
+          description={featuredCollection.description}
+          heading={featuredCollection.title}
+          products={featuredCollection.products}
         />
 
         <CollectionCarousel
