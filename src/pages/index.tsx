@@ -90,7 +90,7 @@ export const pageQuery = graphql`
             gatsbyImageData(
               quality: 75
               placeholder: DOMINANT_COLOR
-              formats: [AUTO, WEBP, AVIF, JPG, PNG]
+              formats: [AUTO, WEBP, AVIF]
             )
           }
         }

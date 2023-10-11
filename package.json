@@ -10,8 +10,8 @@
   "scripts": {
     "start": "yarn develop",
     "clean": "rimraf .cache public",
-    "build": "yarn clean && gatsby build",
-    "develop": "yarn clean && gatsby develop",
+    "build": "gatsby build",
+    "develop": "gatsby develop",
     "serve": "gatsby serve",
     "lint-staged": "lint-staged"
   },
