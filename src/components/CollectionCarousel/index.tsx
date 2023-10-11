@@ -85,6 +85,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
   const { observe, next, prev } = useCarousel(containerRef, 300);
 
   const minPrice = getMinPrice(products);
+  const collectionUrl = to ?? `/collections/${handle}`;
 
   return (
     <Box
@@ -138,9 +139,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                     {products.length > 3 && (
                       <Controls mt={3} mb={4} onPrev={prev} onNext={next} />
                     )}
-                    <Button href={to ?? `/collections/${id}`}>
-                      View Collection
-                    </Button>
+                    <Button href={collectionUrl}>View Collection</Button>
                   </Box>
                 </Box>
               </Box>
@@ -188,7 +187,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
         <MobileContainer>
           <Box display={['block', 'block', 'none']}>
             <Box mt={3}>
-              <Button href={`/collections/${handle}`}>View Collection</Button>
+              <Button href={collectionUrl}>View Collection</Button>
             </Box>
           </Box>
         </MobileContainer>
