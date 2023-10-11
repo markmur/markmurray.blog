@@ -85,7 +85,7 @@ function Photos(props) {
 export const pageQuery = graphql`
   query FilmPageQuery {
     film: allFile(
-      filter: { relativeDirectory: { eq: "film" } }
+      filter: { relativeDirectory: { eq: "canon" } }
       sort: { fields: name, order: [ASC] }
     ) {
       edges {

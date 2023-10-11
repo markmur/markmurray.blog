@@ -69,7 +69,7 @@ const IndexPage = (props) => {
 export const pageQuery = graphql`
   {
     featuredFilmCollection: allFile(
-      filter: { relativeDirectory: { eq: "film-two" } }
+      filter: { relativeDirectory: { eq: "olympus" } }
       sort: { fields: name, order: [DESC] }
       limit: 8
     ) {
