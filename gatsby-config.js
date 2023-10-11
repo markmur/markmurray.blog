@@ -120,7 +120,14 @@ module.exports = {
     //   },
     // },
     'gatsby-plugin-typescript',
-    'gatsby-plugin-sharp',
+
+    {
+      resolve: 'gatsby-plugin-sharp',
+      options: {
+        failOn: 'warning',
+      },
+    },
+
     'gatsby-transformer-sharp',
 
     // "gatsby-plugin-netlify" should come last here
