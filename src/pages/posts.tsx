@@ -27,34 +27,30 @@ export default class PostsPage extends React.Component {
   }
 }
 
-export const pageQuery = graphql`
-  {
-    posts: allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: [DESC] }
-      filter: {
-        frontmatter: { private: { ne: true }, templateKey: { eq: "blog-post" } }
-      }
-    ) {
-      edges {
-        node {
-          id
-          fields {
-            slug
-            readingTime {
-              text
-            }
+export const pageQuery = graphql`{
+  posts: allMarkdownRemark(
+    sort: {frontmatter: {date: DESC}}
+    filter: {frontmatter: {private: {ne: true}, templateKey: {eq: "blog-post"}}}
+  ) {
+    edges {
+      node {
+        id
+        fields {
+          slug
+          readingTime {
+            text
           }
-          frontmatter {
-            title
-            tags
-            templateKey
-            description
-            pinned
-            private
-            date(formatString: "MMMM DD, YYYY")
-          }
+        }
+        frontmatter {
+          title
+          tags
+          templateKey
+          description
+          pinned
+          private
+          date(formatString: "MMMM DD, YYYY")
         }
       }
     }
   }
-`
+}`

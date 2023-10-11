@@ -26,36 +26,29 @@ export default class BlogPage extends React.Component {
   }
 }
 
-export const pageQuery = graphql`
-  query BlogQuery {
-    allMarkdownRemark(
-      sort: {
-        fields: [frontmatter___pinned, frontmatter___date]
-        order: [ASC, DESC]
-      }
-      filter: {
-        frontmatter: { templateKey: { eq: "blog-post" }, private: { ne: true } }
-      }
-    ) {
-      edges {
-        node {
-          id
-          fields {
-            readingTime {
-              text
-            }
+export const pageQuery = graphql`query BlogQuery {
+  allMarkdownRemark(
+    sort: [{frontmatter: {pinned: ASC}}, {frontmatter: {date: DESC}}]
+    filter: {frontmatter: {templateKey: {eq: "blog-post"}, private: {ne: true}}}
+  ) {
+    edges {
+      node {
+        id
+        fields {
+          readingTime {
+            text
           }
-          frontmatter {
-            slug
-            title
-            tags
-            templateKey
-            description
-            pinned
-            date(formatString: "MMMM DD, YYYY")
-          }
+        }
+        frontmatter {
+          slug
+          title
+          tags
+          templateKey
+          description
+          pinned
+          date(formatString: "MMMM DD, YYYY")
         }
       }
     }
   }
-`;
+}`;

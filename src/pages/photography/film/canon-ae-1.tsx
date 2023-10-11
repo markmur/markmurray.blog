@@ -82,26 +82,17 @@ function Photos(props) {
   );
 }
 
-export const pageQuery = graphql`
-  query FilmPageQuery {
-    film: allFile(
-      filter: { relativeDirectory: { eq: "canon" } }
-      sort: { fields: name, order: [ASC] }
-    ) {
-      edges {
-        node {
-          id
-          childImageSharp {
-            gatsbyImageData(
-              quality: 75
-              width: 636
-              placeholder: DOMINANT_COLOR
-            )
-          }
+export const pageQuery = graphql`query FilmPageQuery {
+  film: allFile(filter: {relativeDirectory: {eq: "canon"}}, sort: {name: ASC}) {
+    edges {
+      node {
+        id
+        childImageSharp {
+          gatsbyImageData(quality: 75, width: 636, placeholder: DOMINANT_COLOR)
         }
       }
     }
   }
-`;
+}`;
 
 export default Photos;

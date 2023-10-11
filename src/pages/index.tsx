@@ -76,73 +76,71 @@ const IndexPage = (props) => {
   );
 };
 
-export const pageQuery = graphql`
-  {
-    featuredFilmCollection: allFile(
-      filter: { relativeDirectory: { eq: "olympus" } }
-      sort: { fields: name, order: [DESC] }
-      limit: 8
-    ) {
-      edges {
-        node {
-          id
-          childImageSharp {
-            gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
-          }
-        }
-      }
-    }
-    featuredCollection: shopifyCollection(title: { eq: "Iceland" }) {
-      id
-      title
-      handle
-      description
-      products {
+export const pageQuery = graphql`{
+  featuredFilmCollection: allFile(
+    filter: {relativeDirectory: {eq: "olympus"}}
+    sort: {name: DESC}
+    limit: 8
+  ) {
+    edges {
+      node {
         id
-        handle
-        title
-        images {
-          gatsbyImageData(placeholder: DOMINANT_COLOR)
-          src
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        metafields {
-          key
-          value
-        }
-      }
-    }
-    featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
-      id
-      title
-      handle
-      description
-      products {
-        id
-        handle
-        title
-        images {
-          gatsbyImageData(placeholder: DOMINANT_COLOR)
-          src
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        metafields {
-          key
-          value
+        childImageSharp {
+          gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
         }
       }
     }
   }
-`;
+  featuredCollection: shopifyCollection(title: {eq: "Iceland"}) {
+    id
+    title
+    handle
+    description
+    products {
+      id
+      handle
+      title
+      images {
+        gatsbyImageData(placeholder: DOMINANT_COLOR)
+        src
+      }
+      priceRangeV2 {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      metafields {
+        key
+        value
+      }
+    }
+  }
+  featuredCollectionTwo: shopifyCollection(title: {eq: "Sapphire"}) {
+    id
+    title
+    handle
+    description
+    products {
+      id
+      handle
+      title
+      images {
+        gatsbyImageData(placeholder: DOMINANT_COLOR)
+        src
+      }
+      priceRangeV2 {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      metafields {
+        key
+        value
+      }
+    }
+  }
+}`;
 
 export default IndexPage;
