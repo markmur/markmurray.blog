@@ -92,7 +92,12 @@ export const pageQuery = graphql`
         node {
           id
           childImageSharp {
-            gatsbyImageData(width: 500, placeholder: DOMINANT_COLOR)
+            gatsbyImageData(
+              quality: 75
+              width: 636
+              placeholder: DOMINANT_COLOR
+              formats: [AUTO, WEBP, AVIF, JPG, PNG]
+            )
           }
         }
       }
