@@ -906,6 +906,20 @@ function getUnitValue(value: number | string): string {
   return value;
 }
 
+export const LinkListContainer = styled(Box)<Defaults>`
+  ${defaults};
+  position: absolute;
+  top: -1.5em;
+  left: -1.5em;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 1.5em;
+  z-index: 100;
+  border-radius: 6px;
+  box-shadow: 0 12px 20px 0 rgb(44 62 80 / 50%);
+  animation: ${fadeInKeyframes} 220ms ease-out;
+`;
+
 export const LinkList = styled.ul<Defaults>`
   ${defaults};
   list-style-type: none;

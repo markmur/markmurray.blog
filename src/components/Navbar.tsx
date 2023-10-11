@@ -14,6 +14,7 @@ import {
   HideOnMobile,
   LinkList,
   Text,
+  LinkListContainer,
 } from '../styles';
 import { useShopify } from '../hooks/use-shopify';
 import { graphql, useStaticQuery } from 'gatsby';
@@ -87,17 +88,7 @@ const LinkDropdown = ({
       })}
 
       {isVisible && (
-        <Box
-          position="absolute"
-          top="-1.5em"
-          left="-1.5em"
-          backgroundColor="rgba(0,0,0,0.9)"
-          color="white"
-          p="1.5em"
-          zIndex={100}
-          borderRadius={6}
-          boxShadow={`0 12px 20px 0 rgb(44 62 80 / 50%)`}
-        >
+        <LinkListContainer>
           <Box mb={3} color="white" fontWeight="bold">
             <Link mr={4} to="/photography">
               <Text color="white" as="span">
@@ -107,7 +98,7 @@ const LinkDropdown = ({
           </Box>
 
           {renderLinks()}
-        </Box>
+        </LinkListContainer>
       )}
     </Box>
   );
