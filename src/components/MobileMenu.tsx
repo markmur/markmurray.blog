@@ -32,8 +32,7 @@ const MobileMenu = ({ open = true, onClose }) => {
               <div>
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/about">Who?</NavLink>
-                <NavLink to="/posts">Articles</NavLink>
-                <NavLink to="/projects">Projects</NavLink>
+                <NavLink to="/posts">Writing</NavLink>
                 <NavLink to="/photography">Photography</NavLink>
               </div>
             </Flex>
