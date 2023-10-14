@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
-import { graphql } from 'gatsby';
+import { PageProps, graphql } from 'gatsby';
 
 import { CartContext } from '../context/CartContext';
 import Layout from '../components/Layout';
@@ -27,68 +27,6 @@ import {
 import { formatPrice } from '../utils/currency';
 import { useShopify } from '../hooks/use-shopify';
 
-interface Variant {
-  id: string;
-  productId: string;
-  shopifyId: string;
-  price: string;
-  sku: string;
-  title: string;
-  availableForSale: boolean;
-  image: {
-    originalSrc: string;
-  };
-}
-
-interface Metafield {
-  product: {
-    metafields: {
-      key: string;
-      value: string;
-    };
-  };
-}
-
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-  tags: string[];
-  images: {
-    src: string;
-  }[];
-  featuredImage: {
-    originalSrc: string;
-  };
-  priceRangeV2: {
-    minVariantPrice: {
-      currencyCode: string;
-    };
-  };
-  variants: Variant[];
-  metafield: Metafield[];
-  collections: {
-    id: string;
-    title: string;
-    handle: string;
-  }[];
-}
-
-interface Collection {
-  title: string;
-  handle: string;
-  products: {
-    id: string;
-    handle: string;
-    title: string;
-    images: {
-      src: string;
-    }[];
-  }[];
-}
-
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
@@ -102,15 +40,9 @@ declare global {
 }
 
 function getMetafield(product: Product, key: string) {
-  return get(product, 'metafields.0.product.metafields', []).find(
+  return get(product, 'metafields', []).find(
     (metafield) => get(metafield, 'key') === key,
   )?.value;
-}
-
-interface Props {
-  product: Product;
-  collection: Collection;
-  featuredCollection: Collection;
 }
 
 function getPageSizeFromVariant(variant: Variant): string | undefined {
@@ -147,8 +79,8 @@ function useScrollToTop() {
   }, []);
 }
 
-function ProductTemplate(props: Props) {
-  const product: Product = props.product;
+function ProductTemplate(props: PageProps<Queries.ProductByIDQuery>) {
+  const product = props.product;
   const shopify = useShopify();
   const detailsRef = React.createRef<HTMLDivElement>();
   const [selectedVariant, setSelectedVariant] = React.useState(
@@ -250,8 +182,10 @@ function ProductTemplate(props: Props) {
                 </div>
 
                 <strong>
-                  {getMetafield(product, 'camera')} -{' '}
-                  {getMetafield(product, 'lens')}
+                  {getMetafield(product, 'camera')}
+                  {getMetafield(product, 'lens')
+                    ? ` - ${getMetafield(product, 'lens')}`
+                    : ''}
                 </strong>
               </small>
             </Box>
@@ -269,26 +203,6 @@ function ProductTemplate(props: Props) {
                 </small>
               </Box>
             }
-
-            {/* <Box mt={4} mb={3}>
-              <small>
-                <strong>Sizes available</strong>
-                <Box pt={1} pb={3} pl={4}>
-                  <ul>
-                    {product.variants.map((variant) => (
-                      <li key={variant.shopifyId}>{variant.title}</li>
-                    ))}
-                  </ul>
-                </Box>
-
-                <small>
-                  <strong>
-                    <a href="mailto:mark@markmurray.co">Get in touch</a>
-                  </strong>{' '}
-                  for custom print sizes.
-                </small>
-              </small>
-            </Box> */}
 
             <Box mb={1}>
               <small>
@@ -444,13 +358,16 @@ export const pageQuery = graphql`
       }
       featuredImage {
         originalSrc
+        gatsbyImageData
       }
-      images {
-        src
+      media {
+        ...ShopifyMedia
       }
       variants {
         id
-        productId
+        product {
+          id
+        }
         shopifyId
         price
         sku
@@ -463,12 +380,6 @@ export const pageQuery = graphql`
       metafields {
         key
         value
-        product {
-          metafields {
-            key
-            value
-          }
-        }
       }
     }
 
@@ -479,8 +390,8 @@ export const pageQuery = graphql`
         id
         handle
         title
-        images {
-          src
+        media {
+          ...ShopifyMedia
         }
         metafields {
           key
@@ -507,8 +418,8 @@ export const pageQuery = graphql`
         id
         handle
         title
-        images {
-          src
+        media {
+          ...ShopifyMedia
         }
         priceRangeV2 {
           minVariantPrice {

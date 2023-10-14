@@ -28,11 +28,7 @@ interface Product {
   id: string;
   title: string;
   handle: string;
-  images: {
-    src: string;
-    backgroundColor?: string;
-    gatsbyImageData?: any;
-  }[];
+  media: Queries.IndexPageQuery['featuredCollection']['products'][0]['media'];
   to?: string;
   priceRangeV2?: {
     minVariantPrice: {
@@ -154,7 +150,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
               {[...products]
                 .sort((a, b) => a.title?.localeCompare(b?.title))
                 .map((product) => {
-                  const image = product.images[0];
+                  const image = product?.media[0].image;
 
                   const sharedContainerProps = {
                     mr: [2, 3],
@@ -170,24 +166,13 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                   return (
                     <CarouselItem ref={observe} key={product.id}>
                       <a href={product.to ?? getProductUrl(product)}>
-                        {image.gatsbyImageData ? (
-                          <Box {...sharedContainerProps}>
-                            <GatsbyImage
-                              loading="lazy"
-                              alt={product.title}
-                              image={getImage(image.gatsbyImageData)!}
-                            />
-                          </Box>
-                        ) : (
-                          <Box
-                            {...sharedContainerProps}
-                            className={loaded ? 'item loaded' : 'item'}
-                            backgroundSize="cover"
-                            style={{
-                              backgroundImage: `url(${image.src})`,
-                            }}
+                        <Box {...sharedContainerProps}>
+                          <GatsbyImage
+                            loading="lazy"
+                            alt={product.title}
+                            image={getImage(image.gatsbyImageData)!}
                           />
-                        )}
+                        </Box>
                       </a>
                     </CarouselItem>
                   );

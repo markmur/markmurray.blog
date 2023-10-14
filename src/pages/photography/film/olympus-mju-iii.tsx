@@ -9,9 +9,9 @@ import {
   Subtitle,
 } from '../../../styles';
 import Masonry from 'react-masonry-css';
-import { graphql } from 'gatsby';
+import { PageProps, graphql } from 'gatsby';
 
-function Photos(props) {
+function Photos(props: PageProps<Queries.OlympusFilmPageQuery>) {
   const imageStyles = {
     margin: 0,
     marginBottom: '1em',
@@ -74,17 +74,26 @@ function Photos(props) {
   );
 }
 
-export const pageQuery = graphql`query FilmPageQuery {
-  film: allFile(filter: {relativeDirectory: {eq: "olympus"}}, sort: {name: DESC}) {
-    edges {
-      node {
-        id
-        childImageSharp {
-          gatsbyImageData(quality: 75, width: 636, placeholder: DOMINANT_COLOR)
+export const pageQuery = graphql`
+  query OlympusFilmPage {
+    film: allFile(
+      filter: { relativeDirectory: { eq: "olympus" } }
+      sort: { name: DESC }
+    ) {
+      edges {
+        node {
+          id
+          childImageSharp {
+            gatsbyImageData(
+              quality: 75
+              width: 636
+              placeholder: DOMINANT_COLOR
+            )
+          }
         }
       }
     }
   }
-}`;
+`;
 
 export default Photos;

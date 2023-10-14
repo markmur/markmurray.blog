@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+import { PageProps, graphql } from 'gatsby';
 import { Box, PageHeading, Container } from '../styles';
 import Layout from '../components/Layout';
 import CollectionCarousel from '../components/CollectionCarousel';
@@ -9,7 +9,7 @@ const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);
 };
 
-const IndexPage = (props) => {
+const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
   const { data } = props;
   const { featuredCollection, featuredCollectionTwo, featuredFilmCollection } =
     data;
@@ -25,11 +25,6 @@ const IndexPage = (props) => {
           </Container>
         </Box>
 
-        {console.log(
-          featuredFilmCollection.edges[0].node.childImageSharp.gatsbyImageData
-            .images,
-        )}
-
         <CollectionCarousel
           id="film"
           handle="film"
@@ -41,6 +36,7 @@ const IndexPage = (props) => {
             id: index,
             title: `${node.title}`,
             handle: `${node.title}`,
+            media: [{ image: node.childImageSharp }],
             images: [
               {
                 gatsbyImageData: node.childImageSharp.gatsbyImageData,
@@ -76,22 +72,37 @@ const IndexPage = (props) => {
   );
 };
 
-export const pageQuery = graphql`{
-  featuredFilmCollection: allFile(
-    filter: {relativeDirectory: {eq: "olympus"}}
-    sort: {name: DESC}
-    limit: 8
-  ) {
-    edges {
-      node {
-        id
-        childImageSharp {
-          gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
+export const pageQuery = graphql`
+  query IndexPage {
+    featuredFilmCollection: allFile(
+      filter: { relativeDirectory: { eq: "olympus" } }
+      sort: { name: DESC }
+      limit: 8
+    ) {
+      edges {
+        node {
+          id
+          childImageSharp {
+            gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
+          }
         }
       }
     }
+    featuredCollection: shopifyCollection(title: { eq: "Iceland" }) {
+      ...FeaturedShopifyCollection
+    }
+    featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
+      ...FeaturedShopifyCollection
+    }
   }
-  featuredCollection: shopifyCollection(title: {eq: "Iceland"}) {
+
+  fragment ShopifyMedia on ShopifyMediaImage {
+    image {
+      gatsbyImageData
+    }
+  }
+
+  fragment FeaturedShopifyCollection on ShopifyCollection {
     id
     title
     handle
@@ -100,9 +111,12 @@ export const pageQuery = graphql`{
       id
       handle
       title
-      images {
-        gatsbyImageData(placeholder: DOMINANT_COLOR)
-        src
+      media {
+        ... on ShopifyMediaImage {
+          image {
+            gatsbyImageData
+          }
+        }
       }
       priceRangeV2 {
         minVariantPrice {
@@ -116,31 +130,6 @@ export const pageQuery = graphql`{
       }
     }
   }
-  featuredCollectionTwo: shopifyCollection(title: {eq: "Sapphire"}) {
-    id
-    title
-    handle
-    description
-    products {
-      id
-      handle
-      title
-      images {
-        gatsbyImageData(placeholder: DOMINANT_COLOR)
-        src
-      }
-      priceRangeV2 {
-        minVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      metafields {
-        key
-        value
-      }
-    }
-  }
-}`;
+`;
 
 export default IndexPage;

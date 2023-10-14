@@ -68,6 +68,8 @@ const ShopifyProvider = ({ client, children }: Props) => {
     React.useState<ShopifyClient.Checkout>(defaultCheckout);
   const [isOutdated, setIsOutdated] = React.useState<boolean>(false);
 
+  console.log(checkout);
+
   const cartCount = checkout.lineItems.reduce(
     (state, item) => (state += item.quantity),
     0,
