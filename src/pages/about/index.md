@@ -3,7 +3,6 @@ id: about
 templateKey: about
 title: Who?
 description: Let me quickly introduce myself.
-image_url: https://firebasestorage.googleapis.com/v0/b/project-4767000521921178323.appspot.com/o/images%2Fresized%2Fmark_600x750?alt=media&token=ff0e3bd6-5225-41bf-b96b-f8e166ed92d9
 ---
 
 Hi, my name is Mark and I'm an Irish Software Engineer, Photographer and
