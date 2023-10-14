@@ -3167,7 +3167,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/shopify-buy@^2.10.9":
+"@types/shopify-buy@^2.17.2":
   version "2.17.2"
   resolved "https://registry.yarnpkg.com/@types/shopify-buy/-/shopify-buy-2.17.2.tgz#c90510437f380e0de2d352797156ed25dc6e101a"
   integrity sha512-ik2NnC9VJQ6rf0GGRkGdvhNxdXvRBIwzpduoWmZ4nFRIpb6WGES9K4vM1xtsTP0quJn6JaHkKcQxqrctcjtjfQ==
@@ -14188,7 +14188,7 @@ shift-left@^0.1.5:
   resolved "https://registry.yarnpkg.com/shift-left/-/shift-left-0.1.5.tgz#4a61a9d0412b1b32f9abbd97f72466c9c74a6be1"
   integrity sha512-55d8QaP1YmuL1D52fhgq8CT1tXksM/2WPZ6980RtkMbl0Cze++kuJy50GLMnXwostk/YG9hasaJmP3r+d3yUtQ==
 
-shopify-buy@^2.14.0:
+shopify-buy@^2.21.1:
   version "2.21.1"
   resolved "https://registry.yarnpkg.com/shopify-buy/-/shopify-buy-2.21.1.tgz#a676d971a8866075064d34ce6e6858b1acf60ad1"
   integrity sha512-loiv6edkoleLwN8bA+07PDjq/EJ7KL/VHVRCJMUe4467MzFVcmAgAa4FvHrN6EICpq88h7A47UdqYa2R/W3hNw==

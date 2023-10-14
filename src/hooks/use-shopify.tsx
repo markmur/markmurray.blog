@@ -1,19 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ShopifyClient from 'shopify-buy';
 import Shopify from '../utils/shopify';
 
-type Cart = ShopifyClient.Cart & {
-  webUrl: string;
-  totalPrice: string;
-  currencyCode: string;
-  shippingPrice: string;
-  shippingType: string;
-  taxesIncluded: boolean;
-};
-
 interface UseShopify {
-  // state
-  checkout: Cart;
+  checkout: ShopifyClient.Checkout;
   cartCount: number;
   loading: boolean;
 
@@ -26,12 +16,19 @@ interface UseShopify {
   decrementLineItem: (id: string | number) => Promise<void>;
 }
 
-const defaultCart: Cart = {
+const defaultCheckout: Partial<UseShopify['checkout']> = {
   checkoutUrl: '',
   completedAt: '',
   id: '',
   lineItems: [],
-  subtotalPrice: '0.00',
+  subtotalPrice: {
+    amount: 0,
+    currencyCode: 'EUR',
+  },
+  totalPrice: {
+    amount: 0,
+    currencyCode: 'EUR',
+  },
   webUrl: '',
 };
 
@@ -39,7 +36,7 @@ const noop = async () => undefined;
 
 const defaultContext = {
   loading: false,
-  checkout: defaultCart,
+  checkout: defaultCheckout,
   cartCount: 0,
   goToCheckout: noop,
   addLineItem: noop,
@@ -67,7 +64,8 @@ interface Props {
 
 const ShopifyProvider = ({ client, children }: Props) => {
   const [loading, setLoading] = React.useState(false);
-  const [checkout, setCheckout] = React.useState<Cart>(defaultCart);
+  const [checkout, setCheckout] =
+    React.useState<ShopifyClient.Checkout>(defaultCheckout);
   const [isOutdated, setIsOutdated] = React.useState<boolean>(false);
 
   const cartCount = checkout.lineItems.reduce(
@@ -80,7 +78,10 @@ const ShopifyProvider = ({ client, children }: Props) => {
     client
       .init()
       .then(() => client.fetchCheckout())
-      .then((checkout) => setCheckout(checkout as Cart))
+      .then((checkout: unknown) => {
+        // Note: the Shopify client returns the "checkout" type here but it is typed as Promise<ShopifyClient.Cart> in the lib - which is wrong
+        return setCheckout(checkout as ShopifyClient.Checkout);
+      })
       .then(() => setLoading(false))
       .catch((error) => {
         console.error('Something went wrong fetching checkout');
@@ -90,8 +91,8 @@ const ShopifyProvider = ({ client, children }: Props) => {
   React.useEffect(() => {
     if (isOutdated) {
       setLoading(true);
-      client.fetchCheckout().then((checkout) => {
-        setCheckout(checkout as Cart);
+      client.fetchCheckout().then((checkout: unknown) => {
+        setCheckout(checkout as ShopifyClient.Checkout);
         setIsOutdated(false);
         setLoading(false);
       });
@@ -124,7 +125,7 @@ const ShopifyProvider = ({ client, children }: Props) => {
   }
 
   function getQuantityById(id: string | number): number {
-    return checkout.lineItems?.find((item) => item.id === id)?.quantity;
+    return checkout.lineItems?.find((item) => item.id === id)?.quantity ?? 0;
   }
 
   async function incrementLineItem(id: string | number) {
@@ -143,23 +144,31 @@ const ShopifyProvider = ({ client, children }: Props) => {
     setLoading(false);
   }
 
-  return (
-    <Provider
-      value={{
-        checkout,
-        cartCount,
-        loading,
-        goToCheckout,
-        addLineItem,
-        fetchCheckout,
-        removeLineItem,
-        incrementLineItem,
-        decrementLineItem,
-      }}
-    >
-      {children}
-    </Provider>
-  );
+  const value = useMemo(() => {
+    return {
+      checkout,
+      cartCount,
+      loading,
+      goToCheckout,
+      addLineItem,
+      fetchCheckout,
+      removeLineItem,
+      incrementLineItem,
+      decrementLineItem,
+    };
+  }, [
+    checkout,
+    cartCount,
+    loading,
+    goToCheckout,
+    addLineItem,
+    fetchCheckout,
+    removeLineItem,
+    incrementLineItem,
+    decrementLineItem,
+  ]);
+
+  return <Provider value={value}>{children}</Provider>;
 };
 
 export { ShopifyProvider, useShopify };
