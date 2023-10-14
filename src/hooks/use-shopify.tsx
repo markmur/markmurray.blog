@@ -4,11 +4,10 @@ import Shopify from '../utils/shopify';
 
 type Cart = ShopifyClient.Cart & {
   webUrl: string;
-  totalPrice: string;
   currencyCode: string;
   shippingPrice: string;
   shippingType: string;
-  taxesIncluded: boolean;
+  completedAt: string;
 };
 
 interface UseShopify {
@@ -69,6 +68,8 @@ const ShopifyProvider = ({ client, children }: Props) => {
   const [loading, setLoading] = React.useState(false);
   const [checkout, setCheckout] = React.useState<Cart>(defaultCart);
   const [isOutdated, setIsOutdated] = React.useState<boolean>(false);
+
+  console.log(checkout);
 
   const cartCount = checkout.lineItems.reduce(
     (state, item) => (state += item.quantity),

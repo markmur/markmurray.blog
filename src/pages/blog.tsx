@@ -17,7 +17,7 @@ export default class BlogPage extends React.Component {
           <Container>
             <PageHeading>Latest Posts</PageHeading>
           </Container>
-          {posts.map(post => (
+          {posts.map((post) => (
             <Post key={post.id} post={post} />
           ))}
         </Content>
@@ -26,29 +26,33 @@ export default class BlogPage extends React.Component {
   }
 }
 
-export const pageQuery = graphql`query BlogQuery {
-  allMarkdownRemark(
-    sort: [{frontmatter: {pinned: ASC}}, {frontmatter: {date: DESC}}]
-    filter: {frontmatter: {templateKey: {eq: "blog-post"}, private: {ne: true}}}
-  ) {
-    edges {
-      node {
-        id
-        fields {
-          readingTime {
-            text
+export const pageQuery = graphql`
+  query BlogQuery {
+    allMarkdownRemark(
+      sort: [{ frontmatter: { pinned: ASC } }, { frontmatter: { date: DESC } }]
+      filter: {
+        frontmatter: { templateKey: { eq: "blog-post" }, private: { ne: true } }
+      }
+    ) {
+      edges {
+        node {
+          id
+          fields {
+            readingTime {
+              text
+            }
           }
-        }
-        frontmatter {
-          slug
-          title
-          tags
-          templateKey
-          description
-          pinned
-          date(formatString: "MMMM DD, YYYY")
+          frontmatter {
+            slug
+            title
+            tags
+            templateKey
+            description
+            pinned
+            date(formatString: "MMMM DD, YYYY")
+          }
         }
       }
     }
   }
-}`;
+`;

@@ -145,6 +145,8 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
   //   'https://cdn.shopify.com/shopifycloud/shop-js/v0.1/client.js',
   // );
 
+  console.log(shopify.checkout);
+
   return (
     <Box position="relative">
       {shopify.loading && <LoadingOverlay />}
@@ -215,7 +217,7 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
             )}
             <strong>
               {formatPrice(
-                shopify.checkout.subtotalPrice,
+                shopify.checkout.lineItemsSubtotalPrice.amount,
                 shopify.checkout.currencyCode,
               )}
             </strong>
@@ -278,7 +280,7 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
             <div>
               <strong>
                 {formatPrice(
-                  shopify.checkout.totalPrice,
+                  shopify.checkout.totalPrice.amount,
                   shopify.checkout.currencyCode,
                 )}
               </strong>

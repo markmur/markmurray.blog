@@ -1,14 +1,12 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { ThemeProvider } from 'styled-components';
-import { StaticQuery, graphql, Link } from 'gatsby';
+import { StaticQuery, graphql } from 'gatsby';
 import {
   GlobalStyles,
   Container,
   Box,
   Main,
-  Banner,
-  HideOnMobile,
 } from '../styles';
 import useTheme from '../hooks/theme';
 import CartContext, { CartConsumer } from '../context/CartContext';
@@ -22,7 +20,6 @@ import Navbar from './Navbar';
 import Cart from './Cart';
 import { ShopifyProvider } from '../hooks/use-shopify';
 import Shopify from '../utils/shopify';
-import { pathToFileURL } from 'url';
 
 const query = graphql`
   query HeadingQuery {

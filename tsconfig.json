@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "jsx": "react",
+    "typeRoots": [
+      "./node_modules/@types", 
+      "./src/gatsby-types.d.ts",
+      "./src/@types",
+      "./global.d.ts"
+    ],
+  },
+  "include": [
+    "./src/**/*",
+    "gatsby-node.js", 
+    "gatsby-config.js", 
+  ]
+ }

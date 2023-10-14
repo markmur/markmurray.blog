@@ -234,7 +234,7 @@ export default class PhotographyPage extends React.Component<Props, State> {
 }
 
 export const pageQuery = graphql`
-  {
+  query PhotographyPage {
     featuredCollection: shopifyCollection(title: { eq: "Sapphire" }) {
       id
       title
@@ -244,8 +244,8 @@ export const pageQuery = graphql`
         id
         handle
         title
-        images {
-          src
+        media {
+          ...ShopifyMedia
         }
         priceRangeV2 {
           minVariantPrice {
@@ -269,8 +269,8 @@ export const pageQuery = graphql`
             id
             title
             handle
-            images {
-              src
+            media {
+              ...ShopifyMedia
             }
             priceRangeV2 {
               minVariantPrice {

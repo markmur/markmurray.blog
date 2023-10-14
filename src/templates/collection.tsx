@@ -13,13 +13,27 @@ import {
 } from '../styles';
 import ImageGrid from '../components/ImageGrid';
 import { getProductUrl } from '../utils/product';
+import { PageProps } from 'gatsby';
+
+interface ImageData {
+  media: Queries.CollectionQuery['collection']['products'][0]['media'][0][];
+  href: string;
+  title: string;
+}
+
+interface CollectionTemplateProps {
+  title: string;
+  description: string;
+  images: ImageData[];
+  orientation: 'landscape' | 'portrait';
+}
 
 export const CollectionTemplate = ({
   title,
   description,
   images,
   orientation,
-}) => {
+}: CollectionTemplateProps) => {
   return (
     <Content pb={4} pt={5}>
       <Container textAlign="center">
@@ -41,16 +55,20 @@ export const CollectionTemplate = ({
   );
 };
 
-const Collection = ({ data, pageContext }) => {
+const Collection = ({
+  data,
+  pageContext,
+}: PageProps<Queries.CollectionQuery>) => {
   const { collection } = data;
   const { orientation } = pageContext;
 
   const { id, title, description } = collection;
-  const imageUrls = collection.products.map((product) => ({
-    image_url: product.images[0].src,
+  const images = collection.products.map((product) => ({
+    ...product,
+    media: product.media,
     href: getProductUrl(product),
     title: product.title,
-    ...product,
+    price: product.priceRangeV2.minVariantPrice,
   }));
 
   const url = data.site.siteMetadata.url + `/collection/${id}`;
@@ -79,7 +97,7 @@ const Collection = ({ data, pageContext }) => {
       <CollectionTemplate
         title={title}
         description={description}
-        images={imageUrls}
+        images={images}
         orientation={orientation}
       />
     </Layout>
@@ -103,8 +121,8 @@ export const pageQuery = graphql`
         id
         title
         handle
-        images {
-          src
+        media {
+          ...ShopifyMedia
         }
         priceRangeV2 {
           minVariantPrice {
