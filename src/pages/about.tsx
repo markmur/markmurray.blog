@@ -15,9 +15,10 @@ import {
   HideOnMobile,
   Text,
 } from '../styles';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 
 const About = ({ data }) => {
-  const { markdownRemark: post } = data;
+  const { markdownRemark: post, image } = data;
   const domain = data.site.siteMetadata.url;
 
   const { title, description, image_url } = post.frontmatter;
@@ -64,8 +65,9 @@ const About = ({ data }) => {
                 position="sticky"
                 top="2em"
                 alignSelf="flex-start"
+                maxWidth="100%"
               >
-                <img width="500" src={post.frontmatter.image_url} />
+                <GatsbyImage alt="Profile photo" loading="eager" image={getImage(image.childImageSharp.gatsbyImageData)!} />
               </Flex>
             </HideOnMobile>
 
@@ -82,10 +84,16 @@ const About = ({ data }) => {
 export default About;
 
 export const pageQuery = graphql`
-  {
+  query AboutPage {
     site {
       siteMetadata {
         url
+      }
+    }
+    image: file(name: {eq: "profile"}) {
+      childImageSharp {
+        id
+        gatsbyImageData(width: 500, placeholder: BLURRED)
       }
     }
     markdownRemark(frontmatter: { templateKey: { eq: "about" } }) {
