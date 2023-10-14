@@ -56,22 +56,20 @@ const About = ({ data }) => {
           <LineBreak mt="4em" mb="3em" />
 
           <Flex>
-            <HideOnMobile>
+            <HideOnMobile flex={[1]} mr={[0, 5]}>
               <Flex
                 flexWrap="wrap"
                 alignItems="flex-start"
-                flex={[1]}
-                mr={[0, 5]}
                 position="sticky"
                 top="2em"
                 alignSelf="flex-start"
-                maxWidth="100%"
+                width="100%"
               >
                 <GatsbyImage alt="Profile photo" loading="eager" image={getImage(image.childImageSharp.gatsbyImageData)!} />
               </Flex>
             </HideOnMobile>
 
-            <Box flex={[1]} mt={-3}>
+            <Box flex={`1 0 20%`} mt={-3}>
               <HTMLContent content={post.html} />
             </Box>
           </Flex>
