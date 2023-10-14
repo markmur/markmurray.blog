@@ -20,6 +20,7 @@ import {
   Timestamp,
   Avatar,
 } from '../styles';
+import { getImage } from 'gatsby-plugin-image';
 
 const Tags = ({ tags }) =>
   tags && tags.length > 0 ? (
@@ -42,6 +43,7 @@ export const BlogPostTemplate = ({
   readingTime,
   postContent = HTMLContent,
   showComments = true,
+  avatar
 }) => {
   const PostContent = postContent;
   return (
@@ -54,9 +56,9 @@ export const BlogPostTemplate = ({
 
         <Flex alignItems="center" mb={4}>
           <Avatar
-            src="https://firebasestorage.googleapis.com/v0/b/project-4767000521921178323.appspot.com/o/images%2Fresized%2Fmark_600x750?alt=media&token=ff0e3bd6-5225-41bf-b96b-f8e166ed92d9"
-            width="40"
-            height="40"
+            alt="Profile photo"
+            loading="eager"
+            image={getImage(avatar.childImageSharp.gatsbyImageData)!}
           />
           <Timestamp>
             by <a href="https://twitter.com/mrkmur">Mark Murray</a>
@@ -125,6 +127,7 @@ const BlogPost = ({ data }) => {
         content={post.html}
         tags={tags}
         date={date}
+        avatar={data.avatar}
         readingTime={post.fields.readingTime.text}
       />
     </Layout>
@@ -138,6 +141,12 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         url
+      }
+    }
+    avatar: file(name: {eq: "profile"}) {
+      childImageSharp {
+        id
+        gatsbyImageData(width: 80, layout: FIXED, quality: 100, placeholder: BLURRED)
       }
     }
     markdownRemark(id: { eq: $id }) {

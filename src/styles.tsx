@@ -12,6 +12,7 @@ import {
 import { MAIN_FONT, LOGO_FONT, SERIF_FONT } from './styles/constants';
 import { defaults, Defaults, scrollBar } from './styles/system';
 import { isMobile, notMobile } from './styles/devices';
+import { GatsbyImage } from 'gatsby-plugin-image';
 
 export const Text = styled('p')<Defaults>`
   ${defaults};
@@ -76,11 +77,11 @@ export const CartCount = styled(Box)<Defaults>`
   left: -25%;
 `;
 
-export const Avatar = styled('img')<Defaults>`
+export const Avatar = styled(GatsbyImage)<Defaults>`
   ${defaults};
   aspect-ratio: 1;
-  width: 40px;
-  height: 40px;
+  max-width: 40px;
+  max-height: 40px;
   border-radius: 50%;
   margin-right: 15px;
   object-fit: cover;
