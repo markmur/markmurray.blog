@@ -1,4 +1,5 @@
 import React from 'react';
+import ShopifyClient from 'shopify-buy';
 import {
   FiTrash2 as Trash,
   FiShoppingBag,
@@ -24,24 +25,36 @@ import {
 import { formatPrice } from '../utils/currency';
 import { useShopify } from '../hooks/use-shopify';
 
-function LineItem(props) {
-  const hasDiscounts = props.discountAllocations.length > 0;
+interface LineItemProps {
+  lineItem: ShopifyClient.Checkout['lineItems'][0];
+  onRemove: () => void;
+  onIncrement: () => void;
+  onDecrement: () => void;
+}
+
+function LineItem(props: LineItemProps) {
+  const { lineItem } = props;
+  const hasDiscounts = lineItem.discountAllocations.length > 0;
+
+  if (!lineItem || !lineItem.variant) return null;
 
   const finalPrice = React.useMemo(() => {
     if (!hasDiscounts) {
       return formatPrice(
-        Number(props.variant.priceV2.amount) * (props.quantity || 1),
-        props.variant.priceV2.currencyCode,
+        Number(lineItem.variant?.price.amount) * (lineItem.quantity || 1),
+        lineItem.variant?.price.currencyCode,
       );
     }
 
-    const originalPrice = parseFloat(props.variant.priceV2.amount);
-    const finalPrice = props.discountAllocations.reduce(
+    const originalPrice = parseFloat(
+      String(lineItem.variant?.price.amount) ?? '0',
+    );
+    const finalPrice = lineItem.discountAllocations.reduce(
       (state, discount) =>
-        (state -= parseFloat(discount.allocatedAmount.amount)),
+        (state -= parseFloat(String(discount.allocatedAmount.amount) ?? '0')),
       originalPrice,
     );
-    return formatPrice(finalPrice, props.variant.priceV2.currencyCode);
+    return formatPrice(finalPrice, lineItem.variant?.price.currencyCode);
   }, [props]);
 
   return (
@@ -49,7 +62,7 @@ function LineItem(props) {
       <Flex>
         <Box mr={3}>
           <BackgroundImage
-            src={props.variant?.image?.src}
+            src={lineItem.variant?.image?.src}
             width={60}
             height={90}
             borderRadius={4}
@@ -60,11 +73,11 @@ function LineItem(props) {
           <Flex flex="1" justifyContent="space-between">
             <Box maxWidth="70%">
               <Text as="h4" mb={2}>
-                {props.title}
+                {lineItem.title}
               </Text>
 
               <Box mb={2}>
-                <small>{props.variant.title}</small>
+                <small>{lineItem.variant.title}</small>
               </Box>
             </Box>
 
@@ -72,8 +85,8 @@ function LineItem(props) {
               {hasDiscounts && (
                 <Strike mb={1} fontSize="1em">
                   {formatPrice(
-                    props.variant.priceV2.amount,
-                    props.variant.priceV2.currencyCode,
+                    lineItem.variant.price?.amount,
+                    lineItem.variant.price?.currencyCode,
                   )}
                 </Strike>
               )}
@@ -85,7 +98,7 @@ function LineItem(props) {
 
           <Flex width="100%" alignItems="center" justifyContent="space-between">
             <Incrementer
-              value={props.quantity}
+              value={lineItem.quantity}
               onIncrement={props.onIncrement}
               onDecrement={props.onDecrement}
             />
@@ -105,11 +118,11 @@ function LineItem(props) {
       </Flex>
 
       <Flex mt={2}>
-        {props.discountAllocations.length > 0 && (
+        {lineItem.discountAllocations.length > 0 && (
           <ul>
-            {props.discountAllocations.map((discount) => (
-              <DiscountCode key={props.discountAllocations}>
-                <FiTag /> {discount.discountApplication.title}
+            {lineItem.discountAllocations.map((discount) => (
+              <DiscountCode key={discount.discountApplication.targetType}>
+                <FiTag /> {discount.discountApplication.targetType}
               </DiscountCode>
             ))}
           </ul>
@@ -181,7 +194,7 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
           shopify.checkout.lineItems.map((lineItem) => (
             <LineItem
               key={lineItem.id}
-              {...lineItem}
+              lineItem={lineItem}
               onRemove={() => shopify.removeLineItem(lineItem.id)}
               onIncrement={() => shopify.incrementLineItem(lineItem.id)}
               onDecrement={() => shopify.decrementLineItem(lineItem.id)}
@@ -215,8 +228,8 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
             )}
             <strong>
               {formatPrice(
-                shopify.checkout.subtotalPrice,
-                shopify.checkout.currencyCode,
+                shopify.checkout.subtotalPrice?.amount,
+                shopify.checkout.subtotalPrice?.currencyCode,
               )}
             </strong>
           </Flex>
@@ -237,26 +250,9 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
         >
           <strong>Shipping</strong>
 
-          {shopify.checkout.shippingPrice ? (
-            <div>
-              <div>
-                <strong>
-                  {formatPrice(
-                    shopify.checkout.shippingPrice,
-                    shopify.checkout.currencyCode,
-                  )}
-                </strong>
-              </div>
-
-              {shopify.checkout.shippingType && (
-                <small>{shopify.checkout.shippingType}</small>
-              )}
-            </div>
-          ) : (
-            <small>
-              <em>Calculated at next step</em>
-            </small>
-          )}
+          <small>
+            <em>Calculated at next step</em>
+          </small>
         </Flex>
       </Box>
 
@@ -278,8 +274,8 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
             <div>
               <strong>
                 {formatPrice(
-                  shopify.checkout.totalPrice,
-                  shopify.checkout.currencyCode,
+                  shopify.checkout.totalPrice?.amount,
+                  shopify.checkout.totalPrice?.currencyCode,
                 )}
               </strong>
             </div>
