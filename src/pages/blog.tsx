@@ -1,38 +1,34 @@
-import React from 'react';
-import { graphql } from 'gatsby';
-import { PageHeading, Container, Content } from '../styles';
+import { Container, Content, PageHeading } from '../styles';
+import { PageProps, graphql } from 'gatsby';
+
 import Layout from '../components/Layout';
 import Post from '../components/post';
+import React from 'react';
 
-export default class BlogPage extends React.Component {
-  render() {
-    const { data } = this.props;
-    const { edges } = data.allMarkdownRemark;
+export default function BlogPage(props: PageProps<Queries.BlogPageQuery>) {
+  const { data } = props;
+  const { edges } = data.allMarkdownRemark;
 
-    const posts = edges.map(({ node }) => node);
+  const posts = edges.map(({ node }) => node);
 
-    return (
-      <Layout>
-        <Content>
-          <Container>
-            <PageHeading>Latest Posts</PageHeading>
-          </Container>
-          {posts.map(post => (
-            <Post key={post.id} post={post} />
-          ))}
-        </Content>
-      </Layout>
-    );
-  }
+  return (
+    <Layout>
+      <Content>
+        <Container>
+          <PageHeading>Latest Posts</PageHeading>
+        </Container>
+        {posts.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
+      </Content>
+    </Layout>
+  );
 }
 
 export const pageQuery = graphql`
-  query BlogQuery {
+  query BlogPage {
     allMarkdownRemark(
-      sort: {
-        fields: [frontmatter___pinned, frontmatter___date]
-        order: [ASC, DESC]
-      }
+      sort: [{ frontmatter: { pinned: ASC } }, { frontmatter: { date: DESC } }]
       filter: {
         frontmatter: { templateKey: { eq: "blog-post" }, private: { ne: true } }
       }

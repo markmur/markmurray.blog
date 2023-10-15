@@ -1,15 +1,13 @@
-import React from 'react';
-import { graphql } from 'gatsby';
-import { Box, PageHeading, Container } from '../styles';
-import Layout from '../components/Layout';
+import { Box, Container, PageHeading } from '../styles';
+import { PageProps, graphql } from 'gatsby';
+
 import CollectionCarousel from '../components/CollectionCarousel';
 import ErrorBoundary from '../components/ErrorBoundary';
+import Layout from '../components/Layout';
+import React from 'react';
+import { fileCollectionToProductCollection } from '../utils/collection';
 
-const getNodes = (entity) => {
-  return entity.edges.map(({ node }) => node);
-};
-
-const IndexPage = (props) => {
+const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
   const { data } = props;
   const { featuredCollection, featuredCollectionTwo, featuredFilmCollection } =
     data;
@@ -25,11 +23,6 @@ const IndexPage = (props) => {
           </Container>
         </Box>
 
-        {console.log(
-          featuredFilmCollection.edges[0].node.childImageSharp.gatsbyImageData
-            .images,
-        )}
-
         <CollectionCarousel
           id="film"
           handle="film"
@@ -37,21 +30,10 @@ const IndexPage = (props) => {
           title="Olympus mju III"
           description="A collection of photos taken in Greece on
             Portra 400 film with an Olympus mju III."
-          products={featuredFilmCollection.edges.map(({ node }, index) => ({
-            id: index,
-            title: `${node.title}`,
-            handle: `${node.title}`,
-            images: [
-              {
-                gatsbyImageData: node.childImageSharp.gatsbyImageData,
-                src: node.childImageSharp.gatsbyImageData.images.fallback.src,
-                backgroundColor:
-                  node.childImageSharp.gatsbyImageData.backgroundColor,
-              },
-            ],
-            to: '/photography/film/olympus-mju-iii',
-            metafields: [{ key: 'orientation', value: 'landscape' }],
-          }))}
+          products={fileCollectionToProductCollection(
+            featuredFilmCollection,
+            '/photography/film/olympus-mju-iii',
+          )}
         />
 
         <CollectionCarousel
@@ -77,69 +59,114 @@ const IndexPage = (props) => {
 };
 
 export const pageQuery = graphql`
-  {
+  query IndexPage {
     featuredFilmCollection: allFile(
       filter: { relativeDirectory: { eq: "olympus" } }
-      sort: { fields: name, order: [DESC] }
+      sort: { name: DESC }
       limit: 8
     ) {
-      edges {
-        node {
-          id
-          childImageSharp {
-            gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
-          }
-        }
-      }
+      ...FileCollection
     }
     featuredCollection: shopifyCollection(title: { eq: "Iceland" }) {
-      id
-      title
-      handle
-      description
-      products {
+      ...FeaturedShopifyCollection
+    }
+    featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
+      ...FeaturedShopifyCollection
+    }
+  }
+
+  fragment FileCollection on FileConnection {
+    edges {
+      node {
         id
-        handle
-        title
-        images {
-          gatsbyImageData(placeholder: DOMINANT_COLOR)
-          src
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        metafields {
-          key
-          value
+        childImageSharp {
+          gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
         }
       }
     }
-    featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
+  }
+
+  fragment Media on ShopifyMediaImage {
+    image {
+      gatsbyImageData
+    }
+  }
+
+  fragment FeaturedMedia on ShopifyProduct {
+    featuredMedia {
       id
-      title
-      handle
-      description
-      products {
-        id
-        handle
-        title
-        images {
-          gatsbyImageData(placeholder: DOMINANT_COLOR)
+      preview {
+        image {
           src
+          altText
+          width
+          height
+          gatsbyImageData
         }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        metafields {
-          key
-          value
-        }
+      }
+    }
+  }
+
+  fragment FeaturedShopifyCollection on ShopifyCollection {
+    __typename
+    id
+    title
+    handle
+    description
+    products {
+      ...Product
+    }
+  }
+
+  fragment Product on ShopifyProduct {
+    __typename
+    ...FeaturedMedia
+    media {
+      ...Media
+    }
+    id
+    handle
+    title
+    metafields {
+      key
+      value
+    }
+    priceRangeV2 {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+  }
+
+  fragment ProductDetails on ShopifyProduct {
+    ...Product
+    description
+    createdAt
+    updatedAt
+    tags
+    collections {
+      id
+      handle
+      title
+    }
+    variants {
+      id
+      product {
+        id
+      }
+      shopifyId
+      price
+      sku
+      title
+      availableForSale
+      image {
+        originalSrc
+        gatsbyImageData
+      }
+      metafields {
+        key
+        value
       }
     }
   }

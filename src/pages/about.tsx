@@ -1,21 +1,21 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import { graphql } from 'gatsby';
-
-import Layout from '../components/Layout';
-import { HTMLContent } from '../components/Content';
 import {
   Box,
-  Flex,
   Container,
   Content,
   Description,
+  Flex,
+  HideOnMobile,
   LineBreak,
   PostTitle,
-  HideOnMobile,
   Text,
 } from '../styles';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+
+import { HTMLContent } from '../components/Content';
+import Helmet from 'react-helmet';
+import Layout from '../components/Layout';
+import React from 'react';
+import { graphql } from 'gatsby';
 
 const About = ({ data }) => {
   const { markdownRemark: post, image } = data;

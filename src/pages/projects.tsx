@@ -1,46 +1,45 @@
-import React from 'react'
-import { graphql } from 'gatsby'
-import { Content, Container } from '../styles'
-import Layout from '../components/Layout'
-import Projects from '../components/Projects'
-import ProjectShowcase from '../components/ProjectShowcase'
-import BackgroundLines from '../components/BackgroundLines'
+import { Container, Content } from '../styles';
+import { PageProps, graphql } from 'gatsby';
 
-const getNodes = entity => {
-  return entity.edges.map(({ node }) => node)
-}
+import BackgroundLines from '../components/BackgroundLines';
+import Layout from '../components/Layout';
+import ProjectShowcase from '../components/ProjectShowcase';
+import Projects from '../components/Projects';
+import React from 'react';
 
-export default class ProjectsPage extends React.Component {
-  render() {
-    const { data } = this.props
+const getNodes = (entity) => {
+  return entity.edges.map(({ node }) => node);
+};
 
-    const projects = getNodes(data.projects)
+export default function ProjectsPage(
+  props: PageProps<Queries.ProjectsPageQuery>,
+) {
+  const { projects } = props.data;
 
-    return (
-      <Layout wide displayTagline={false}>
-        <BackgroundLines />
-        <Content>
-          <Container style={{ marginTop: 80 }}>
-            <Projects
-              projects={projects}
-              renderProject={(project, key) => (
-                <ProjectShowcase key={key} project={project} />
-              )}
-            />
-          </Container>
-        </Content>
-      </Layout>
-    )
-  }
+  return (
+    <Layout wide displayTagline={false}>
+      <BackgroundLines />
+      <Content>
+        <Container style={{ marginTop: 80 }}>
+          <Projects
+            projects={getNodes(projects)}
+            renderProject={(project, key) => (
+              <ProjectShowcase key={key} project={project} />
+            )}
+          />
+        </Container>
+      </Content>
+    </Layout>
+  );
 }
 
 export const pageQuery = graphql`
-  {
+  query ProjectsPage {
     projects: allMarkdownRemark(
       filter: {
         frontmatter: { templateKey: { eq: "project" }, hidden: { ne: true } }
       }
-      sort: { fields: [frontmatter___order] }
+      sort: { frontmatter: { order: ASC } }
     ) {
       edges {
         node {
@@ -63,4 +62,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

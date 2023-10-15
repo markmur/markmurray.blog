@@ -1,7 +1,7 @@
-import React from 'react';
 import Cart from '../components/Cart';
-import Layout from '../components/Layout';
 import { Container } from '../styles';
+import Layout from '../components/Layout';
+import React from 'react';
 
 const CartPage = () => {
   return (

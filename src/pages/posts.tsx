@@ -1,36 +1,34 @@
-import React from 'react'
-import { graphql } from 'gatsby'
-import Layout from '../components/Layout'
-import Post from '../components/post'
-import { Content } from '../styles'
+import { PageProps, graphql } from 'gatsby';
 
-const getNodes = entity => {
-  return entity.edges.map(({ node }) => node)
-}
+import { Content } from '../styles';
+import Layout from '../components/Layout';
+import Post from '../components/post';
+import React from 'react';
 
-export default class PostsPage extends React.Component {
-  render() {
-    const { data } = this.props
-    const posts = getNodes(data.posts)
+const getNodes = (entity) => {
+  return entity.edges.map(({ node }) => node);
+};
 
-    return (
-      <Layout wide>
-        <Content wide>
-          {posts
-            .sort((a, b) => b.frontmatter.pinned - a.frontmatter.pinned)
-            .map(post => (
-              <Post key={post.id} post={post} />
-            ))}
-        </Content>
-      </Layout>
-    )
-  }
+export default function PostsPage(props: PageProps<Queries.PostsPageQuery>) {
+  const { posts } = props.data;
+
+  return (
+    <Layout wide>
+      <Content>
+        {getNodes(posts)
+          .sort((a, b) => b.frontmatter.pinned - a.frontmatter.pinned)
+          .map((post) => (
+            <Post key={post.id} post={post} />
+          ))}
+      </Content>
+    </Layout>
+  );
 }
 
 export const pageQuery = graphql`
-  {
+  query PostsPage {
     posts: allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: [DESC] }
+      sort: { frontmatter: { date: DESC } }
       filter: {
         frontmatter: { private: { ne: true }, templateKey: { eq: "blog-post" } }
       }
@@ -57,4 +55,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

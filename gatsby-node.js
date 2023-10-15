@@ -29,7 +29,7 @@ exports.createPages = ({ actions, graphql }) => {
           featuredCollectionTitle
         }
       }
-      products: allShopifyProduct(sort: { fields: [publishedAt], order: ASC }) {
+      products: allShopifyProduct(sort: { publishedAt: ASC }) {
         edges {
           node {
             id

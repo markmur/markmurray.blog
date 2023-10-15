@@ -1,6 +1,3 @@
-import React from 'react';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
-import Layout from '../../../components/Layout';
 import {
   Box,
   Container,
@@ -8,10 +5,14 @@ import {
   PostTitle,
   Subtitle,
 } from '../../../styles';
-import Masonry from 'react-masonry-css';
-import { graphql } from 'gatsby';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { PageProps, graphql } from 'gatsby';
 
-function Photos(props) {
+import Layout from '../../../components/Layout';
+import Masonry from 'react-masonry-css';
+import React from 'react';
+
+function Photos(props: PageProps<Queries.OlympusFilmPageQuery>) {
   const imageStyles = {
     margin: 0,
     marginBottom: '1em',
@@ -75,10 +76,10 @@ function Photos(props) {
 }
 
 export const pageQuery = graphql`
-  query FilmPageQuery {
+  query OlympusFilmPage {
     film: allFile(
       filter: { relativeDirectory: { eq: "olympus" } }
-      sort: { fields: name, order: [DESC] }
+      sort: { name: DESC }
     ) {
       edges {
         node {

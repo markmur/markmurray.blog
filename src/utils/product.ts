@@ -1,3 +1,5 @@
+import get from 'lodash/get';
+
 interface CartProduct {
   name: string;
   sku: string;
@@ -11,6 +13,7 @@ interface Product {
   name: string;
   id: string;
   images: string[];
+  metafields: Metafield[];
 }
 
 interface Price {
@@ -31,7 +34,7 @@ export function toCartProduct(product: Product, price: Price): CartProduct {
   };
 }
 
-export function getProductUrl({ id, handle }: { id: string; handle: string }) {
+export function getProductUrl({ id, handle }: { id: string; handle?: string }) {
   if (!handle && !id) {
     return undefined;
   }
@@ -81,10 +84,47 @@ export function getProductSize(variantSize: string) {
   return variantSize;
 }
 
-export function isOrientationLandscape(product) {
-  return Boolean(
-    product.metafields?.find(
-      (field) => field?.key === 'orientation' && field?.value === 'landscape',
-    ),
-  );
+interface ProductWithMediafiels {
+  metafields: readonly Metafield[];
 }
+
+export function isOrientationPortrait(product: ProductWithMediafiels) {
+  return getMetafield(product, 'orientation') === 'portrait';
+}
+
+export function isOrientationLandscape(product: ProductWithMediafiels) {
+  return getMetafield(product, 'orientation') === 'landscape';
+}
+
+export function getMetafield(product: ProductWithMediafiels, key: string) {
+  return get(product, 'metafields', []).find(
+    (metafield) => get(metafield, 'key') === key,
+  )?.value;
+}
+
+export function getPageSizeFromVariant(
+  variant: Queries.ProductDetailsFragment['variants'][0],
+): string | undefined {
+  const size = getProductSize(variant.title);
+  const matches = size.match(/(A[0-9]{1})/i);
+
+  return matches && matches.length ? matches[0] : undefined;
+}
+
+export const getMinPrice = (
+  products: readonly Queries.ProductFragment[],
+): Queries.ProductFragment['priceRangeV2'] | undefined => {
+  if (!products.length) return;
+
+  if (
+    products.every((product) => typeof product.priceRangeV2 === 'undefined')
+  ) {
+    return undefined;
+  }
+
+  return [...products].sort(
+    (a, b) =>
+      a.priceRangeV2?.minVariantPrice.amount -
+      b.priceRangeV2?.minVariantPrice.amount,
+  )[0]?.priceRangeV2;
+};

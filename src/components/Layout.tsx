@@ -1,39 +1,20 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import { ThemeProvider } from 'styled-components';
-import { StaticQuery, graphql, Link } from 'gatsby';
-import {
-  GlobalStyles,
-  Container,
-  Box,
-  Main,
-  Banner,
-  HideOnMobile,
-} from '../styles';
-import useTheme from '../hooks/theme';
+import { Box, Container, GlobalStyles, Main } from '../styles';
 import CartContext, { CartConsumer } from '../context/CartContext';
 import MenuContext, { MenuConsumer } from '../context/MenuContext';
+import { PageProps, graphql, useStaticQuery } from 'gatsby';
+import React, { PropsWithChildren, useMemo } from 'react';
 
-import Drawer from './Drawer';
-import MobileMenu from './MobileMenu';
 import BackgroundLines from './BackgroundLines';
-import Footer from './Footer';
-import Navbar from './Navbar';
 import Cart from './Cart';
-import { ShopifyProvider } from '../hooks/use-shopify';
+import Drawer from './Drawer';
+import Footer from './Footer';
+import Helmet from 'react-helmet';
+import MobileMenu from './MobileMenu';
+import Navbar from './Navbar';
 import Shopify from '../utils/shopify';
-import { pathToFileURL } from 'url';
-
-const query = graphql`
-  query HeadingQuery {
-    site {
-      siteMetadata {
-        title
-        description
-      }
-    }
-  }
-`;
+import { ShopifyProvider } from '../hooks/use-shopify';
+import { ThemeProvider } from 'styled-components';
+import useTheme from '../hooks/theme';
 
 const Head = ({ site }) => (
   <Helmet>
@@ -44,14 +25,14 @@ const Head = ({ site }) => (
 
     {/* Facebook */}
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://markmurray.co/" />
+    <meta property="og:url" content={site.siteMetadata.url} />
     <meta property="og:title" content={site.siteMetadata.title} />
     <meta property="og:description" content={site.siteMetadata.description} />
     <meta property="og:image" content="/img/meta.png" />
 
     {/* Twitter */}
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://markmurray.co/" />
+    <meta property="twitter:url" content={site.siteMetadata.url} />
     <meta property="twitter:title" content={site.siteMetadata.title} />
     <meta
       property="twitter:description"
@@ -64,77 +45,95 @@ const Head = ({ site }) => (
   </Helmet>
 );
 
-const Content = ({ site, children, displayTagline = false }) => {
+const Content = ({
+  data,
+  children,
+  displayTagline = false,
+}: PropsWithChildren<{
+  data: Queries.LayoutQuery;
+  displayTagline?: boolean;
+}>) => {
+  const { site } = data;
   const [theme] = useTheme();
 
+  const shopifyClient = useMemo(() => {
+    return new Shopify();
+  }, []);
+
   return (
-    <div>
-      <ShopifyProvider client={new Shopify()}>
-        <Head site={site} />
+    <ShopifyProvider client={shopifyClient}>
+      <Head site={site} />
 
-        <BackgroundLines />
+      <BackgroundLines />
 
-        <ThemeProvider theme={theme}>
-          <Box pt={4}>
-            <GlobalStyles />
+      <ThemeProvider theme={theme}>
+        <Box pt={4}>
+          <GlobalStyles />
 
-            <MenuContext initialState={{ open: false }}>
-              <CartContext initialState={{ open: false }}>
-                <CartConsumer>
-                  {({ open, setCartState }) => (
-                    <React.Fragment>
-                      <Drawer
-                        open={open}
-                        onClose={() => setCartState(false)}
-                        zIndex={[100000, 1000, 1000]}
-                      >
-                        <Cart onClose={() => setCartState(false)} open={open} />
-                      </Drawer>
+          <MenuContext initialState={{ open: false }}>
+            <CartContext initialState={{ open: false }}>
+              <CartConsumer>
+                {({ open, setCartState }) => (
+                  <React.Fragment>
+                    <Drawer
+                      open={open}
+                      onClose={() => setCartState(false)}
+                      zIndex={[100000, 1000, 1000]}
+                    >
+                      <Cart onClose={() => setCartState(false)} />
+                    </Drawer>
 
-                      <MenuConsumer>
-                        {({ open, setOpenState }) => (
-                          <React.Fragment>
-                            <MobileMenu
-                              open={open}
-                              onClose={() => setOpenState(!open)}
-                            />
-                            <Navbar
-                              open={open}
-                              displayTagline={displayTagline}
-                              onCartClick={() => setCartState(true)}
-                              onMenuClick={() => setOpenState(!open)}
-                            />
-                          </React.Fragment>
-                        )}
-                      </MenuConsumer>
+                    <MenuConsumer>
+                      {({ open, setOpenState }) => (
+                        <React.Fragment>
+                          <MobileMenu
+                            open={open}
+                            onClose={() => setOpenState(!open)}
+                          />
+                          <Navbar
+                            open={open}
+                            displayTagline={displayTagline}
+                            onCartClick={() => setCartState(true)}
+                            onMenuClick={() => setOpenState(!open)}
+                          />
+                        </React.Fragment>
+                      )}
+                    </MenuConsumer>
 
-                      <Main>{children}</Main>
+                    <Main>{children}</Main>
 
-                      <Container>
-                        <Footer />
-                      </Container>
-                    </React.Fragment>
-                  )}
-                </CartConsumer>
-              </CartContext>
-            </MenuContext>
-          </Box>
-        </ThemeProvider>
-      </ShopifyProvider>
-    </div>
+                    <Container>
+                      <Footer />
+                    </Container>
+                  </React.Fragment>
+                )}
+              </CartConsumer>
+            </CartContext>
+          </MenuContext>
+        </Box>
+      </ThemeProvider>
+    </ShopifyProvider>
   );
 };
 
+const query = graphql`
+  query Layout {
+    site {
+      siteMetadata {
+        url
+        title
+        description
+      }
+    }
+  }
+`;
+
 const Layout = ({ children, ...props }) => {
+  const data = useStaticQuery(query);
   return (
-    <StaticQuery
-      query={query}
-      render={(data) => (
-        <Content {...data} {...props}>
-          {children}
-        </Content>
-      )}
-    />
+    <Content data={data} {...props}>
+      {children}
+    </Content>
   );
 };
 

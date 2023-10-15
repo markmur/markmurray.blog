@@ -4,14 +4,25 @@ const GA_TRACKING_ID = 'UA-76403737-3';
 require('dotenv').config();
 
 module.exports = {
+  graphqlTypegen: true,
+
   siteMetadata: {
     title: 'Mark Murray',
     url: 'https://markmurray.co',
+    email: 'contact@markmurray.co',
     description: 'Senior Developer @ Shopify',
     featuredCollectionTitle: 'Reflections',
     bannerMessage: '',
     bannerLink: '',
     bannerInclude: [],
+    social: {
+      twitterHandle: '@mrkmur',
+      instagramHandle: '@markmur',
+      githubHandle: '@markmur',
+      twitterUrl: 'https://twitter.com/mrkmur',
+      instagramUrl: 'https://instagram.com/markmur',
+      githubUrl: 'https://github.com/markmur',
+    },
   },
   plugins: [
     'gatsby-remark-reading-time',

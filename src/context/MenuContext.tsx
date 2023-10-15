@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 interface Props {
   open: boolean;
@@ -10,10 +10,10 @@ const { Provider, Consumer } = React.createContext<Props>({
   setOpenState: () => {},
 });
 
-const MenuContext: React.FC<{ initialState: { open: boolean } }> = ({
-  initialState,
-  children,
-}) => {
+function MenuContext(
+  props: PropsWithChildren<{ initialState: { open: boolean } }>,
+) {
+  const { children, initialState } = props;
   const [state, setState] = React.useState(initialState);
 
   const setOpenState = (value: boolean) => {
@@ -32,7 +32,7 @@ const MenuContext: React.FC<{ initialState: { open: boolean } }> = ({
       {children}
     </Provider>
   );
-};
+}
 
 export { Consumer as MenuConsumer };
 

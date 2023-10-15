@@ -1,46 +1,33 @@
 import * as React from 'react';
-import Button from '../Button';
+import * as styles from './styles.css';
+
 import {
-  Flex,
   Box,
   Carousel,
   CarouselItem,
-  Container,
-  Subtitle,
   CollectionCarouselBox,
+  Container,
+  Flex,
   Link,
+  Subtitle,
 } from '../../styles';
-
-import * as styles from './styles.css';
-import { useCarousel } from '../Carousel';
-import { getProductUrl, isOrientationLandscape } from '../../utils/product';
-import { formatPrice } from '../../utils/currency';
-import Controls from '../Carousel/Controls';
 import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import {
+  getMinPrice,
+  getProductUrl,
+  isOrientationLandscape,
+} from '../../utils/product';
+
+import Button from '../Button';
+import Controls from '../Carousel/Controls';
+import { formatPrice } from '../../utils/currency';
+import { useCarousel } from '../Carousel';
 
 const MobileContainer = ({ children }) => (
   <Box pl={[1, 0, 0]} px={['1em', 0, '0.5em']}>
     {children}
   </Box>
 );
-
-interface Product {
-  id: string;
-  title: string;
-  handle: string;
-  images: {
-    src: string;
-    backgroundColor?: string;
-    gatsbyImageData?: any;
-  }[];
-  to?: string;
-  priceRangeV2?: {
-    minVariantPrice: {
-      amount: number;
-      currencyCode: string;
-    };
-  };
-}
 
 interface Props {
   id: string;
@@ -49,26 +36,8 @@ interface Props {
   title: string;
   heading?: string;
   description?: string;
-  products: Product[];
+  products: readonly Queries.ProductFragment[];
 }
-
-const getMinPrice = (
-  products: Product[],
-): Product['priceRangeV2'] | undefined => {
-  if (!products.length) return;
-
-  if (
-    products.every((product) => typeof product.priceRangeV2 === 'undefined')
-  ) {
-    return undefined;
-  }
-
-  return products.sort(
-    (a, b) =>
-      a.priceRangeV2!.minVariantPrice.amount -
-      b.priceRangeV2!.minVariantPrice.amount,
-  )[0]?.priceRangeV2;
-};
 
 const CollectionCarousel: React.FunctionComponent<Props> = ({
   id,
@@ -78,12 +47,6 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
   description,
   products,
 }) => {
-  const [loaded, setLoadedState] = React.useState(false);
-
-  React.useEffect(() => {
-    setLoadedState(true);
-  }, []);
-
   const containerRef = React.useRef(null);
   const { observe, next, prev } = useCarousel(containerRef, 300);
 
@@ -154,7 +117,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
               {[...products]
                 .sort((a, b) => a.title?.localeCompare(b?.title))
                 .map((product) => {
-                  const image = product.images[0];
+                  const image = product?.media[0]?.image;
 
                   const sharedContainerProps = {
                     mr: [2, 3],
@@ -170,24 +133,13 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                   return (
                     <CarouselItem ref={observe} key={product.id}>
                       <a href={product.to ?? getProductUrl(product)}>
-                        {image.gatsbyImageData ? (
-                          <Box {...sharedContainerProps}>
-                            <GatsbyImage
-                              loading="lazy"
-                              alt={product.title}
-                              image={getImage(image.gatsbyImageData)!}
-                            />
-                          </Box>
-                        ) : (
-                          <Box
-                            {...sharedContainerProps}
-                            className={loaded ? 'item loaded' : 'item'}
-                            backgroundSize="cover"
-                            style={{
-                              backgroundImage: `url(${image.src})`,
-                            }}
+                        <Box {...sharedContainerProps}>
+                          <GatsbyImage
+                            loading="lazy"
+                            alt={product.title}
+                            image={getImage(image.gatsbyImageData)!}
                           />
-                        )}
+                        </Box>
                       </a>
                     </CarouselItem>
                   );

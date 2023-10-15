@@ -1,26 +1,26 @@
-import React from 'react';
-import { DiscussionEmbed } from 'disqus-react';
-import { kebabCase } from 'lodash';
-import Helmet from 'react-helmet';
-import { graphql } from 'gatsby';
-
-import Layout from '../components/Layout';
-import { HTMLContent } from '../components/Content';
 import {
-  Flex,
+  Avatar,
   Box,
   Bullet,
   Comments,
   Container,
   Content,
   Description,
+  Flex,
   LineBreak,
   PostTitle,
   Tag,
   Timestamp,
-  Avatar,
 } from '../styles';
+
+import { DiscussionEmbed } from 'disqus-react';
+import { HTMLContent } from '../components/Content';
+import Helmet from 'react-helmet';
+import Layout from '../components/Layout';
+import React from 'react';
 import { getImage } from 'gatsby-plugin-image';
+import { graphql } from 'gatsby';
+import { kebabCase } from 'lodash';
 
 const Tags = ({ tags }) =>
   tags && tags.length > 0 ? (

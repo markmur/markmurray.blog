@@ -1,19 +1,18 @@
-import React from 'react';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
-import Layout from '../../../components/Layout';
 import {
   Box,
-  Text,
   Container,
-  PageHeading,
   Description,
   PostTitle,
   Subtitle,
 } from '../../../styles';
-import Masonry from 'react-masonry-css';
-import { graphql } from 'gatsby';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { PageProps, graphql } from 'gatsby';
 
-function Photos(props) {
+import Layout from '../../../components/Layout';
+import Masonry from 'react-masonry-css';
+import React from 'react';
+
+function Photos(props: PageProps<Queries.FilmPageQuery>) {
   const imageStyles = {
     margin: 0,
     marginBottom: '1em',
@@ -83,10 +82,10 @@ function Photos(props) {
 }
 
 export const pageQuery = graphql`
-  query FilmPageQuery {
+  query FilmPage {
     film: allFile(
       filter: { relativeDirectory: { eq: "canon" } }
-      sort: { fields: name, order: [ASC] }
+      sort: { name: ASC }
     ) {
       edges {
         node {

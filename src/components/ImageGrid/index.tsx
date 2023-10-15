@@ -1,7 +1,9 @@
-import React from 'react';
 import './styles.css';
 
-import { Flex, Box, Text } from '../../styles';
+import { Box, Flex, Text } from '../../styles';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+
+import React from 'react';
 import { formatPrice } from '../../utils/currency';
 import { isOrientationLandscape } from '../../utils/product';
 
@@ -9,19 +11,9 @@ interface Image {
   image_url: string;
   href: string;
   title: string;
-  price?: number;
   width?: number;
   height?: number;
-  priceRangeV2?: {
-    minVariantPrice: {
-      amount: number;
-      currencyCode: string;
-    };
-  };
-  metafields?: {
-    key?: string;
-    value?: string;
-  };
+  price?: Price;
 }
 
 interface Props {
@@ -57,6 +49,7 @@ const ImageGrid: React.FC<Props> = ({
           : isLandscape
           ? landscapeGrid
           : portraitGrid;
+
         return (
           <Box
             key={image.href}
@@ -68,29 +61,24 @@ const ImageGrid: React.FC<Props> = ({
             ]}
           >
             <a href={image.href}>
-              <Box
-                aspectRatio={aspectRatio}
-                className="image"
-                backgroundSize="cover"
-                backgroundPosition="center center"
-                style={{
-                  backgroundImage: `url(${image.image_url})`,
-                }}
+              <GatsbyImage
+                loading="lazy"
+                alt={image.title}
+                image={getImage(image.media[0].image.gatsbyImageData)!}
               />
 
               <Box textAlign="center" py={3} mb={2}>
                 <h4>{image.title}</h4>
-                {image.priceRangeV2 &&
-                  isFinite(image.priceRangeV2.minVariantPrice.amount) && (
-                    <Text mt={2} fontSize="small">
-                      <em>from </em>
-                      {formatPrice(
-                        image.priceRangeV2.minVariantPrice.amount,
-                        image.priceRangeV2.minVariantPrice.currencyCode,
-                      )}{' '}
-                      {image.priceRangeV2.minVariantPrice.currencyCode}
-                    </Text>
-                  )}
+                {image.price && isFinite(image.price.amount) && (
+                  <Text mt={2} fontSize="small">
+                    <em>from </em>
+                    {formatPrice(
+                      image.price.amount,
+                      image.price.currencyCode,
+                    )}{' '}
+                    {image.price.currencyCode}
+                  </Text>
+                )}
               </Box>
             </a>
           </Box>

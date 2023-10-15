@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
-import ShopifyClient from 'shopify-buy';
+import React, { useEffect, useMemo } from 'react';
+
 import Shopify from '../utils/shopify';
+import ShopifyClient from 'shopify-buy';
 
 interface UseShopify {
   checkout: ShopifyClient.Checkout;
@@ -66,61 +67,47 @@ const ShopifyProvider = ({ client, children }: Props) => {
   const [loading, setLoading] = React.useState(false);
   const [checkout, setCheckout] =
     React.useState<ShopifyClient.Checkout>(defaultCheckout);
-  const [isOutdated, setIsOutdated] = React.useState<boolean>(false);
 
   const cartCount = checkout.lineItems.reduce(
     (state, item) => (state += item.quantity),
     0,
   );
 
-  React.useEffect(() => {
-    setLoading(true);
-    client
-      .init()
-      .then(() => client.fetchCheckout())
-      .then((checkout: unknown) => {
-        // Note: the Shopify client returns the "checkout" type here but it is typed as Promise<ShopifyClient.Cart> in the lib - which is wrong
-        return setCheckout(checkout as ShopifyClient.Checkout);
-      })
-      .then(() => setLoading(false))
-      .catch((error) => {
-        console.error('Something went wrong fetching checkout');
-      });
-  }, []);
+  async function fetchCheckout(showLoading: boolean = true) {
+    if (showLoading) setLoading(true);
+    await client.init();
 
-  React.useEffect(() => {
-    if (isOutdated) {
-      setLoading(true);
-      client.fetchCheckout().then((checkout: unknown) => {
-        setCheckout(checkout as ShopifyClient.Checkout);
-        setIsOutdated(false);
-        setLoading(false);
-      });
+    // Note: the Shopify client returns the "checkout" type here but it is typed as Promise<ShopifyClient.Cart> in the lib - which is wrong
+    try {
+      const checkout = (await client.fetchCheckout()) as unknown;
+      setCheckout(checkout as ShopifyClient.Checkout);
+    } catch (error) {
+      console.error('Something went wrong fetching checkout', error);
+    } finally {
+      setLoading(false);
     }
-  }, [isOutdated]);
+  }
+
+  useEffect(() => {
+    fetchCheckout();
+  }, []);
 
   function goToCheckout() {
     setLoading(true);
     if (typeof window !== 'undefined') window.location.href = checkout.webUrl;
   }
 
-  async function fetchCheckout() {
-    setLoading(true);
-    await client.fetchCheckout();
-    setLoading(false);
-  }
-
   async function addLineItem(shopifyId: string) {
     setLoading(true);
-    await client.addLineItem(shopifyId);
-    setIsOutdated(true);
+    const checkout = await client.addLineItem(shopifyId);
+    setCheckout(checkout);
     setLoading(false);
   }
 
   async function removeLineItem(id: string | number) {
     setLoading(true);
-    await client.removeLineItem(id);
-    setIsOutdated(true);
+    const checkout = await client.removeLineItem(id);
+    setCheckout(checkout);
     setLoading(false);
   }
 
@@ -131,16 +118,16 @@ const ShopifyProvider = ({ client, children }: Props) => {
   async function incrementLineItem(id: string | number) {
     setLoading(true);
     const currentQuantity = getQuantityById(id);
-    await client.increment(id, currentQuantity);
-    setIsOutdated(true);
+    const checkout = await client.increment(String(id), currentQuantity);
+    setCheckout(checkout);
     setLoading(false);
   }
 
   async function decrementLineItem(id: string | number) {
     setLoading(true);
     const currentQuantity = getQuantityById(id);
-    await client.decrement(id, currentQuantity);
-    setIsOutdated(true);
+    const checkout = await client.decrement(String(id), currentQuantity);
+    setCheckout(checkout);
     setLoading(false);
   }
 

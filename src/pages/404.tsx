@@ -1,6 +1,6 @@
-import React from 'react';
-import Layout from '../components/Layout';
 import { Container } from '../styles';
+import Layout from '../components/Layout';
+import React from 'react';
 
 const NotFoundPage = () => (
   <Layout>
