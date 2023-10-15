@@ -114,10 +114,12 @@ module.exports = {
         shopifyConnections: ['collections'],
       },
     },
+    // TODO: Enable Sentry
+    // {
     //   resolve: '@sentry/gatsby',
     //   options: {
     //     dsn: process.env.SENTRY_DSN,
-    //     sampleRate: 0.7,
+    //     sampleRate: 1,
     //   },
     // },
     'gatsby-plugin-typescript',
@@ -138,6 +140,7 @@ module.exports = {
     'gatsby-transformer-sharp',
 
     // "gatsby-plugin-netlify" should come last here
+    // TODO: remove unused netlify plugin
     'gatsby-plugin-netlify',
   ],
 };

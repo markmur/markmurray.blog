@@ -43,26 +43,6 @@ const Head = ({ site }) => (
 
     <link rel="icon" type="image/png" href="/img/favicon.png" sizes="32x32" />
     <meta name="theme-color" content="#f8f8f9" />
-
-    {/* Google Analytics */}
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-079D6JXQE0"
-    ></script>
-    <Script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-079D6JXQE0"
-    />
-    <Script
-      id="google-analytics"
-      dangerouslySetInnerHTML={{
-        __html: `window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-079D6JXQE0');`,
-      }}
-    />
   </Helmet>
 );
 
@@ -84,6 +64,21 @@ const Content = ({
   return (
     <ShopifyProvider client={shopifyClient}>
       <Head site={site} />
+
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-079D6JXQE0"
+      />
+      <Script
+        id="google-analytics"
+        dangerouslySetInnerHTML={{
+          __html: `window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-079D6JXQE0');`,
+        }}
+      />
 
       <BackgroundLines />
 
