@@ -1,6 +1,3 @@
-/* eslint-disable */
-const GA_TRACKING_ID = 'G-079D6JXQE0';
-
 require('dotenv').config();
 
 module.exports = {
@@ -30,14 +27,14 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
-        trackingId: GA_TRACKING_ID,
+        trackingId: 'UA-76403737-3',
         exclude: ['/admin/**'],
       },
     },
     {
       resolve: 'gatsby-plugin-google-tagmanager',
       options: {
-        id: GA_TRACKING_ID,
+        id: 'G-079D6JXQE0',
         includeInDevelopment: false,
         defaultDataLayer: { platform: 'gatsby' },
         enableWebVitalsTracking: true,
@@ -46,7 +43,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-web-vitals',
       options: {
-        trackingId: GA_TRACKING_ID,
+        trackingId: 'UA-76403737-3',
         metrics: [`FID`, `TTFB`, `LCP`, `CLS`, `FCP`],
         eventCategory: 'Performance',
         includeInDevelopment: false,
