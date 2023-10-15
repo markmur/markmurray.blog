@@ -47,12 +47,6 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
   description,
   products,
 }) => {
-  // TODO: remove this
-  // const [loaded, setLoadedState] = React.useState(false);
-  // React.useEffect(() => {
-  //   setLoadedState(true);
-  // }, []);
-
   const containerRef = React.useRef(null);
   const { observe, next, prev } = useCarousel(containerRef, 300);
 

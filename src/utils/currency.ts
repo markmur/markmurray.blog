@@ -11,7 +11,6 @@ export const formatPrice = (
   });
 
   if (isNaN(parseFloat(price))) {
-    console.log('price is not a number', amount, currencyCode, price);
     return '0.00';
   }
 

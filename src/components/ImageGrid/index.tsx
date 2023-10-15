@@ -1,10 +1,11 @@
-import React from 'react';
 import './styles.css';
 
-import { Flex, Box, Text } from '../../styles';
+import { Box, Flex, Text } from '../../styles';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+
+import React from 'react';
 import { formatPrice } from '../../utils/currency';
 import { isOrientationLandscape } from '../../utils/product';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 
 interface Image {
   image_url: string;
@@ -60,16 +61,6 @@ const ImageGrid: React.FC<Props> = ({
             ]}
           >
             <a href={image.href}>
-              {/* <Box
-                aspectRatio={aspectRatio}
-                className="image"
-                backgroundSize="cover"
-                backgroundPosition="center center"
-                style={{
-                  backgroundImage: `url(${image.media[0].image})`,
-                }}
-              /> */}
-
               <GatsbyImage
                 loading="lazy"
                 alt={image.title}
