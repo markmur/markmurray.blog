@@ -105,6 +105,7 @@ export const Nav = styled('nav')<Defaults>`
     background: rgba(245, 245, 247, 0.75);
     border-bottom: 1px solid #eaeaea;
     backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
   `)}
 
   &.active {
