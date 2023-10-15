@@ -72,7 +72,11 @@ function Photos(props: PageProps<Queries.FilmPageQuery>) {
         >
           {images.map((image) => (
             <figure style={imageStyles} key={image.id}>
-              <GatsbyImage alt="" loading="lazy" image={getImage(image)!} />
+              <GatsbyImage
+                alt={image.name}
+                loading="lazy"
+                image={getImage(image)!}
+              />
             </figure>
           ))}
         </Masonry>
@@ -90,6 +94,7 @@ export const pageQuery = graphql`
       edges {
         node {
           id
+          name
           childImageSharp {
             gatsbyImageData(
               quality: 75

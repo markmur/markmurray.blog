@@ -105,7 +105,7 @@ function ProductTemplate(props: {
             <GatsbyImage
               {...productImages[0].image}
               loading="eager"
-              alt=""
+              alt={product.title}
               image={getImage(productImages[0].image)}
             />
           </Box>

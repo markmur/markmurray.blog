@@ -6060,7 +6060,7 @@ type FileCollectionFragment = { readonly edges: ReadonlyArray<{ readonly node: {
 type FilmPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type FilmPageQuery = { readonly film: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> } };
+type FilmPageQuery = { readonly film: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly name: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> } };
 
 type GatsbyImageSharpFixedFragment = { readonly base64: string | null, readonly width: number, readonly height: number, readonly src: string, readonly srcSet: string };
 
@@ -6103,7 +6103,7 @@ type MediaFragment = { readonly image: { readonly gatsbyImageData: Record<string
 type OlympusFilmPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type OlympusFilmPageQuery = { readonly film: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> } };
+type OlympusFilmPageQuery = { readonly film: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly name: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> } };
 
 type PhotographyPageQueryVariables = Exact<{ [key: string]: never; }>;
 

@@ -54,7 +54,7 @@ const ImageGallery = ({ images, featuredImage }: Props) => {
                 {image.tag && <Tag value={image.tag} />}
 
                 <GatsbyImage
-                  alt=""
+                  alt={image.tag}
                   loading="lazy"
                   image={getImage(image.image)}
                 />
@@ -78,7 +78,7 @@ const ImageGallery = ({ images, featuredImage }: Props) => {
               <Box backgroundColor="#eee">
                 {image.tag && <Tag value={image.tag} />}
                 <GatsbyImage
-                  alt=""
+                  alt={image.tag}
                   loading="lazy"
                   image={getImage(image.image)}
                   style={{
