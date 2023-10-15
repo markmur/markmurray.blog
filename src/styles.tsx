@@ -57,7 +57,9 @@ export const HideOnDesktop = ({ children }) => (
 );
 
 const transition = css`
-  transition: color 150ms, background 150ms;
+  transition:
+    color 150ms,
+    background 150ms;
   will-change: color, background;
 `;
 
@@ -446,6 +448,7 @@ export const Carousel = styled(Flex)<Defaults & { scrollPadding?: boolean }>`
 `;
 
 export const CarouselItem = styled(Box)<Defaults>`
+  max-width: calc(576px + 1em);
   display: flex;
   cursor: pointer;
   scroll-snap-align: start;
@@ -774,7 +777,9 @@ export const Drawer = styled(Box)<
   }
   &.exit-active {
     opacity: 0;
-    transition: opacity 250ms, transform 250ms;
+    transition:
+      opacity 250ms,
+      transform 250ms;
   }
 `;
 

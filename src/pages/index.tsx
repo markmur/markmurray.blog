@@ -80,7 +80,7 @@ export const pageQuery = graphql`
       node {
         id
         childImageSharp {
-          gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
+          gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR, width: 576)
         }
       }
     }
@@ -88,7 +88,7 @@ export const pageQuery = graphql`
 
   fragment Media on ShopifyMediaImage {
     image {
-      gatsbyImageData
+      gatsbyImageData(width: 576)
     }
   }
 
@@ -101,7 +101,7 @@ export const pageQuery = graphql`
           altText
           width
           height
-          gatsbyImageData
+          gatsbyImageData(width: 576)
         }
       }
     }
