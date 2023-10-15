@@ -158,6 +158,8 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
   //   'https://cdn.shopify.com/shopifycloud/shop-js/v0.1/client.js',
   // );
 
+  console.log(shopify.checkout);
+
   return (
     <Box position="relative">
       {shopify.loading && <LoadingOverlay />}

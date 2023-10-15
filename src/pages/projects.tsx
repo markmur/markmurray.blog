@@ -1,17 +1,19 @@
 import { Container, Content } from '../styles';
+import { PageProps, graphql } from 'gatsby';
 
 import BackgroundLines from '../components/BackgroundLines';
 import Layout from '../components/Layout';
 import ProjectShowcase from '../components/ProjectShowcase';
 import Projects from '../components/Projects';
 import React from 'react';
-import { graphql } from 'gatsby';
 
 const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);
 };
 
-export default class ProjectsPage extends React.Component {
+export default class ProjectsPage extends React.Component<
+  PageProps<Queries.ProjectsPageQuery>
+> {
   render() {
     const { data } = this.props;
 

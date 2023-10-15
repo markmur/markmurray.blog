@@ -67,7 +67,13 @@ export const tagPageQuery = graphql`
             tags
           }
         }
+        frontmatter {
+          date(formatString: "MMMM DD, YYYY")
+          title
+          description
+          tags
+        }
       }
     }
   }
-`;
+}`;

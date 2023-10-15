@@ -169,6 +169,10 @@ export const pageQuery = graphql`
         originalSrc
         gatsbyImageData
       }
+      metafields {
+        key
+        value
+      }
     }
   }
 `;
