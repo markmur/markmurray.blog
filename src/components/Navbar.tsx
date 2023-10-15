@@ -199,10 +199,10 @@ const Navbar: React.FC<{
               </LinkDropdown>
 
               <Box ml={4}>
-                <a style={{ cursor: 'pointer' }} onClick={onCartClick}>
+                <div style={{ cursor: 'pointer' }} onClick={onCartClick}>
                   <FiShoppingBag style={{ verticalAlign: 'bottom' }} />{' '}
                   <CartCount>{cartCount}</CartCount>
-                </a>
+                </div>
               </Box>
             </Flex>
           </HideOnMobile>
