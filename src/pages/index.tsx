@@ -12,13 +12,6 @@ const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
   const { featuredCollection, featuredCollectionTwo, featuredFilmCollection } =
     data;
 
-  console.log(
-    fileCollectionToProductCollection(
-      featuredFilmCollection,
-      '/photography/film/olympus-mju-iii',
-    ),
-  );
-
   return (
     <Layout wide displayTagline>
       <ErrorBoundary>
