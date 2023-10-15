@@ -95,23 +95,17 @@ function ProductTemplate(props: {
         {isProductLandscape && (
           <Box mb={[3, 0, 0]}>
             <GatsbyImage
-              {...productImages[0].image}
+              {...product.featured.preview.image.gatsbyImageData}
               loading="eager"
               alt={product.title}
-              image={getImage(productImages[0].image)}
+              image={getImage(product.featured.preview.image.gatsbyImageData)}
             />
           </Box>
         )}
 
         <HideOnDesktop>
           <Box mt={-2}>
-            <ImageGallery
-              featuredImage={{
-                id: product.featuredMedia.id,
-                image: product.featuredMedia.preview.image.gatsbyImageData,
-              }}
-              images={productImages}
-            />
+            <ImageGallery images={productImages} />
           </Box>
         </HideOnDesktop>
 
@@ -318,6 +312,14 @@ export const pageQuery = graphql`
   ) {
     product: shopifyProduct(id: { eq: $id }) {
       ...ProductDetails
+      featured: featuredMedia {
+        id
+        preview {
+          image {
+            gatsbyImageData(width: 1320, placeholder: DOMINANT_COLOR)
+          }
+        }
+      }
     }
 
     collection: shopifyCollection(id: { eq: $collectionId }) {

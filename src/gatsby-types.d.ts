@@ -2224,13 +2224,17 @@ type Query_shopifyVideoArgs = {
 type Query_siteArgs = {
   buildTime: InputMaybe<DateQueryOperatorInput>;
   children: InputMaybe<NodeFilterListInput>;
-  graphqlTypegen: InputMaybe<BooleanQueryOperatorInput>;
+  graphqlTypegen: InputMaybe<SiteGraphqlTypegenFilterInput>;
   host: InputMaybe<StringQueryOperatorInput>;
   id: InputMaybe<StringQueryOperatorInput>;
   internal: InputMaybe<InternalFilterInput>;
+  jsxRuntime: InputMaybe<StringQueryOperatorInput>;
   parent: InputMaybe<NodeFilterInput>;
+  pathPrefix: InputMaybe<StringQueryOperatorInput>;
+  polyfill: InputMaybe<BooleanQueryOperatorInput>;
   port: InputMaybe<IntQueryOperatorInput>;
   siteMetadata: InputMaybe<SiteSiteMetadataFilterInput>;
+  trailingSlash: InputMaybe<StringQueryOperatorInput>;
 };
 
 
@@ -5178,13 +5182,17 @@ type ShopifyWeightUnitQueryOperatorInput = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly children: ReadonlyArray<Node>;
-  readonly graphqlTypegen: Maybe<Scalars['Boolean']>;
+  readonly graphqlTypegen: Maybe<SiteGraphqlTypegen>;
   readonly host: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
   readonly internal: Internal;
+  readonly jsxRuntime: Maybe<Scalars['String']>;
   readonly parent: Maybe<Node>;
+  readonly pathPrefix: Maybe<Scalars['String']>;
+  readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly port: Maybe<Scalars['Int']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
+  readonly trailingSlash: Maybe<Scalars['String']>;
 };
 
 
@@ -5369,25 +5377,33 @@ type SiteEdge = {
 type SiteFieldSelector = {
   readonly buildTime: InputMaybe<FieldSelectorEnum>;
   readonly children: InputMaybe<NodeFieldSelector>;
-  readonly graphqlTypegen: InputMaybe<FieldSelectorEnum>;
+  readonly graphqlTypegen: InputMaybe<SiteGraphqlTypegenFieldSelector>;
   readonly host: InputMaybe<FieldSelectorEnum>;
   readonly id: InputMaybe<FieldSelectorEnum>;
   readonly internal: InputMaybe<InternalFieldSelector>;
+  readonly jsxRuntime: InputMaybe<FieldSelectorEnum>;
   readonly parent: InputMaybe<NodeFieldSelector>;
+  readonly pathPrefix: InputMaybe<FieldSelectorEnum>;
+  readonly polyfill: InputMaybe<FieldSelectorEnum>;
   readonly port: InputMaybe<FieldSelectorEnum>;
   readonly siteMetadata: InputMaybe<SiteSiteMetadataFieldSelector>;
+  readonly trailingSlash: InputMaybe<FieldSelectorEnum>;
 };
 
 type SiteFilterInput = {
   readonly buildTime: InputMaybe<DateQueryOperatorInput>;
   readonly children: InputMaybe<NodeFilterListInput>;
-  readonly graphqlTypegen: InputMaybe<BooleanQueryOperatorInput>;
+  readonly graphqlTypegen: InputMaybe<SiteGraphqlTypegenFilterInput>;
   readonly host: InputMaybe<StringQueryOperatorInput>;
   readonly id: InputMaybe<StringQueryOperatorInput>;
   readonly internal: InputMaybe<InternalFilterInput>;
+  readonly jsxRuntime: InputMaybe<StringQueryOperatorInput>;
   readonly parent: InputMaybe<NodeFilterInput>;
+  readonly pathPrefix: InputMaybe<StringQueryOperatorInput>;
+  readonly polyfill: InputMaybe<BooleanQueryOperatorInput>;
   readonly port: InputMaybe<IntQueryOperatorInput>;
   readonly siteMetadata: InputMaybe<SiteSiteMetadataFilterInput>;
+  readonly trailingSlash: InputMaybe<StringQueryOperatorInput>;
 };
 
 type SiteFunction = Node & {
@@ -5530,6 +5546,30 @@ type SiteFunctionSortInput = {
   readonly parent: InputMaybe<NodeSortInput>;
   readonly pluginName: InputMaybe<SortOrderEnum>;
   readonly relativeCompiledFilePath: InputMaybe<SortOrderEnum>;
+};
+
+type SiteGraphqlTypegen = {
+  readonly documentSearchPaths: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
+  readonly generateOnBuild: Maybe<Scalars['Boolean']>;
+  readonly typesOutputPath: Maybe<Scalars['String']>;
+};
+
+type SiteGraphqlTypegenFieldSelector = {
+  readonly documentSearchPaths: InputMaybe<FieldSelectorEnum>;
+  readonly generateOnBuild: InputMaybe<FieldSelectorEnum>;
+  readonly typesOutputPath: InputMaybe<FieldSelectorEnum>;
+};
+
+type SiteGraphqlTypegenFilterInput = {
+  readonly documentSearchPaths: InputMaybe<StringQueryOperatorInput>;
+  readonly generateOnBuild: InputMaybe<BooleanQueryOperatorInput>;
+  readonly typesOutputPath: InputMaybe<StringQueryOperatorInput>;
+};
+
+type SiteGraphqlTypegenSortInput = {
+  readonly documentSearchPaths: InputMaybe<SortOrderEnum>;
+  readonly generateOnBuild: InputMaybe<SortOrderEnum>;
+  readonly typesOutputPath: InputMaybe<SortOrderEnum>;
 };
 
 type SiteGroupConnection = {
@@ -5948,13 +5988,17 @@ type SiteSiteMetadataSortInput = {
 type SiteSortInput = {
   readonly buildTime: InputMaybe<SortOrderEnum>;
   readonly children: InputMaybe<NodeSortInput>;
-  readonly graphqlTypegen: InputMaybe<SortOrderEnum>;
+  readonly graphqlTypegen: InputMaybe<SiteGraphqlTypegenSortInput>;
   readonly host: InputMaybe<SortOrderEnum>;
   readonly id: InputMaybe<SortOrderEnum>;
   readonly internal: InputMaybe<InternalSortInput>;
+  readonly jsxRuntime: InputMaybe<SortOrderEnum>;
   readonly parent: InputMaybe<NodeSortInput>;
+  readonly pathPrefix: InputMaybe<SortOrderEnum>;
+  readonly polyfill: InputMaybe<SortOrderEnum>;
   readonly port: InputMaybe<SortOrderEnum>;
   readonly siteMetadata: InputMaybe<SiteSiteMetadataSortInput>;
+  readonly trailingSlash: InputMaybe<SortOrderEnum>;
 };
 
 type SortOrderEnum =
@@ -6080,7 +6124,7 @@ type ProductByIDQueryVariables = Exact<{
 }>;
 
 
-type ProductByIDQuery = { readonly product: { readonly __typename: 'ShopifyProduct', readonly description: string, readonly createdAt: string, readonly updatedAt: string, readonly tags: ReadonlyArray<string>, readonly id: string, readonly handle: string, readonly title: string, readonly collections: ReadonlyArray<{ readonly id: string, readonly handle: string, readonly title: string }>, readonly variants: ReadonlyArray<{ readonly id: string, readonly shopifyId: string, readonly price: number, readonly sku: string | null, readonly title: string, readonly availableForSale: boolean, readonly product: { readonly id: string }, readonly image: { readonly originalSrc: string, readonly gatsbyImageData: Record<string, unknown> | null } | null, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }> }>, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null } | null, readonly collection: { readonly __typename: 'ShopifyCollection', readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } | null, readonly featuredCollection: { readonly __typename: 'ShopifyCollection', readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } | null };
+type ProductByIDQuery = { readonly product: { readonly __typename: 'ShopifyProduct', readonly description: string, readonly createdAt: string, readonly updatedAt: string, readonly tags: ReadonlyArray<string>, readonly id: string, readonly handle: string, readonly title: string, readonly featured: { readonly id: string, readonly preview: { readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null, readonly collections: ReadonlyArray<{ readonly id: string, readonly handle: string, readonly title: string }>, readonly variants: ReadonlyArray<{ readonly id: string, readonly shopifyId: string, readonly price: number, readonly sku: string | null, readonly title: string, readonly availableForSale: boolean, readonly product: { readonly id: string }, readonly image: { readonly originalSrc: string, readonly gatsbyImageData: Record<string, unknown> | null } | null, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }> }>, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null } | null, readonly collection: { readonly __typename: 'ShopifyCollection', readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } | null, readonly featuredCollection: { readonly __typename: 'ShopifyCollection', readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } | null };
 
 type ProductDetailsFragment = { readonly __typename: 'ShopifyProduct', readonly description: string, readonly createdAt: string, readonly updatedAt: string, readonly tags: ReadonlyArray<string>, readonly id: string, readonly handle: string, readonly title: string, readonly collections: ReadonlyArray<{ readonly id: string, readonly handle: string, readonly title: string }>, readonly variants: ReadonlyArray<{ readonly id: string, readonly shopifyId: string, readonly price: number, readonly sku: string | null, readonly title: string, readonly availableForSale: boolean, readonly product: { readonly id: string }, readonly image: { readonly originalSrc: string, readonly gatsbyImageData: Record<string, unknown> | null } | null, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }> }>, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null };
 

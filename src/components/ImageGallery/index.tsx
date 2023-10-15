@@ -21,7 +21,6 @@ interface Image {
 
 interface Props {
   images: Image[];
-  featuredImage?: Image;
 }
 
 function Tag({ value }) {
@@ -38,7 +37,7 @@ function Tag({ value }) {
   );
 }
 
-const ImageGallery = ({ images, featuredImage }: Props) => {
+const ImageGallery = ({ images }: Props) => {
   return (
     <React.Fragment>
       {/* Desktop */}
