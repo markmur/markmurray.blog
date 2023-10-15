@@ -7,7 +7,7 @@ export function fileCollectionToProductCollection(
     __typename: 'ShopifyProduct',
     id: node.id,
     handle: null,
-    title: null,
+    title: node.title,
     priceRangeV2: null,
     featuredMedia: {
       id: node.id,

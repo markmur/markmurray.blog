@@ -114,36 +114,34 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
 
           <Box flex={8} overflow="hidden">
             <Carousel ref={containerRef} pr={[3, 5]}>
-              {[...products]
-                .sort((a, b) => a.title?.localeCompare(b?.title))
-                .map((product) => {
-                  const image = product?.media[0]?.image;
+              {[...products].map((product) => {
+                const image = product?.media[0]?.image;
 
-                  const sharedContainerProps = {
-                    mr: [2, 3],
-                    width: isOrientationLandscape(product)
-                      ? ['90vw', '40vw']
-                      : ['60vw', '200px', '278px'],
-                    aspectRatio: isOrientationLandscape(product)
-                      ? [3 / 2]
-                      : [4 / 6, 5 / 8],
-                    style: { overflow: 'hidden' },
-                  };
+                const sharedContainerProps = {
+                  mr: [2, 3],
+                  width: isOrientationLandscape(product)
+                    ? ['90vw', '40vw']
+                    : ['60vw', '200px', '278px'],
+                  aspectRatio: isOrientationLandscape(product)
+                    ? [3 / 2]
+                    : [4 / 6, 5 / 8],
+                  style: { overflow: 'hidden' },
+                };
 
-                  return (
-                    <CarouselItem ref={observe} key={product.id}>
-                      <a href={product.to ?? getProductUrl(product)}>
-                        <Box {...sharedContainerProps}>
-                          <GatsbyImage
-                            loading="lazy"
-                            alt={product.title}
-                            image={getImage(image.gatsbyImageData)!}
-                          />
-                        </Box>
-                      </a>
-                    </CarouselItem>
-                  );
-                })}
+                return (
+                  <CarouselItem ref={observe} key={product.id}>
+                    <a href={product.to ?? getProductUrl(product)}>
+                      <Box {...sharedContainerProps}>
+                        <GatsbyImage
+                          loading="lazy"
+                          alt={product.title}
+                          image={getImage(image.gatsbyImageData)!}
+                        />
+                      </Box>
+                    </a>
+                  </CarouselItem>
+                );
+              })}
             </Carousel>
 
             <Box className="title">

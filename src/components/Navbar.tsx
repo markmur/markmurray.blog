@@ -180,7 +180,7 @@ const Navbar: React.FC<{
                       to: '/photography/film/canon-ae-1',
                     },
                     {
-                      text: 'Olympus mju III',
+                      text: 'Olympus mju-III',
                       to: '/photography/film/olympus-mju-iii',
                     },
                   ],

@@ -12,6 +12,13 @@ const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
   const { featuredCollection, featuredCollectionTwo, featuredFilmCollection } =
     data;
 
+  console.log(
+    fileCollectionToProductCollection(
+      featuredFilmCollection,
+      '/photography/film/olympus-mju-iii',
+    ),
+  );
+
   return (
     <Layout wide displayTagline>
       <ErrorBoundary>
@@ -79,6 +86,7 @@ export const pageQuery = graphql`
     edges {
       node {
         id
+        title: name
         childImageSharp {
           gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR, width: 576)
         }
