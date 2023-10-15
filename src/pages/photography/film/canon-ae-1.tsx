@@ -66,7 +66,7 @@ function Photos(props: PageProps<Queries.FilmPageQuery>) {
         <hr />
 
         <Masonry
-          breakpointCols={{ default: 3, 1100: 3, 700: 2, 500: 1 }}
+          breakpointCols={{ default: 1, 1100: 3, 700: 2, 500: 1 }}
           className="masonry-grid"
           columnClassName="masonry-column"
         >
