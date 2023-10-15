@@ -25,22 +25,6 @@ module.exports = {
     'gatsby-remark-reading-time',
     'gatsby-plugin-offline',
     {
-      resolve: 'gatsby-plugin-google-analytics',
-      options: {
-        trackingId: 'UA-76403737-3',
-        exclude: ['/admin/**'],
-      },
-    },
-    {
-      resolve: 'gatsby-plugin-google-tagmanager',
-      options: {
-        id: 'G-079D6JXQE0',
-        includeInDevelopment: false,
-        defaultDataLayer: { platform: 'gatsby' },
-        enableWebVitalsTracking: true,
-      },
-    },
-    {
       resolve: 'gatsby-plugin-web-vitals',
       options: {
         trackingId: 'UA-76403737-3',

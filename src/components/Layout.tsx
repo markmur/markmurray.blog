@@ -1,7 +1,7 @@
 import { Box, Container, GlobalStyles, Main } from '../styles';
 import CartContext, { CartConsumer } from '../context/CartContext';
 import MenuContext, { MenuConsumer } from '../context/MenuContext';
-import { PageProps, graphql, useStaticQuery } from 'gatsby';
+import { PageProps, Script, graphql, useStaticQuery } from 'gatsby';
 import React, { PropsWithChildren, useMemo } from 'react';
 
 import BackgroundLines from './BackgroundLines';
@@ -43,6 +43,26 @@ const Head = ({ site }) => (
 
     <link rel="icon" type="image/png" href="/img/favicon.png" sizes="32x32" />
     <meta name="theme-color" content="#f8f8f9" />
+
+    {/* Google Analytics */}
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-079D6JXQE0"
+    ></script>
+    <Script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-079D6JXQE0"
+    />
+    <Script
+      id="google-analytics"
+      dangerouslySetInnerHTML={{
+        __html: `window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-079D6JXQE0');`,
+      }}
+    />
   </Helmet>
 );
 
