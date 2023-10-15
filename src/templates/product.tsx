@@ -1,71 +1,53 @@
-import React, { useEffect } from 'react';
-import Helmet from 'react-helmet';
-import { PageProps, graphql } from 'gatsby';
-
-import { CartContext } from '../context/CartContext';
-import Layout from '../components/Layout';
-import ImageGallery from '../components/ImageGallery';
 import {
   Box,
   Button,
   Container,
   Flex,
-  Select,
-  ProductTitle,
-  Subtitle,
-  Link,
   HideOnDesktop,
   HideOnMobile,
+  Link,
+  ProductTitle,
+  Select,
+  Subtitle,
 } from '../styles';
-import { get } from 'lodash';
-import ImageGrid from '../components/ImageGrid';
+import { GatsbyImage, IGatsbyImageData, getImage } from 'gatsby-plugin-image';
+import { PageProps, graphql } from 'gatsby';
+import React, { useEffect } from 'react';
 import {
+  getMetafield,
+  getPageSizeFromVariant,
   getProductSize,
-  getProductUrl,
   isOrientationLandscape,
 } from '../utils/product';
+
+import { CartContext } from '../context/CartContext';
+import Helmet from 'react-helmet';
+import ImageGallery from '../components/ImageGallery';
+import Layout from '../components/Layout';
+import ProductGrid from '../components/ProductGrid';
 import { formatPrice } from '../utils/currency';
 import { useShopify } from '../hooks/use-shopify';
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      'shop-pay-button': {
-        variants: string;
-        'store-url': string;
-      };
-    }
-  }
-}
-
-function getMetafield(product: Product, key: string) {
-  return get(product, 'metafields', []).find(
-    (metafield) => get(metafield, 'key') === key,
-  )?.value;
-}
-
-function getPageSizeFromVariant(variant: Variant): string | undefined {
-  const size = getProductSize(variant.title);
-  const matches = size.match(/(A[0-9]{1})/i);
-
-  return matches && matches.length ? matches[0] : undefined;
-}
-
 interface Image {
-  src: string;
+  id: string;
   tag?: string;
+  image: IGatsbyImageData;
   featured?: boolean;
 }
 
-function getProductImages(product: Product): Image[] {
+function getProductImages(product: Queries.ProductDetailsFragment): Image[] {
   const images = [];
 
-  images.push({ src: product.featuredImage.originalSrc, featured: true });
+  images.push({
+    id: product.featuredMedia.id,
+    image: product.featuredMedia.preview.image.gatsbyImageData,
+    featured: true,
+  });
 
   product.variants.forEach((variant) => {
     images.push({
-      src: variant.image.originalSrc,
+      id: variant.id,
+      image: variant.image.gatsbyImageData,
       tag: getPageSizeFromVariant(variant),
     });
   });
@@ -79,7 +61,11 @@ function useScrollToTop() {
   }, []);
 }
 
-function ProductTemplate(props: PageProps<Queries.ProductByIDQuery>) {
+function ProductTemplate(props: {
+  product: Queries.ProductByIDQuery['product'];
+  collection: Queries.ProductByIDQuery['collection'];
+  featuredCollection: Queries.ProductByIDQuery['featuredCollection'];
+}) {
   const product = props.product;
   const shopify = useShopify();
   const detailsRef = React.createRef<HTMLDivElement>();
@@ -116,13 +102,25 @@ function ProductTemplate(props: PageProps<Queries.ProductByIDQuery>) {
       <Container>
         {isProductLandscape && (
           <Box mb={[3, 0, 0]}>
-            <img src={productImages[0].src} />
+            <GatsbyImage
+              {...productImages[0].image}
+              loading="eager"
+              alt=""
+              image={getImage(productImages[0].image)}
+            />
           </Box>
         )}
 
         <HideOnDesktop>
           <Box mt={-2}>
-            <ImageGallery images={productImages} />
+            <ImageGallery
+              featuredImage={{
+                id: product.featuredMedia.id,
+                image: product.featuredMedia.preview.image.gatsbyImageData,
+                featured: true,
+              }}
+              images={productImages}
+            />
           </Box>
         </HideOnDesktop>
 
@@ -190,19 +188,17 @@ function ProductTemplate(props: PageProps<Queries.ProductByIDQuery>) {
               </small>
             </Box>
 
-            {
-              <Box my={4}>
-                <small>
-                  <div>
-                    <em>Printed on</em>
-                  </div>
+            <Box my={4}>
+              <small>
+                <div>
+                  <em>Printed on</em>
+                </div>
 
-                  <strong>
-                    {getMetafield(product, 'paper') || 'C-Type - Fuji Matt'}
-                  </strong>
-                </small>
-              </Box>
-            }
+                <strong>
+                  {getMetafield(product, 'paper') || 'C-Type - Fuji Matt'}
+                </strong>
+              </small>
+            </Box>
 
             <Box mb={1}>
               <small>
@@ -265,18 +261,13 @@ function ProductTemplate(props: PageProps<Queries.ProductByIDQuery>) {
               <h1>More from the collection...</h1>
             </Box>
 
-            <ImageGrid
+            <ProductGrid
               carouselOnMobile
               orientation={isCollectionLandscape ? 'landscape' : 'portrait'}
-              images={props.collection.products
+              products={props.collection.products
                 .filter((x) => x.id !== props.product.id)
                 .slice(0, isCollectionLandscape ? 4 : 6)
-                .sort((a, b) => a.title.localeCompare(b.title))
-                .map((x) => ({
-                  ...x,
-                  image_url: x.images?.[0].src,
-                  href: getProductUrl(x),
-                }))}
+                .sort((a, b) => a.title.localeCompare(b.title))}
             />
           </Box>
         )}
@@ -293,17 +284,12 @@ function ProductTemplate(props: PageProps<Queries.ProductByIDQuery>) {
                 <h1>You might also like...</h1>
               </Box>
 
-              <ImageGrid
+              <ProductGrid
                 carouselOnMobile
-                images={props.featuredCollection.products
+                products={props.featuredCollection.products
                   .slice(0, 6)
                   .filter((x) => x.id !== props.product.id)
-                  .sort((a, b) => a.title.localeCompare(b.title))
-                  .map((x) => ({
-                    ...x,
-                    image_url: x.images?.[0].src,
-                    href: getProductUrl(x),
-                  }))}
+                  .sort((a, b) => a.title.localeCompare(b.title))}
               />
             </Box>
           )}
@@ -312,7 +298,7 @@ function ProductTemplate(props: PageProps<Queries.ProductByIDQuery>) {
   );
 }
 
-const Product = ({ data, ...rest }) => {
+const Product = ({ data }: PageProps<Queries.ProductByIDQuery>) => {
   const { product, collection, featuredCollection } = data;
 
   return (
@@ -340,94 +326,17 @@ export const pageQuery = graphql`
     $featuredCollectionTitle: String
   ) {
     product: shopifyProduct(id: { eq: $id }) {
-      id
-      title
-      description
-      createdAt
-      updatedAt
-      tags
-      collections {
-        id
-        handle
-        title
-      }
-      priceRangeV2 {
-        minVariantPrice {
-          currencyCode
-        }
-      }
-      featuredImage {
-        originalSrc
-        gatsbyImageData
-      }
-      media {
-        ...ShopifyMedia
-      }
-      variants {
-        id
-        product {
-          id
-        }
-        shopifyId
-        price
-        sku
-        title
-        availableForSale
-        image {
-          originalSrc
-        }
-      }
-      metafields {
-        key
-        value
-      }
+      ...ProductDetails
     }
 
     collection: shopifyCollection(id: { eq: $collectionId }) {
-      title
-      handle
-      products {
-        id
-        handle
-        title
-        media {
-          ...ShopifyMedia
-        }
-        metafields {
-          key
-          value
-        }
-        collections {
-          title
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-      }
+      ...FeaturedShopifyCollection
     }
 
     featuredCollection: shopifyCollection(
       title: { eq: $featuredCollectionTitle }
     ) {
-      title
-      handle
-      products {
-        id
-        handle
-        title
-        media {
-          ...ShopifyMedia
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-      }
+      ...FeaturedShopifyCollection
     }
   }
 `;

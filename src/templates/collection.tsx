@@ -1,8 +1,3 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import { graphql } from 'gatsby';
-
-import Layout from '../components/Layout';
 import {
   Box,
   Container,
@@ -11,27 +6,25 @@ import {
   PostTitle,
   Subtitle,
 } from '../styles';
-import ImageGrid from '../components/ImageGrid';
-import { getProductUrl } from '../utils/product';
-import { PageProps } from 'gatsby';
 
-interface ImageData {
-  media: Queries.CollectionQuery['collection']['products'][0]['media'][0][];
-  href: string;
-  title: string;
-}
+import Helmet from 'react-helmet';
+import Layout from '../components/Layout';
+import { PageProps } from 'gatsby';
+import ProductGrid from '../components/ProductGrid';
+import React from 'react';
+import { graphql } from 'gatsby';
 
 interface CollectionTemplateProps {
   title: string;
   description: string;
-  images: ImageData[];
+  collection: Queries.FeaturedShopifyCollectionFragment;
   orientation: 'landscape' | 'portrait';
 }
 
 export const CollectionTemplate = ({
   title,
   description,
-  images,
+  collection,
   orientation,
 }: CollectionTemplateProps) => {
   return (
@@ -49,7 +42,7 @@ export const CollectionTemplate = ({
 
         <hr />
 
-        <ImageGrid images={images} orientation={orientation} />
+        <ProductGrid products={collection.products} orientation={orientation} />
       </Container>
     </Content>
   );
@@ -58,18 +51,14 @@ export const CollectionTemplate = ({
 const Collection = ({
   data,
   pageContext,
-}: PageProps<Queries.CollectionQuery>) => {
+}: PageProps<
+  Queries.CollectionQuery,
+  { orientation: 'portrait' | 'landscape' }
+>) => {
   const { collection } = data;
   const { orientation } = pageContext;
 
   const { id, title, description } = collection;
-  const images = collection.products.map((product) => ({
-    ...product,
-    media: product.media,
-    href: getProductUrl(product),
-    title: product.title,
-    price: product.priceRangeV2.minVariantPrice,
-  }));
 
   const url = data.site.siteMetadata.url + `/collection/${id}`;
 
@@ -97,7 +86,7 @@ const Collection = ({
       <CollectionTemplate
         title={title}
         description={description}
-        images={images}
+        collection={collection}
         orientation={orientation}
       />
     </Layout>
@@ -114,27 +103,7 @@ export const pageQuery = graphql`
       }
     }
     collection: shopifyCollection(id: { eq: $id }) {
-      id
-      title
-      description
-      products {
-        id
-        title
-        handle
-        media {
-          ...ShopifyMedia
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        metafields {
-          key
-          value
-        }
-      }
+      ...FeaturedShopifyCollection
     }
   }
 `;

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import ShopifyClient from 'shopify-buy';
+
 import Shopify from '../utils/shopify';
+import ShopifyClient from 'shopify-buy';
 
 interface UseShopify {
   checkout: ShopifyClient.Checkout;
@@ -67,8 +68,6 @@ const ShopifyProvider = ({ client, children }: Props) => {
   const [checkout, setCheckout] =
     React.useState<ShopifyClient.Checkout>(defaultCheckout);
   const [isOutdated, setIsOutdated] = React.useState<boolean>(false);
-
-  console.log(checkout);
 
   const cartCount = checkout.lineItems.reduce(
     (state, item) => (state += item.quantity),

@@ -1,18 +1,19 @@
-import React from 'react';
-import { Link as GatsbyLink } from 'gatsby';
-import { EntypoPin } from 'react-entypo-icons';
-import { space } from 'styled-system';
-import styled, { css, createGlobalStyle, keyframes } from 'styled-components';
+import { Defaults, defaults, scrollBar } from './styles/system';
+import { LOGO_FONT, MAIN_FONT, SERIF_FONT } from './styles/constants';
 import {
-  slideInKeyframes,
   fadeInKeyframes,
-  fadeUpInKeyframes,
   fadeOutKeyframes,
+  fadeUpInKeyframes,
+  slideInKeyframes,
 } from './styles/keyframes';
-import { MAIN_FONT, LOGO_FONT, SERIF_FONT } from './styles/constants';
-import { defaults, Defaults, scrollBar } from './styles/system';
 import { isMobile, notMobile } from './styles/devices';
+import styled, { createGlobalStyle, css, keyframes } from 'styled-components';
+
+import { EntypoPin } from 'react-entypo-icons';
 import { GatsbyImage } from 'gatsby-plugin-image';
+import { Link as GatsbyLink } from 'gatsby';
+import React from 'react';
+import { space } from 'styled-system';
 
 export const Text = styled('p')<Defaults>`
   ${defaults};
@@ -127,6 +128,7 @@ interface ButtonProps {
   selected?: boolean;
   small?: boolean;
   increment?: boolean;
+  success?: boolean;
 }
 
 export const Button = styled('button').attrs({
@@ -824,6 +826,7 @@ export const Overlay = styled(Box)`
   background: rgba(63, 63, 106, 0.42);
   z-index: 999;
   animation: ${fadeInKeyframes} 200ms ease;
+  backdrop-filter: blur(3px) saturate(150%);
 
   &.close {
     animation: ${fadeOutKeyframes};

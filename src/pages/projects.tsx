@@ -1,10 +1,11 @@
+import { Container, Content } from '../styles';
+
+import BackgroundLines from '../components/BackgroundLines';
+import Layout from '../components/Layout';
+import ProjectShowcase from '../components/ProjectShowcase';
+import Projects from '../components/Projects';
 import React from 'react';
 import { graphql } from 'gatsby';
-import { Content, Container } from '../styles';
-import Layout from '../components/Layout';
-import Projects from '../components/Projects';
-import ProjectShowcase from '../components/ProjectShowcase';
-import BackgroundLines from '../components/BackgroundLines';
 
 const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);

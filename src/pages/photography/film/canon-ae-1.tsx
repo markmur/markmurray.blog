@@ -1,7 +1,3 @@
-import React from 'react';
-import { graphql, PageProps } from 'gatsby';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
-import Layout from '../../../components/Layout';
 import {
   Box,
   Container,
@@ -9,7 +5,12 @@ import {
   PostTitle,
   Subtitle,
 } from '../../../styles';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { PageProps, graphql } from 'gatsby';
+
+import Layout from '../../../components/Layout';
 import Masonry from 'react-masonry-css';
+import React from 'react';
 
 function Photos(props: PageProps<Queries.FilmPageQuery>) {
   const imageStyles = {

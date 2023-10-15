@@ -1,23 +1,24 @@
-import React from 'react';
-import cx from 'classnames';
-import { FiShoppingBag, FiMenu, FiX } from 'react-icons/fi';
 import {
-  Flex,
   Box,
-  Container,
-  Link,
-  Logo,
-  Nav,
   CartCount,
-  Timestamp,
+  Container,
+  Flex,
   HideOnDesktop,
   HideOnMobile,
+  Link,
   LinkList,
-  Text,
   LinkListContainer,
+  Logo,
+  Nav,
+  Text,
+  Timestamp,
 } from '../styles';
-import { useShopify } from '../hooks/use-shopify';
+import { FiMenu, FiShoppingBag, FiX } from 'react-icons/fi';
 import { graphql, useStaticQuery } from 'gatsby';
+
+import React from 'react';
+import cx from 'classnames';
+import { useShopify } from '../hooks/use-shopify';
 
 interface Link {
   text: string;
@@ -163,9 +164,6 @@ const Navbar: React.FC<{
               >
                 Writing
               </Link>
-              {/* <Link activeClassName="active" mr={4} to="/projects">
-                Projects
-              </Link> */}
 
               <LinkDropdown
                 links={{

@@ -1,13 +1,10 @@
-import React from 'react';
+import { Box, Container, PageHeading } from '../styles';
 import { PageProps, graphql } from 'gatsby';
-import { Box, PageHeading, Container } from '../styles';
-import Layout from '../components/Layout';
+
 import CollectionCarousel from '../components/CollectionCarousel';
 import ErrorBoundary from '../components/ErrorBoundary';
-
-const getNodes = (entity) => {
-  return entity.edges.map(({ node }) => node);
-};
+import Layout from '../components/Layout';
+import React from 'react';
 
 const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
   const { data } = props;
@@ -34,8 +31,6 @@ const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
             Portra 400 film with an Olympus mju III."
           products={featuredFilmCollection.edges.map(({ node }, index) => ({
             id: index,
-            title: `${node.title}`,
-            handle: `${node.title}`,
             media: [{ image: node.childImageSharp }],
             images: [
               {
@@ -96,37 +91,83 @@ export const pageQuery = graphql`
     }
   }
 
-  fragment ShopifyMedia on ShopifyMediaImage {
+  fragment Media on ShopifyMediaImage {
     image {
       gatsbyImageData
     }
   }
 
+  fragment FeaturedMedia on ShopifyProduct {
+    featuredMedia {
+      id
+      preview {
+        image {
+          src
+          altText
+          width
+          height
+          gatsbyImageData
+        }
+      }
+    }
+  }
+
   fragment FeaturedShopifyCollection on ShopifyCollection {
+    __typename
     id
     title
     handle
     description
     products {
+      ...Product
+    }
+  }
+
+  fragment Product on ShopifyProduct {
+    __typename
+    ...FeaturedMedia
+    media {
+      ...Media
+    }
+    id
+    handle
+    title
+    metafields {
+      key
+      value
+    }
+    priceRangeV2 {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+  }
+
+  fragment ProductDetails on ShopifyProduct {
+    ...Product
+    description
+    createdAt
+    updatedAt
+    tags
+    collections {
       id
       handle
       title
-      media {
-        ... on ShopifyMediaImage {
-          image {
-            gatsbyImageData
-          }
-        }
+    }
+    variants {
+      id
+      product {
+        id
       }
-      priceRangeV2 {
-        minVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      metafields {
-        key
-        value
+      shopifyId
+      price
+      sku
+      title
+      availableForSale
+      image {
+        originalSrc
+        gatsbyImageData
       }
     }
   }

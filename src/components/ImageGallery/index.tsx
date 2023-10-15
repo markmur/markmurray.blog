@@ -1,24 +1,28 @@
-import React from 'react';
 import './styles.css';
 
 import {
-  Flex,
   Box,
-  HideOnMobile,
-  HideOnDesktop,
-  Sticker,
   Carousel,
   CarouselItem,
+  Flex,
+  HideOnDesktop,
+  HideOnMobile,
+  Sticker,
 } from '../../styles';
+import { GatsbyImage, IGatsbyImageData, getImage } from 'gatsby-plugin-image';
+
+import React from 'react';
 
 interface Image {
-  src: string;
+  id: string;
+  image: IGatsbyImageData;
   featured?: boolean;
   tag?: string;
 }
 
 interface Props {
   images: Image[];
+  featuredImage?: Image;
 }
 
 function Tag({ value }) {
@@ -35,7 +39,7 @@ function Tag({ value }) {
   );
 }
 
-const ImageGallery = ({ images }: Props) => {
+const ImageGallery = ({ images, featuredImage }: Props) => {
   return (
     <React.Fragment>
       {/* Desktop */}
@@ -44,12 +48,17 @@ const ImageGallery = ({ images }: Props) => {
           <Box mr={4}>
             {images.map((image, i) => (
               <Box
-                key={image.src}
+                key={image.id}
                 mb={i < images.length - 1 ? 4 : 0}
                 position="relative"
               >
                 {image.tag && <Tag value={image.tag} />}
-                <img src={image.src} />
+
+                <GatsbyImage
+                  alt=""
+                  loading="lazy"
+                  image={getImage(image.image)}
+                />
               </Box>
             ))}
           </Box>
@@ -64,13 +73,15 @@ const ImageGallery = ({ images }: Props) => {
               display="inline-block"
               margin="auto"
               position="relative"
-              key={image.src}
+              key={image.id}
               flex="1 0 auto"
             >
               <Box backgroundColor="#eee">
                 {image.tag && <Tag value={image.tag} />}
-                <img
-                  src={image.src}
+                <GatsbyImage
+                  alt=""
+                  loading="lazy"
+                  image={getImage(image.image)}
                   style={{
                     width: 'calc(100vw - 2em)',
                   }}

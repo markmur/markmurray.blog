@@ -1,8 +1,9 @@
-import React from 'react';
-import { graphql } from 'gatsby';
-import { PageHeading, Container, Content } from '../styles';
+import { Container, Content, PageHeading } from '../styles';
+
 import Layout from '../components/Layout';
 import Post from '../components/post';
+import React from 'react';
+import { graphql } from 'gatsby';
 
 export default class BlogPage extends React.Component {
   render() {

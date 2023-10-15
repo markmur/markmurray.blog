@@ -1,68 +1,26 @@
-import React from 'react';
-import { graphql } from 'gatsby';
 import {
-  Flex,
   Box,
   Button,
   Container,
+  Flex,
   PageHeading,
-  Text,
   Subtitle,
+  Text,
 } from '../../styles';
-import Layout from '../../components/Layout';
+import { PageProps, graphql } from 'gatsby';
+
 import BackgroundLines from '../../components/BackgroundLines';
 import CollectionCarousel from '../../components/CollectionCarousel';
-import ImageGrid from '../../components/ImageGrid';
+import Layout from '../../components/Layout';
+import ProductGrid from '../../components/ProductGrid';
+import React from 'react';
 import { getProductUrl } from '../../utils/product';
-
-type Edge<T> = {
-  node: T;
-};
-
-type Edges<T> = {
-  edges: Edge<T>[];
-};
-
-interface ShopifyCollection {
-  id: string;
-  title: string;
-  handle: string;
-  products: {
-    title: string;
-    handle: string;
-    images: { src: string }[];
-  }[];
-}
-
-interface Collection {
-  id: string;
-  title: string;
-  description: string;
-  products: {
-    id: string;
-    handle: string;
-    images: {
-      src: string;
-    }[];
-    priceRangeV2: {
-      minVariantPrice: {
-        amount: number;
-        currencyCode: string;
-      };
-    };
-  }[];
-}
-
-interface Props {
-  data: {
-    featuredCollection: Collection;
-    collections: Edges<ShopifyCollection>;
-  };
-}
 
 interface State {
   selectedCollection: string | null;
 }
+
+type Props = PageProps<Queries.PhotographyPageQuery>;
 
 export default class PhotographyPage extends React.Component<Props, State> {
   state = {
@@ -74,7 +32,8 @@ export default class PhotographyPage extends React.Component<Props, State> {
       .reduce((state, { node }) => [...state, ...node.products], [])
       .map((product) => ({
         ...product,
-        image_url: product.images[0].src,
+        image_url: product.featuredMedia.preview.image.src,
+        gatsbyImageData: product.featuredMedia.preview.image.gatsbyImageData,
         title: product.title,
         href: getProductUrl(product),
       }));
@@ -169,7 +128,7 @@ export default class PhotographyPage extends React.Component<Props, State> {
           handle={featuredCollection.handle}
           title={featuredCollection.title}
           description={featuredCollection.description}
-          products={featuredCollection.products}
+          products={featuredCollection.products as Queries.ProductFragment[]}
         />
 
         <Container>
@@ -223,9 +182,9 @@ export default class PhotographyPage extends React.Component<Props, State> {
             </div>
           </div>
 
-          <ImageGrid
+          <ProductGrid
             key={this.state.selectedCollection || 'all'}
-            images={filteredPhotos}
+            products={filteredPhotos}
           />
         </Container>
       </Layout>
@@ -241,22 +200,7 @@ export const pageQuery = graphql`
       handle
       description
       products {
-        id
-        handle
-        title
-        media {
-          ...ShopifyMedia
-        }
-        priceRangeV2 {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        metafields {
-          key
-          value
-        }
+        ...Product
       }
     }
     collections: allShopifyCollection(filter: { productsCount: { gt: 0 } }) {
@@ -266,22 +210,7 @@ export const pageQuery = graphql`
           title
           handle
           products {
-            id
-            title
-            handle
-            media {
-              ...ShopifyMedia
-            }
-            priceRangeV2 {
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-            }
-            metafields {
-              key
-              value
-            }
+            ...Product
           }
         }
       }

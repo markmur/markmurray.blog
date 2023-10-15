@@ -1,8 +1,8 @@
-import React from 'react';
-import { graphql } from 'gatsby';
+import { Content } from '../styles';
 import Layout from '../components/Layout';
 import Post from '../components/post';
-import { Content } from '../styles';
+import React from 'react';
+import { graphql } from 'gatsby';
 
 const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);

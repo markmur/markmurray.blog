@@ -1,26 +1,26 @@
-import React from 'react';
-import ShopifyClient from 'shopify-buy';
 import {
-  FiTrash2 as Trash,
+  BackgroundImage,
+  Box,
+  Button,
+  DiscountCode,
+  ErrorMessage,
+  Flex,
+  Loader,
+  Overlay,
+  Strike,
+  Text,
+} from '../styles';
+import {
   FiShoppingBag,
   FiShoppingCart,
   FiTag,
   FiX,
+  FiTrash2 as Trash,
 } from 'react-icons/fi';
 
 import Incrementer from './Incrementer';
-import {
-  Box,
-  Button,
-  DiscountCode,
-  Flex,
-  ErrorMessage,
-  Text,
-  Overlay,
-  BackgroundImage,
-  Strike,
-  Loader,
-} from '../styles';
+import React from 'react';
+import ShopifyClient from 'shopify-buy';
 // import { useLoadScript } from '../hooks/use-load-script';
 import { formatPrice } from '../utils/currency';
 import { useShopify } from '../hooks/use-shopify';
@@ -157,8 +157,6 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
   // const shopPayLoadedStatus = useLoadScript(
   //   'https://cdn.shopify.com/shopifycloud/shop-js/v0.1/client.js',
   // );
-
-  console.log(shopify.checkout);
 
   return (
     <Box position="relative">

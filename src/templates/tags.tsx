@@ -1,71 +1,73 @@
-import React from 'react';
+import { Container, Content } from '../styles';
+import { PageProps, graphql } from 'gatsby';
+
 import Helmet from 'react-helmet';
-import { graphql, PageProps } from 'gatsby';
 import Layout from '../components/Layout';
-import { Content, Container } from '../styles';
 import Post from '../components/post';
+import React from 'react';
 
-class TagRoute extends React.Component<PageProps> {
-  render() {
-    const { pageContext } = this.props;
-    const { allMarkdownRemark, site } = this.props.data;
-    const posts = this.props.data.allMarkdownRemark.edges;
+export default function TagRoute(
+  props: PageProps<Queries.TagPageQuery, { tag: string }>,
+) {
+  const { pageContext } = props;
+  const { allMarkdownRemark, site } = props.data;
+  const posts = props.data.allMarkdownRemark.edges;
 
-    const { tag } = pageContext;
-    const { title } = site.siteMetadata;
-    const { totalCount } = allMarkdownRemark;
+  const { tag } = pageContext;
+  const { title } = site.siteMetadata;
+  const { totalCount } = allMarkdownRemark;
 
-    return (
-      <Layout wide>
-        <section>
-          <Helmet title={`${tag} | ${title}`} />
-          <Content>
-            <Container>
-              <h3>
-                {totalCount} post{totalCount === 1 ? '' : 's'} tagged with “
-                {tag}”
-              </h3>
-            </Container>
-            {posts.map(({ node: post }) => (
-              <Post key={post.id} post={post} />
-            ))}
-          </Content>
-        </section>
-      </Layout>
-    );
-  }
+  return (
+    <Layout wide>
+      <section>
+        <Helmet title={`${tag} | ${title}`} />
+        <Content>
+          <Container>
+            <h3>
+              {totalCount} post{totalCount === 1 ? '' : 's'} tagged with “{tag}”
+            </h3>
+          </Container>
+          {posts.map(({ node: post }) => (
+            <Post key={post.id} post={post} />
+          ))}
+        </Content>
+      </section>
+    </Layout>
+  );
 }
 
-export default TagRoute;
-
-export const tagPageQuery = graphql`query TagPage($tag: String) {
-  site {
-    siteMetadata {
-      title
+export const tagPageQuery = graphql`
+  query TagPage($tag: String) {
+    site {
+      siteMetadata {
+        title
+      }
     }
-  }
-  allMarkdownRemark(
-    limit: 1000
-    sort: {frontmatter: {date: DESC}}
-    filter: {frontmatter: {templateKey: {eq: "blog-post"}, tags: {in: [$tag]}}}
-  ) {
-    totalCount
-    edges {
-      node {
-        id
-        fields {
-          slug
-          readingTime {
-            text
+    allMarkdownRemark(
+      limit: 1000
+      sort: { frontmatter: { date: DESC } }
+      filter: {
+        frontmatter: { templateKey: { eq: "blog-post" }, tags: { in: [$tag] } }
+      }
+    ) {
+      totalCount
+      edges {
+        node {
+          id
+          fields {
+            slug
+            readingTime {
+              text
+            }
           }
-        }
-        frontmatter {
-          date(formatString: "MMMM DD, YYYY")
-          title
-          description
-          tags
+          frontmatter {
+            date(formatString: "MMMM DD, YYYY")
+            title
+            description
+            tags
+          }
         }
       }
     }
   }
-}`;
+`;
