@@ -112,7 +112,7 @@ export function getPageSizeFromVariant(
 }
 
 export const getMinPrice = (
-  products: Queries.ProductFragment[],
+  products: readonly Queries.ProductFragment[],
 ): Queries.ProductFragment['priceRangeV2'] | undefined => {
   if (!products.length) return;
 
@@ -122,9 +122,9 @@ export const getMinPrice = (
     return undefined;
   }
 
-  return products.sort(
+  return [...products].sort(
     (a, b) =>
-      a.priceRangeV2!.minVariantPrice.amount -
-      b.priceRangeV2!.minVariantPrice.amount,
+      a.priceRangeV2?.minVariantPrice.amount -
+      b.priceRangeV2?.minVariantPrice.amount,
   )[0]?.priceRangeV2;
 };

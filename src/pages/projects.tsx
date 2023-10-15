@@ -11,30 +11,26 @@ const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);
 };
 
-export default class ProjectsPage extends React.Component<
-  PageProps<Queries.ProjectsPageQuery>
-> {
-  render() {
-    const { data } = this.props;
+export default function ProjectsPage(
+  props: PageProps<Queries.ProjectsPageQuery>,
+) {
+  const { projects } = props.data;
 
-    const projects = getNodes(data.projects);
-
-    return (
-      <Layout wide displayTagline={false}>
-        <BackgroundLines />
-        <Content>
-          <Container style={{ marginTop: 80 }}>
-            <Projects
-              projects={projects}
-              renderProject={(project, key) => (
-                <ProjectShowcase key={key} project={project} />
-              )}
-            />
-          </Container>
-        </Content>
-      </Layout>
-    );
-  }
+  return (
+    <Layout wide displayTagline={false}>
+      <BackgroundLines />
+      <Content>
+        <Container style={{ marginTop: 80 }}>
+          <Projects
+            projects={getNodes(projects)}
+            renderProject={(project, key) => (
+              <ProjectShowcase key={key} project={project} />
+            )}
+          />
+        </Container>
+      </Content>
+    </Layout>
+  );
 }
 
 export const pageQuery = graphql`

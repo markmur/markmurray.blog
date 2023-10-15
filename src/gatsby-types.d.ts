@@ -2224,17 +2224,13 @@ type Query_shopifyVideoArgs = {
 type Query_siteArgs = {
   buildTime: InputMaybe<DateQueryOperatorInput>;
   children: InputMaybe<NodeFilterListInput>;
-  graphqlTypegen: InputMaybe<SiteGraphqlTypegenFilterInput>;
+  graphqlTypegen: InputMaybe<BooleanQueryOperatorInput>;
   host: InputMaybe<StringQueryOperatorInput>;
   id: InputMaybe<StringQueryOperatorInput>;
   internal: InputMaybe<InternalFilterInput>;
-  jsxRuntime: InputMaybe<StringQueryOperatorInput>;
   parent: InputMaybe<NodeFilterInput>;
-  pathPrefix: InputMaybe<StringQueryOperatorInput>;
-  polyfill: InputMaybe<BooleanQueryOperatorInput>;
   port: InputMaybe<IntQueryOperatorInput>;
   siteMetadata: InputMaybe<SiteSiteMetadataFilterInput>;
-  trailingSlash: InputMaybe<StringQueryOperatorInput>;
 };
 
 
@@ -5182,17 +5178,13 @@ type ShopifyWeightUnitQueryOperatorInput = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly children: ReadonlyArray<Node>;
-  readonly graphqlTypegen: Maybe<SiteGraphqlTypegen>;
+  readonly graphqlTypegen: Maybe<Scalars['Boolean']>;
   readonly host: Maybe<Scalars['String']>;
   readonly id: Scalars['ID'];
   readonly internal: Internal;
-  readonly jsxRuntime: Maybe<Scalars['String']>;
   readonly parent: Maybe<Node>;
-  readonly pathPrefix: Maybe<Scalars['String']>;
-  readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly port: Maybe<Scalars['Int']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
-  readonly trailingSlash: Maybe<Scalars['String']>;
 };
 
 
@@ -5377,33 +5369,25 @@ type SiteEdge = {
 type SiteFieldSelector = {
   readonly buildTime: InputMaybe<FieldSelectorEnum>;
   readonly children: InputMaybe<NodeFieldSelector>;
-  readonly graphqlTypegen: InputMaybe<SiteGraphqlTypegenFieldSelector>;
+  readonly graphqlTypegen: InputMaybe<FieldSelectorEnum>;
   readonly host: InputMaybe<FieldSelectorEnum>;
   readonly id: InputMaybe<FieldSelectorEnum>;
   readonly internal: InputMaybe<InternalFieldSelector>;
-  readonly jsxRuntime: InputMaybe<FieldSelectorEnum>;
   readonly parent: InputMaybe<NodeFieldSelector>;
-  readonly pathPrefix: InputMaybe<FieldSelectorEnum>;
-  readonly polyfill: InputMaybe<FieldSelectorEnum>;
   readonly port: InputMaybe<FieldSelectorEnum>;
   readonly siteMetadata: InputMaybe<SiteSiteMetadataFieldSelector>;
-  readonly trailingSlash: InputMaybe<FieldSelectorEnum>;
 };
 
 type SiteFilterInput = {
   readonly buildTime: InputMaybe<DateQueryOperatorInput>;
   readonly children: InputMaybe<NodeFilterListInput>;
-  readonly graphqlTypegen: InputMaybe<SiteGraphqlTypegenFilterInput>;
+  readonly graphqlTypegen: InputMaybe<BooleanQueryOperatorInput>;
   readonly host: InputMaybe<StringQueryOperatorInput>;
   readonly id: InputMaybe<StringQueryOperatorInput>;
   readonly internal: InputMaybe<InternalFilterInput>;
-  readonly jsxRuntime: InputMaybe<StringQueryOperatorInput>;
   readonly parent: InputMaybe<NodeFilterInput>;
-  readonly pathPrefix: InputMaybe<StringQueryOperatorInput>;
-  readonly polyfill: InputMaybe<BooleanQueryOperatorInput>;
   readonly port: InputMaybe<IntQueryOperatorInput>;
   readonly siteMetadata: InputMaybe<SiteSiteMetadataFilterInput>;
-  readonly trailingSlash: InputMaybe<StringQueryOperatorInput>;
 };
 
 type SiteFunction = Node & {
@@ -5546,30 +5530,6 @@ type SiteFunctionSortInput = {
   readonly parent: InputMaybe<NodeSortInput>;
   readonly pluginName: InputMaybe<SortOrderEnum>;
   readonly relativeCompiledFilePath: InputMaybe<SortOrderEnum>;
-};
-
-type SiteGraphqlTypegen = {
-  readonly documentSearchPaths: Maybe<ReadonlyArray<Maybe<Scalars['String']>>>;
-  readonly generateOnBuild: Maybe<Scalars['Boolean']>;
-  readonly typesOutputPath: Maybe<Scalars['String']>;
-};
-
-type SiteGraphqlTypegenFieldSelector = {
-  readonly documentSearchPaths: InputMaybe<FieldSelectorEnum>;
-  readonly generateOnBuild: InputMaybe<FieldSelectorEnum>;
-  readonly typesOutputPath: InputMaybe<FieldSelectorEnum>;
-};
-
-type SiteGraphqlTypegenFilterInput = {
-  readonly documentSearchPaths: InputMaybe<StringQueryOperatorInput>;
-  readonly generateOnBuild: InputMaybe<BooleanQueryOperatorInput>;
-  readonly typesOutputPath: InputMaybe<StringQueryOperatorInput>;
-};
-
-type SiteGraphqlTypegenSortInput = {
-  readonly documentSearchPaths: InputMaybe<SortOrderEnum>;
-  readonly generateOnBuild: InputMaybe<SortOrderEnum>;
-  readonly typesOutputPath: InputMaybe<SortOrderEnum>;
 };
 
 type SiteGroupConnection = {
@@ -5909,7 +5869,9 @@ type SiteSiteMetadata = {
   readonly bannerLink: Maybe<Scalars['String']>;
   readonly bannerMessage: Maybe<Scalars['String']>;
   readonly description: Maybe<Scalars['String']>;
+  readonly email: Maybe<Scalars['String']>;
   readonly featuredCollectionTitle: Maybe<Scalars['String']>;
+  readonly social: Maybe<SiteSiteMetadataSocial>;
   readonly title: Maybe<Scalars['String']>;
   readonly url: Maybe<Scalars['String']>;
 };
@@ -5918,7 +5880,9 @@ type SiteSiteMetadataFieldSelector = {
   readonly bannerLink: InputMaybe<FieldSelectorEnum>;
   readonly bannerMessage: InputMaybe<FieldSelectorEnum>;
   readonly description: InputMaybe<FieldSelectorEnum>;
+  readonly email: InputMaybe<FieldSelectorEnum>;
   readonly featuredCollectionTitle: InputMaybe<FieldSelectorEnum>;
+  readonly social: InputMaybe<SiteSiteMetadataSocialFieldSelector>;
   readonly title: InputMaybe<FieldSelectorEnum>;
   readonly url: InputMaybe<FieldSelectorEnum>;
 };
@@ -5927,16 +5891,56 @@ type SiteSiteMetadataFilterInput = {
   readonly bannerLink: InputMaybe<StringQueryOperatorInput>;
   readonly bannerMessage: InputMaybe<StringQueryOperatorInput>;
   readonly description: InputMaybe<StringQueryOperatorInput>;
+  readonly email: InputMaybe<StringQueryOperatorInput>;
   readonly featuredCollectionTitle: InputMaybe<StringQueryOperatorInput>;
+  readonly social: InputMaybe<SiteSiteMetadataSocialFilterInput>;
   readonly title: InputMaybe<StringQueryOperatorInput>;
   readonly url: InputMaybe<StringQueryOperatorInput>;
+};
+
+type SiteSiteMetadataSocial = {
+  readonly githubHandle: Maybe<Scalars['String']>;
+  readonly githubUrl: Maybe<Scalars['String']>;
+  readonly instagramHandle: Maybe<Scalars['String']>;
+  readonly instagramUrl: Maybe<Scalars['String']>;
+  readonly twitterHandle: Maybe<Scalars['String']>;
+  readonly twitterUrl: Maybe<Scalars['String']>;
+};
+
+type SiteSiteMetadataSocialFieldSelector = {
+  readonly githubHandle: InputMaybe<FieldSelectorEnum>;
+  readonly githubUrl: InputMaybe<FieldSelectorEnum>;
+  readonly instagramHandle: InputMaybe<FieldSelectorEnum>;
+  readonly instagramUrl: InputMaybe<FieldSelectorEnum>;
+  readonly twitterHandle: InputMaybe<FieldSelectorEnum>;
+  readonly twitterUrl: InputMaybe<FieldSelectorEnum>;
+};
+
+type SiteSiteMetadataSocialFilterInput = {
+  readonly githubHandle: InputMaybe<StringQueryOperatorInput>;
+  readonly githubUrl: InputMaybe<StringQueryOperatorInput>;
+  readonly instagramHandle: InputMaybe<StringQueryOperatorInput>;
+  readonly instagramUrl: InputMaybe<StringQueryOperatorInput>;
+  readonly twitterHandle: InputMaybe<StringQueryOperatorInput>;
+  readonly twitterUrl: InputMaybe<StringQueryOperatorInput>;
+};
+
+type SiteSiteMetadataSocialSortInput = {
+  readonly githubHandle: InputMaybe<SortOrderEnum>;
+  readonly githubUrl: InputMaybe<SortOrderEnum>;
+  readonly instagramHandle: InputMaybe<SortOrderEnum>;
+  readonly instagramUrl: InputMaybe<SortOrderEnum>;
+  readonly twitterHandle: InputMaybe<SortOrderEnum>;
+  readonly twitterUrl: InputMaybe<SortOrderEnum>;
 };
 
 type SiteSiteMetadataSortInput = {
   readonly bannerLink: InputMaybe<SortOrderEnum>;
   readonly bannerMessage: InputMaybe<SortOrderEnum>;
   readonly description: InputMaybe<SortOrderEnum>;
+  readonly email: InputMaybe<SortOrderEnum>;
   readonly featuredCollectionTitle: InputMaybe<SortOrderEnum>;
+  readonly social: InputMaybe<SiteSiteMetadataSocialSortInput>;
   readonly title: InputMaybe<SortOrderEnum>;
   readonly url: InputMaybe<SortOrderEnum>;
 };
@@ -5944,17 +5948,13 @@ type SiteSiteMetadataSortInput = {
 type SiteSortInput = {
   readonly buildTime: InputMaybe<SortOrderEnum>;
   readonly children: InputMaybe<NodeSortInput>;
-  readonly graphqlTypegen: InputMaybe<SiteGraphqlTypegenSortInput>;
+  readonly graphqlTypegen: InputMaybe<SortOrderEnum>;
   readonly host: InputMaybe<SortOrderEnum>;
   readonly id: InputMaybe<SortOrderEnum>;
   readonly internal: InputMaybe<InternalSortInput>;
-  readonly jsxRuntime: InputMaybe<SortOrderEnum>;
   readonly parent: InputMaybe<NodeSortInput>;
-  readonly pathPrefix: InputMaybe<SortOrderEnum>;
-  readonly polyfill: InputMaybe<SortOrderEnum>;
   readonly port: InputMaybe<SortOrderEnum>;
   readonly siteMetadata: InputMaybe<SiteSiteMetadataSortInput>;
-  readonly trailingSlash: InputMaybe<SortOrderEnum>;
 };
 
 type SortOrderEnum =
@@ -5988,17 +5988,17 @@ type AboutPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 type AboutPageQuery = { readonly site: { readonly siteMetadata: { readonly url: string | null } | null } | null, readonly image: { readonly childImageSharp: { readonly id: string, readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } | null, readonly markdownRemark: { readonly html: string | null, readonly frontmatter: { readonly date: string | null, readonly title: string | null, readonly description: string | null, readonly image_url: string | null } | null } | null };
 
+type BlogPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type BlogPageQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly fields: { readonly readingTime: { readonly text: string | null } | null } | null, readonly frontmatter: { readonly slug: string | null, readonly title: string | null, readonly tags: ReadonlyArray<string | null> | null, readonly templateKey: string | null, readonly description: string | null, readonly pinned: boolean | null, readonly date: string | null } | null } }> } };
+
 type BlogPostByIDQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
 type BlogPostByIDQuery = { readonly site: { readonly siteMetadata: { readonly url: string | null } | null } | null, readonly avatar: { readonly childImageSharp: { readonly id: string, readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } | null, readonly markdownRemark: { readonly id: string, readonly html: string | null, readonly fields: { readonly slug: string | null, readonly readingTime: { readonly text: string | null } | null } | null, readonly frontmatter: { readonly date: string | null, readonly title: string | null, readonly description: string | null, readonly tags: ReadonlyArray<string | null> | null, readonly pinned: boolean | null, readonly image: string | null } | null } | null };
-
-type BlogQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogQueryQuery = { readonly allMarkdownRemark: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly fields: { readonly readingTime: { readonly text: string | null } | null } | null, readonly frontmatter: { readonly slug: string | null, readonly title: string | null, readonly tags: ReadonlyArray<string | null> | null, readonly templateKey: string | null, readonly description: string | null, readonly pinned: boolean | null, readonly date: string | null } | null } }> } };
 
 type CollectionQueryVariables = Exact<{
   id: Scalars['String'];
@@ -6010,6 +6010,8 @@ type CollectionQuery = { readonly site: { readonly siteMetadata: { readonly url:
 type FeaturedMediaFragment = { readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null };
 
 type FeaturedShopifyCollectionFragment = { readonly __typename: 'ShopifyCollection', readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> };
+
+type FileCollectionFragment = { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> };
 
 type FilmPageQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -6042,15 +6044,15 @@ type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = { readonly tracedSVG: st
 
 type GatsbyImageSharpFluidLimitPresentationSizeFragment = { readonly maxHeight: number, readonly maxWidth: number };
 
-type HeadingQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type HeadingQueryQuery = { readonly site: { readonly siteMetadata: { readonly title: string | null, readonly description: string | null } | null } | null };
-
 type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type IndexPageQuery = { readonly featuredFilmCollection: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> }, readonly featuredCollection: { readonly __typename: 'ShopifyCollection', readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } | null, readonly featuredCollectionTwo: { readonly __typename: 'ShopifyCollection', readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } | null };
+
+type LayoutQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type LayoutQuery = { readonly site: { readonly siteMetadata: { readonly url: string | null, readonly title: string | null, readonly description: string | null } | null } | null };
 
 type MediaFragment = { readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null };
 
@@ -6062,7 +6064,7 @@ type OlympusFilmPageQuery = { readonly film: { readonly edges: ReadonlyArray<{ r
 type PhotographyPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type PhotographyPageQuery = { readonly featuredCollection: { readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } | null, readonly collections: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly title: string, readonly handle: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } }> } };
+type PhotographyPageQuery = { readonly site: { readonly siteMetadata: { readonly email: string | null, readonly social: { readonly twitterUrl: string | null, readonly instagramUrl: string | null, readonly instagramHandle: string | null } | null } | null } | null, readonly featuredCollection: { readonly id: string, readonly title: string, readonly handle: string, readonly description: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } | null, readonly collections: { readonly edges: ReadonlyArray<{ readonly node: { readonly id: string, readonly title: string, readonly handle: string, readonly products: ReadonlyArray<{ readonly __typename: 'ShopifyProduct', readonly id: string, readonly handle: string, readonly title: string, readonly media: ReadonlyArray<{ readonly image: { readonly gatsbyImageData: Record<string, unknown> | null } | null } | {}>, readonly metafields: ReadonlyArray<{ readonly key: string, readonly value: string }>, readonly priceRangeV2: { readonly minVariantPrice: { readonly amount: number, readonly currencyCode: ShopifyCurrencyCode } }, readonly featuredMedia: { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | { readonly id: string, readonly preview: { readonly image: { readonly src: string, readonly altText: string | null, readonly width: number | null, readonly height: number | null, readonly gatsbyImageData: Record<string, unknown> | null } | null } | null } | null }> } }> } };
 
 type PostsPageQueryVariables = Exact<{ [key: string]: never; }>;
 

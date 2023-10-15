@@ -117,7 +117,6 @@ function ProductTemplate(props: {
               featuredImage={{
                 id: product.featuredMedia.id,
                 image: product.featuredMedia.preview.image.gatsbyImageData,
-                featured: true,
               }}
               images={productImages}
             />

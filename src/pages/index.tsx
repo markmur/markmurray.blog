@@ -5,6 +5,7 @@ import CollectionCarousel from '../components/CollectionCarousel';
 import ErrorBoundary from '../components/ErrorBoundary';
 import Layout from '../components/Layout';
 import React from 'react';
+import { fileCollectionToProductCollection } from '../utils/collection';
 
 const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
   const { data } = props;
@@ -29,20 +30,10 @@ const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
           title="Olympus mju III"
           description="A collection of photos taken in Greece on
             Portra 400 film with an Olympus mju III."
-          products={featuredFilmCollection.edges.map(({ node }, index) => ({
-            id: index,
-            media: [{ image: node.childImageSharp }],
-            images: [
-              {
-                gatsbyImageData: node.childImageSharp.gatsbyImageData,
-                src: node.childImageSharp.gatsbyImageData.images.fallback.src,
-                backgroundColor:
-                  node.childImageSharp.gatsbyImageData.backgroundColor,
-              },
-            ],
-            to: '/photography/film/olympus-mju-iii',
-            metafields: [{ key: 'orientation', value: 'landscape' }],
-          }))}
+          products={fileCollectionToProductCollection(
+            featuredFilmCollection,
+            '/photography/film/olympus-mju-iii',
+          )}
         />
 
         <CollectionCarousel
@@ -74,20 +65,24 @@ export const pageQuery = graphql`
       sort: { name: DESC }
       limit: 8
     ) {
-      edges {
-        node {
-          id
-          childImageSharp {
-            gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
-          }
-        }
-      }
+      ...FileCollection
     }
     featuredCollection: shopifyCollection(title: { eq: "Iceland" }) {
       ...FeaturedShopifyCollection
     }
     featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
       ...FeaturedShopifyCollection
+    }
+  }
+
+  fragment FileCollection on FileConnection {
+    edges {
+      node {
+        id
+        childImageSharp {
+          gatsbyImageData(quality: 75, placeholder: DOMINANT_COLOR)
+        }
+      }
     }
   }
 

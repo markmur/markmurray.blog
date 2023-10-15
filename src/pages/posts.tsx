@@ -1,30 +1,28 @@
+import { PageProps, graphql } from 'gatsby';
+
 import { Content } from '../styles';
 import Layout from '../components/Layout';
 import Post from '../components/post';
 import React from 'react';
-import { graphql } from 'gatsby';
 
 const getNodes = (entity) => {
   return entity.edges.map(({ node }) => node);
 };
 
-export default class PostsPage extends React.Component {
-  render() {
-    const { data } = this.props;
-    const posts = getNodes(data.posts);
+export default function PostsPage(props: PageProps<Queries.PostsPageQuery>) {
+  const { posts } = props.data;
 
-    return (
-      <Layout wide>
-        <Content wide>
-          {posts
-            .sort((a, b) => b.frontmatter.pinned - a.frontmatter.pinned)
-            .map((post) => (
-              <Post key={post.id} post={post} />
-            ))}
-        </Content>
-      </Layout>
-    );
-  }
+  return (
+    <Layout wide>
+      <Content>
+        {getNodes(posts)
+          .sort((a, b) => b.frontmatter.pinned - a.frontmatter.pinned)
+          .map((post) => (
+            <Post key={post.id} post={post} />
+          ))}
+      </Content>
+    </Layout>
+  );
 }
 
 export const pageQuery = graphql`

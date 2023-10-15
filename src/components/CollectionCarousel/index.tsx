@@ -36,7 +36,7 @@ interface Props {
   title: string;
   heading?: string;
   description?: string;
-  products: Queries.ProductFragment[];
+  products: readonly Queries.ProductFragment[];
 }
 
 const CollectionCarousel: React.FunctionComponent<Props> = ({

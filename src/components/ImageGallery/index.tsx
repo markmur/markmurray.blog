@@ -16,7 +16,6 @@ import React from 'react';
 interface Image {
   id: string;
   image: IGatsbyImageData;
-  featured?: boolean;
   tag?: string;
 }
 

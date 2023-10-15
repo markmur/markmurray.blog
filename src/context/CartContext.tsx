@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
 interface Props {
   open: boolean;
@@ -10,10 +10,8 @@ export const CartContext = React.createContext<Props>({
   setCartState: (open: boolean) => undefined,
 });
 
-const Cart: React.FC<{ initialState: { open: boolean } }> = ({
-  initialState,
-  children,
-}) => {
+function Cart(props: PropsWithChildren<{ initialState: { open: boolean } }>) {
+  const { children, initialState } = props;
   const [state, setState] = React.useState(initialState);
 
   const setCartState = (value: boolean) => {
@@ -32,7 +30,7 @@ const Cart: React.FC<{ initialState: { open: boolean } }> = ({
       {children}
     </CartContext.Provider>
   );
-};
+}
 
 const { Consumer } = CartContext;
 
