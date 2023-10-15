@@ -5,7 +5,6 @@ module.exports = {
       'error',
       {
         env: 'literal',
-        // schemaJson: require('./schema.json'),
         schemaJsonFilepath: path.resolve(__dirname, './schema.json'),
       },
     ],
