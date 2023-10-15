@@ -1,5 +1,5 @@
 /* eslint-disable */
-const GA_TRACKING_ID = 'UA-76403737-3';
+const GA_TRACKING_ID = 'G-079D6JXQE0';
 
 require('dotenv').config();
 
