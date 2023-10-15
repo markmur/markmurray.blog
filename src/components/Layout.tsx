@@ -14,6 +14,7 @@ import Navbar from './Navbar';
 import Shopify from '../utils/shopify';
 import { ShopifyProvider } from '../hooks/use-shopify';
 import { ThemeProvider } from 'styled-components';
+import { useScrollToTop } from '../hooks/use-scroll-to-top';
 import useTheme from '../hooks/theme';
 
 const Head = ({ site }) => (
@@ -130,6 +131,10 @@ const query = graphql`
 
 const Layout = ({ children, ...props }) => {
   const data = useStaticQuery(query);
+
+  // Scroll to top on page change
+  useScrollToTop();
+
   return (
     <Content data={data} {...props}>
       {children}

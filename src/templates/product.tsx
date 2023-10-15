@@ -55,12 +55,6 @@ function getProductImages(product: Queries.ProductDetailsFragment): Image[] {
   return images;
 }
 
-function useScrollToTop() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-}
-
 function ProductTemplate(props: {
   product: Queries.ProductByIDQuery['product'];
   collection: Queries.ProductByIDQuery['collection'];
@@ -74,8 +68,6 @@ function ProductTemplate(props: {
   );
   const [addedToCart, setAddedToCart] = React.useState(false);
   const { setCartState } = React.useContext(CartContext);
-
-  useScrollToTop();
 
   const handleAddToCart = () => {
     shopify.addLineItem(selectedVariant);
