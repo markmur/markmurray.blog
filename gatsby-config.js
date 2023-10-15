@@ -35,6 +35,15 @@ module.exports = {
       },
     },
     {
+      resolve: 'gatsby-plugin-google-tagmanager',
+      options: {
+        id: GA_TRACKING_ID,
+        includeInDevelopment: false,
+        defaultDataLayer: { platform: 'gatsby' },
+        enableWebVitalsTracking: true,
+      },
+    },
+    {
       resolve: 'gatsby-plugin-web-vitals',
       options: {
         trackingId: GA_TRACKING_ID,
