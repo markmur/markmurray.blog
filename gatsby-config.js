@@ -140,6 +140,7 @@ module.exports = {
           quality: 75,
           formats: ['auto', 'webp'],
           placeholder: 'dominantColor',
+          breakpoints: [425, 750, 1080, 1366, 1920],
         },
       },
     },
