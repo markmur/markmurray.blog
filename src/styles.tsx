@@ -344,6 +344,7 @@ export const Tag = styled(GatsbyLink)`
 `;
 
 export const Container = styled(Box)<Defaults & { narrow?: boolean }>`
+  position: relative;
   margin: auto;
   padding: 0 1em;
   ${defaults};

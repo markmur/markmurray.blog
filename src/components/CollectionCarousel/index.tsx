@@ -120,7 +120,7 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                 const sharedContainerProps = {
                   mr: [2, 3],
                   width: isOrientationLandscape(product)
-                    ? ['90vw', '40vw']
+                    ? ['90vw', '576px']
                     : ['60vw', '200px', '278px'],
                   aspectRatio: isOrientationLandscape(product)
                     ? [3 / 2]
@@ -143,14 +143,13 @@ const CollectionCarousel: React.FunctionComponent<Props> = ({
                 );
               })}
             </Carousel>
-
-            <Box className="title">
-              <Container>
-                <h1 style={{ zIndex: -1 }}>{title}</h1>
-              </Container>
-            </Box>
           </Box>
         </Flex>
+        <Box className="title">
+          <Container>
+            <h1 style={{ zIndex: -1 }}>{title}</h1>
+          </Container>
+        </Box>
 
         <MobileContainer>
           <Box display={['block', 'block', 'none']}>
