@@ -40,10 +40,7 @@ function Photos(props: PageProps<Queries.FilmPageQuery>) {
           background-clip: padding-box;
           width: 100%;
         }
-        
-        /* Style your items */
         .masonry-column > div {
-          background: grey;
           margin-bottom: 30px;
         }
         `}
@@ -66,7 +63,7 @@ function Photos(props: PageProps<Queries.FilmPageQuery>) {
         <hr />
 
         <Masonry
-          breakpointCols={{ default: 1, 1100: 3, 700: 2, 500: 1 }}
+          breakpointCols={{ default: 3, 1100: 3, 700: 2, 500: 1 }}
           className="masonry-grid"
           columnClassName="masonry-column"
         >

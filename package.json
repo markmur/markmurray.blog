@@ -8,7 +8,7 @@
   "author": "Mark Murray",
   "license": "MIT",
   "scripts": {
-    "start": "yarn develop",
+    "start": "yarn clean && yarn develop",
     "clean": "rimraf .cache public",
     "build": "gatsby build",
     "develop": "gatsby develop",
