@@ -24,19 +24,6 @@ const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
         </Box>
 
         <CollectionCarousel
-          id="film"
-          handle="film"
-          to="/photography/film/olympus-mju-iii"
-          title="Olympus mju III"
-          description="A collection of photos taken in Greece on
-            Portra 400 film with an Olympus mju III."
-          products={fileCollectionToProductCollection(
-            featuredFilmCollection,
-            '/photography/film/olympus-mju-iii',
-          )}
-        />
-
-        <CollectionCarousel
           id={featuredCollection.id}
           handle={featuredCollection.handle}
           title={`${featuredCollection.title} Collection`}
@@ -60,13 +47,13 @@ const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
 
 export const pageQuery = graphql`
   query IndexPage {
-    featuredFilmCollection: allFile(
-      filter: { relativeDirectory: { eq: "olympus" } }
-      sort: { name: DESC }
-      limit: 8
-    ) {
-      ...FileCollection
-    }
+    # featuredFilmCollection: allFile(
+    #   filter: { relativeDirectory: { eq: "olympus" } }
+    #   sort: { name: DESC }
+    #   limit: 8
+    # ) {
+    #   ...FileCollection
+    # }
     featuredCollection: shopifyCollection(title: { eq: "Iceland" }) {
       ...FeaturedShopifyCollection
     }
