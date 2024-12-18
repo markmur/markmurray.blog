@@ -43,11 +43,11 @@ export const BlogPostTemplate = ({
   readingTime,
   postContent = HTMLContent,
   showComments = true,
-  avatar
+  avatar,
 }) => {
   const PostContent = postContent;
   return (
-    <Content pt={[4, 5]} pb={4}>
+    <Content pt={[4, 5]} pb={4} className="blog-post">
       <Container narrow>
         <Box mt={4}>
           <PostTitle dangerouslySetInnerHTML={{ __html: title }} />
@@ -99,15 +99,19 @@ const BlogPost = ({ data }) => {
   const { title, description, tags, date, image } = post.frontmatter;
   const url = `${domain}${slug}`;
 
+  // Strip HTML tags from title for meta tags
+  const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '');
+  const cleanTitle = stripHtml(title);
+
   return (
     <Layout>
       <Helmet titleTemplate="%s">
-        <title>{title}</title>
+        <title>{cleanTitle}</title>
         <meta name="description" content={description} />
 
         <meta property="og:type" content="website" />
         <meta property="og:url" content={url} />
-        <meta property="og:title" content={title} />
+        <meta property="og:title" content={cleanTitle} />
         <meta property="og:description" content={description} />
 
         {image && <meta property="og:image" content={image} />}
@@ -116,7 +120,7 @@ const BlogPost = ({ data }) => {
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={url} />
-        <meta property="twitter:title" content={title} />
+        <meta property="twitter:title" content={cleanTitle} />
         <meta property="twitter:description" content={description} />
       </Helmet>
 
@@ -143,10 +147,15 @@ export const pageQuery = graphql`
         url
       }
     }
-    avatar: file(name: {eq: "profile"}) {
+    avatar: file(name: { eq: "profile" }) {
       childImageSharp {
         id
-        gatsbyImageData(width: 80, layout: FIXED, quality: 100, placeholder: BLURRED)
+        gatsbyImageData(
+          width: 80
+          layout: FIXED
+          quality: 100
+          placeholder: BLURRED
+        )
       }
     }
     markdownRemark(id: { eq: $id }) {

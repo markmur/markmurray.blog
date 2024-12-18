@@ -407,8 +407,8 @@ export const Main = styled('main')<Defaults>`
 `;
 
 export const PageHeading = styled(Text).attrs({ as: 'h1' })<Defaults>`
-  font-size: 2rem;
-  font-weight: 400;
+  font-size: 0.9rem;
+  font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
   margin-top: 0.2em;

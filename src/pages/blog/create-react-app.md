@@ -8,11 +8,18 @@ tags:
   - React
   - Parcel
 ---
-Let me start by saying that [Create React App](https://github.com/facebook/create-react-app) is still a great choice for many applications and may be more suited for complex projects. [Create React App](https://github.com/facebook/create-react-app) is a great solution because it abstracts a complex [Webpack](https://webpack.js.org) configuration which you can choose to manage if you choose to `eject` at a later stage.
 
-With [Parcel](https://parceljs.org/) however, there's no configuration needed - which
-greatly reduces the learning curve and removes the headaches often associated
-with managing [Webpack](https://webpack.js.org) configs.
+Let me start by saying that
+[Create React App](https://github.com/facebook/create-react-app) is still a
+great choice for many applications and may be more suited for complex projects.
+[Create React App](https://github.com/facebook/create-react-app) is a great
+solution because it abstracts a complex [Webpack](https://webpack.js.org)
+configuration which you can choose to manage if you choose to `eject` at a later
+stage.
+
+With [Parcel](https://parceljs.org/) however, there's no configuration needed -
+which greatly reduces the learning curve and removes the headaches often
+associated with managing [Webpack](https://webpack.js.org) configs.
 
 If you have [Node](https://nodejs.org) installed already, you'll also have
 [NPM](http://npmjs.com) installed by default. This guide uses
@@ -99,16 +106,16 @@ Add the following to your `index.html` file:
 Add the following to your `index.js` file:
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 class App extends React.Component {
   render() {
-    return <div>Simple React App!</div>
+    return <div>Simple React App!</div>;
   }
 }
 
-ReactDOM.render(<App />, document.querySelector('#root'))
+ReactDOM.render(<App />, document.querySelector('#root'));
 ```
 
 Add `start` and `build` scripts to your `package.json` file:
@@ -141,8 +148,7 @@ Start the app in development mode:
 yarn start
 ```
 
-The app should then be available at
-<http://localhost:1234>.
+The app should then be available at <http://localhost:1234>.
 
 To deploy a production-ready version of your app, run `yarn build` - one of the
 scripts we listed in the `package.json` file above. Once complete, you should
