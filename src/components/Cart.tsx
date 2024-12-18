@@ -64,7 +64,7 @@ function LineItem(props: LineItemProps) {
           <BackgroundImage
             src={lineItem.variant?.image?.src}
             width={60}
-            height={90}
+            height={60}
             borderRadius={4}
           />
         </Box>
@@ -158,6 +158,8 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
   //   'https://cdn.shopify.com/shopifycloud/shop-js/v0.1/client.js',
   // );
 
+  const hasLineItems = shopify.checkout.lineItems.length > 0;
+
   return (
     <Box position="relative">
       {shopify.loading && <LoadingOverlay />}
@@ -190,7 +192,7 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
       </Flex>
 
       <Box px={4}>
-        {shopify.checkout.lineItems.length > 0 ? (
+        {hasLineItems ? (
           shopify.checkout.lineItems.map((lineItem) => (
             <LineItem
               key={lineItem.id}
@@ -201,100 +203,102 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
             />
           ))
         ) : (
-          <Box textAlign="center" pt={6} pb={5}>
-            <FiShoppingCart size="40" />
+          <Box textAlign="center" pt={7} pb={5}>
+            <FiShoppingCart size="60" color="#ccc" />
             <Text>Your cart is currently empty</Text>
           </Box>
         )}
       </Box>
 
-      <Box
-        py={3}
-        px={4}
-        mt={4}
-        bg="#f4f4f7"
-        borderTop="1px solid"
-        borderColor="#e8e9ef"
-      >
-        <Flex justifyContent="space-between" alignItems="center">
-          <strong>Subtotal</strong>
-          <Flex>
-            {shopify.checkout.taxesIncluded && (
-              <Box mr={2}>
-                <small>
-                  <em>incl. tax</em>
-                </small>
-              </Box>
-            )}
-            <strong>
-              {formatPrice(
-                shopify.checkout.subtotalPrice?.amount,
-                shopify.checkout.subtotalPrice?.currencyCode,
-              )}
-            </strong>
-          </Flex>
-        </Flex>
-      </Box>
-
-      <Box
-        py={3}
-        px={4}
-        bg="#f4f4f7"
-        borderBottom="1px solid"
-        borderColor="#e8e9ef"
-      >
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          textAlign="right"
-        >
-          <strong>Shipping</strong>
-
-          <small>
-            <em>Calculated at next step</em>
-          </small>
-        </Flex>
-      </Box>
-
-      <Box
-        py={3}
-        px={4}
-        bg="#f4f4f7"
-        borderBottom="1px solid"
-        borderColor="#e8e9ef"
-      >
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          textAlign="right"
-        >
-          <strong>Estimated Total</strong>
-
-          <div>
-            <div>
-              <strong>
-                {formatPrice(
-                  shopify.checkout.totalPrice?.amount,
-                  shopify.checkout.totalPrice?.currencyCode,
+      {hasLineItems && (
+        <Box>
+          <Box
+            py={3}
+            px={4}
+            mt={4}
+            bg="#f4f4f7"
+            borderTop="1px solid"
+            borderColor="#e8e9ef"
+          >
+            <Flex justifyContent="space-between" alignItems="center">
+              <strong>Subtotal</strong>
+              <Flex>
+                {shopify.checkout.taxesIncluded && (
+                  <Box mr={2}>
+                    <small>
+                      <em>incl. tax</em>
+                    </small>
+                  </Box>
                 )}
-              </strong>
-            </div>
-          </div>
-        </Flex>
-      </Box>
+                <strong>
+                  {formatPrice(
+                    shopify.checkout.subtotalPrice?.amount,
+                    shopify.checkout.subtotalPrice?.currencyCode,
+                  )}
+                </strong>
+              </Flex>
+            </Flex>
+          </Box>
 
-      <Box py={3} px={4} mt={2}>
-        <Button
-          disabled={shopify.checkout.lineItems.length === 0}
-          primary
-          expand
-          loading={shopify.loading ? 'true' : undefined}
-          onClick={() => shopify.goToCheckout()}
-        >
-          {shopify.loading ? 'Loading...' : 'Complete checkout'}
-        </Button>
+          <Box
+            py={3}
+            px={4}
+            bg="#f4f4f7"
+            borderBottom="1px solid"
+            borderColor="#e8e9ef"
+          >
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              textAlign="right"
+            >
+              <strong>Shipping</strong>
 
-        {/* {shopPayLoadedStatus === 'done' && shopify.checkout.lineItems.length > 0 && (
+              <small>
+                <em>Calculated at next step</em>
+              </small>
+            </Flex>
+          </Box>
+
+          <Box
+            py={3}
+            px={4}
+            bg="#f4f4f7"
+            borderBottom="1px solid"
+            borderColor="#e8e9ef"
+          >
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              textAlign="right"
+            >
+              <strong>Estimated Total</strong>
+
+              <div>
+                <div>
+                  <strong>
+                    {formatPrice(
+                      shopify.checkout.totalPrice?.amount,
+                      shopify.checkout.totalPrice?.currencyCode,
+                    )}
+                  </strong>
+                </div>
+              </div>
+            </Flex>
+          </Box>
+
+          <Box py={3} px={4} mt={2}>
+            <Button
+              disabled={shopify.checkout.lineItems.length === 0}
+              primary
+              expand
+              loading={shopify.loading ? 'true' : undefined}
+              onClick={() => shopify.goToCheckout()}
+            >
+              {shopify.loading ? 'Loading...' : 'Complete checkout'}
+            </Button>
+
+            {/* {shopPayLoadedStatus === 'done' && shopify.checkout.lineItems.length > 0 && (
           <>
             <Box textAlign="center" my={2}>
               <small>or</small>
@@ -309,12 +313,14 @@ const Cart = ({ onClose }: { onClose?: () => void }) => {
           </>
         )} */}
 
-        {error && (
-          <ErrorMessage mt={2} width="100%" textAlign="center" p={2}>
-            {error}
-          </ErrorMessage>
-        )}
-      </Box>
+            {error && (
+              <ErrorMessage mt={2} width="100%" textAlign="center" p={2}>
+                {error}
+              </ErrorMessage>
+            )}
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };

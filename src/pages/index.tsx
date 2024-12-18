@@ -4,21 +4,31 @@ import { PageProps, graphql } from 'gatsby';
 import CollectionCarousel from '../components/CollectionCarousel';
 import ErrorBoundary from '../components/ErrorBoundary';
 import Layout from '../components/Layout';
+import Post from '../components/post';
 import React from 'react';
-import { fileCollectionToProductCollection } from '../utils/collection';
 
 const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
   const { data } = props;
-  const { featuredCollection, featuredCollectionTwo, featuredFilmCollection } =
-    data;
+  const {
+    pinnedArticle,
+    featuredCollection,
+    featuredCollectionTwo,
+    featuredCollectionThree,
+  } = data;
 
   return (
     <Layout wide displayTagline>
       <ErrorBoundary>
         <Box pt={[0, 4]}>
           <Container>
-            <Box mb={[3, 4]}>
-              <PageHeading>Latest Collections</PageHeading>
+            {pinnedArticle && (
+              <Box mb={[3, 4]}>
+                <PageHeading>Latest thoughts</PageHeading>
+                <Post post={pinnedArticle} />
+              </Box>
+            )}
+            <Box pt={4} mb={[3, 4]}>
+              <PageHeading>Latest photography</PageHeading>
             </Box>
           </Container>
         </Box>
@@ -40,6 +50,15 @@ const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
           heading={featuredCollectionTwo.title}
           products={featuredCollectionTwo.products}
         />
+
+        <CollectionCarousel
+          id={featuredCollectionThree.id}
+          handle={featuredCollectionThree.handle}
+          title={`${featuredCollectionThree.title} Collection`}
+          description={featuredCollectionThree.description}
+          heading={featuredCollectionThree.title}
+          products={featuredCollectionThree.products}
+        />
       </ErrorBoundary>
     </Layout>
   );
@@ -47,17 +66,35 @@ const IndexPage = (props: PageProps<Queries.IndexPageQuery>) => {
 
 export const pageQuery = graphql`
   query IndexPage {
-    # featuredFilmCollection: allFile(
-    #   filter: { relativeDirectory: { eq: "olympus" } }
-    #   sort: { name: DESC }
-    #   limit: 8
-    # ) {
-    #   ...FileCollection
-    # }
+    pinnedArticle: markdownRemark(
+      frontmatter: {
+        pinned: { eq: true }
+        templateKey: { eq: "blog-post" }
+        private: { ne: true }
+      }
+    ) {
+      id
+      fields {
+        slug
+        readingTime {
+          text
+        }
+      }
+      frontmatter {
+        title
+        description
+        tags
+        pinned
+        date(formatString: "MMMM DD, YYYY")
+      }
+    }
     featuredCollection: shopifyCollection(title: { eq: "Iceland" }) {
       ...FeaturedShopifyCollection
     }
     featuredCollectionTwo: shopifyCollection(title: { eq: "Sapphire" }) {
+      ...FeaturedShopifyCollection
+    }
+    featuredCollectionThree: shopifyCollection(title: { eq: "Reflections" }) {
       ...FeaturedShopifyCollection
     }
   }

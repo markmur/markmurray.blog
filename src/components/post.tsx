@@ -1,23 +1,24 @@
-import React from 'react';
-import { Link } from 'gatsby';
-import { kebabCase } from 'lodash';
 import {
-  Flex,
   Box,
   Bullet,
-  Post as StyledPost,
-  Title,
-  Timestamp,
+  Button,
+  Container,
+  Flex,
+  HideOnDesktop,
+  LineBreak,
+  LineClamp,
   Paragraph,
   Pinned,
-  Container,
-  LineBreak,
-  Tag,
-  LineClamp,
+  Post as StyledPost,
   PostPreview as StyledPostPreview,
-  Button,
-  HideOnDesktop,
+  Tag,
+  Timestamp,
+  Title,
 } from '../styles';
+
+import { Link } from 'gatsby';
+import React from 'react';
+import { kebabCase } from 'lodash';
 
 const Tags = ({ tags, ...props }) =>
   tags &&
@@ -31,8 +32,8 @@ const Tags = ({ tags, ...props }) =>
     </Flex>
   );
 
-const Post = ({ post }) => (
-  <StyledPost>
+const Post = ({ post, ...props }) => (
+  <StyledPost {...props}>
     <Container>
       {post.frontmatter.pinned && <Pinned />}
 

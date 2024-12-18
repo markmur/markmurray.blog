@@ -44,10 +44,10 @@ We'll begin by creating a new `LRUCache` class, with 2 static properties:
 class LRUCache {
   constructor(capacity) {
     // Store the capacity size
-    this.capacity = capacity
+    this.capacity = capacity;
 
     // Store the cache as a Map
-    this.cache = new Map()
+    this.cache = new Map();
   }
 }
 ```
@@ -87,7 +87,7 @@ putting in the position of the most frequently accessed item.
 put(key, value) {
   // If the key already exists, delete it so that it will be added
   // to the top of the cache
-  if (this.cache.get(key)) {
+  if (this.cache.has(key)) {
     this.cache.delete(key)
   }
 
@@ -115,17 +115,17 @@ first value by calling `.next().value` to access the first value in the
 ## Using our class
 
 ```js
-const cache = new LRUCache(3)
+const cache = new LRUCache(3);
 
 // Insert 3 items to our cache
-cache.set(1, 10) // Map { 1 => 10 }
-cache.set(2, 20) // Map { 1 => 10, 2 => 20 }
-cache.set(3, 30) // Map { 1 => 10, 2 => 20, 3 => 30 }
+cache.put(1, 10); // Map { 1 => 10 }
+cache.put(2, 20); // Map { 1 => 10, 2 => 20 }
+cache.put(3, 30); // Map { 1 => 10, 2 => 20, 3 => 30 }
 
 // Fetch by key
-cache.get(2) // Returns 20, Map { 1 => 10, 3 => 30, 2 => 20 }
+cache.get(2); // Returns 20, Map { 1 => 10, 3 => 30, 2 => 20 }
 
 // Insert another item
-cache.set(4, 40) // Map { 3 => 30, 2 => 20, 4 => 40 }
+cache.put(4, 40); // Map { 3 => 30, 2 => 20, 4 => 40 }
 // Notice how our "1" key has been evicted
 ```
