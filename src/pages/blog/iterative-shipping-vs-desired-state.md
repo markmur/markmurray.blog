@@ -12,93 +12,96 @@ tags:
   - Commerce
 ---
 
-## Balancing Desired State and Iterative Shipping
+> A "perfect" codebase is ideal, but should never come at a cost to the end
+> user.
 
-In software engineering, we constantly face the tension between shipping a
-product that represents the desired state and releasing iterative updates. Both
-approaches have their merits, but focusing on solving buyer frustrations, I
-believe an iterative approach is often the most effective route to long-term
-success. Let’s explore why, while also considering the counterpoints that may
-make a desired-state approach appealing.
+## Balancing Desired State with Iterative Shipping
 
-## Solving Buyer Frustrations First
+In product engineering, there is almost always a tension between shipping a
+product which satisfies both the expected user experience as well as
+implementing a technical desired state. Engineers want a codebase that is easy
+to reason about and debug, composable by nature and a platform for building new
+features upon easily.
 
-At its core, our mission as software engineers is to deliver value to our users.
-Buyers often face immediate frustrations: an unintuitive interface, slow
-response times, or confusing user experiences which occur in fringe but common
-scenarios. Addressing these pain points incrementally ensures users are never
-blocked, reinforcing their confidence in the product and our responsiveness.
+While the appeal of perfect solutions is strong, iterative shipping often yields
+better results. By shipping smaller updates that tackle specific frustrations,
+we create a feedback loop that helps validate solutions in real-world
+conditions. This is particularly crucial in commerce, where both merchants and
+buyers have immediate needs that can't wait for perfect solutions.
 
-An iterative approach also allows for continuous feedback. By shipping smaller
-updates that tackle specific frustrations, we create a feedback loop that helps
-us validate our solutions in real-world conditions. This process minimizes the
-risk of investing months—or even years—in developing “perfect” solutions which
-fail to meet actual user needs when finally materialised.
+### The Trade-offs
 
-## The Pitfalls of Shipping Desired State
-
-While the allure of delivering a fully formed, desired-state product is strong,
-the risks are significant. First, defining what constitutes a "desired state" is
-inherently speculative. Even the most carefully conducted research and design
-workshops cannot fully account for how users will react once a product is live.
-
-Aiming to deliver a polished, feature-complete solution often leads to longer
-development cycles, during which buyer frustrations persist unaddressed. In
+Aiming to deliver polished, feature-complete solutions often leads to longer
+development cycles, during which buyer frustrations remain unaddressed. In
 fast-moving markets, this can result in losing users to competitors who are
-quicker to resolve these pain points. Worse still, a prolonged development
-timeline can amplify the gap between evolving user needs and the state of the
-shipped product.
+quicker to address immediate needs.
 
-## Advantages of Iterative Development
+However, iterative shipping brings several advantages:
 
-Iterative shipping enables us to adapt to changing circumstances. Buyer
-frustrations evolve as markets shift, competitors innovate, and customer
-priorities change. Regular updates allow us to keep pace, aligning the product
-closer to user needs over time.
+- Faster adaptation to changing circumstances and user needs
+- Reduced complexity through smaller, manageable pieces
+- Easier testing, review, and deployment
+- Compounding gains through continuous small improvements
+- Immediate value delivery to users
 
-From an engineering perspective, breaking work into smaller, incremental pieces
-reduces complexity. Smaller changes are easier to test, review, and deploy,
-minimizing the risk of introducing critical bugs. Furthermore, a modular,
-iterative approach enables the team to pivot more effectively if initial
-assumptions prove incorrect.
+### The Value of Iterative Shipping
 
-## Challenges and Considerations of Iterative Shipping
+At its core, our mission as software engineers is to deliver value to our users,
+particularly in commerce where both merchants and buyers have immediate needs.
+By shipping smaller updates that tackle specific frustrations, we create a
+feedback loop that helps validate solutions in real-world conditions while
+ensuring users are never blocked. When optimizing for conversion, both buyers
+and merchants are almost always happy.
 
-Critics of iterative shipping often cite concerns about user experience
-fragmentation. Incremental updates may lead to inconsistencies or half-baked
-features that confuse users. While this is a valid concern, it can be mitigated
-through strong design principles, clear communication of updates, and
-prioritization of features that deliver immediate value without undermining the
-product’s coherence.
+### The Risks of Perfect Solutions
 
-Another argument against iterative shipping is that it can create technical
-debt. Rapid updates might prioritize speed over maintainability, leading to
-long-term challenges. However, this risk can be managed with disciplined
-engineering practices—including robust code reviews, automated testing, and
-continuous refactoring—that ensure quality is not sacrificed for velocity.
+Aiming to deliver polished, feature-complete solutions often leads to longer
+development cycles, during which buyer frustrations remain unaddressed. In
+fast-moving markets, this can result in losing users to competitors who are
+quicker to address immediate needs. Extended development cycles can create an
+increasingly wide disconnect between user expectations and the final delivered
+product.
 
-Frequent updates can also overwhelm users. A barrage of small, incremental
-changes may require users to repeatedly adapt, leading to frustration rather
-than satisfaction. This can be addressed by bundling related updates into
-cohesive releases, providing users with a more seamless experience while
-maintaining the benefits of iteration.
+### Finding the Right Approach
 
-## When Desired State Shipping is Necessary
+Iterative shipping enables us to adapt to changing circumstances and user needs.
+From an engineering perspective, breaking work into smaller pieces reduces
+complexity, making changes easier to test, review, and deploy. Even small
+improvements can yield significant results through compounding gains over time.
 
-Some scenarios demand a more comprehensive desired-state approach.
-Safety-critical software, enterprise-level solutions, or products governed by
-stringent regulatory requirements may need to launch in a near-complete state
-due to the high cost of failure. In such cases, the desired state serves as a
-foundation for reliability and compliance that iterative updates might not
-immediately deliver.
+However, iterative shipping presents challenges:
 
-Additionally, in markets where competitors release polished, feature-rich
-products, an iterative approach may give the impression of incompleteness. To
-counter this, iterative development should be paired with clear communication
-and visible progress toward the desired state, ensuring users and stakeholders
-understand the long-term vision.
+- Technical debt from rapid updates
+- User experience fragmentation
+- Overwhelming users with frequent changes
 
-## Striking the Right Balance
+These risks can be mitigated by:
+
+- **Complete User Journeys**: Bundling updates that complete entire workflows
+- **Maintain UI Consistency**: Coordinating related visual changes
+- **Align with Mental Models**: Grouping naturally associated features
+
+When evaluating the trade-offs between iterative shipping and desired state,
+it's important to remain focused on what truly matters: the buyer's experience.
+While clean architecture and technical excellence are admirable pursuits, they
+should never come at the expense of user satisfaction or business outcomes.
+
+A perfectly architected codebase that frustrates users is ultimately a failed
+product. Buyers don't experience our class hierarchies, design patterns, or
+system architecture—they experience slow page loads, confusing workflows, and
+bugs that prevent them from completing their tasks. When faced with the choice
+between addressing a critical user-facing issue or refactoring toward an ideal
+technical state, the user's experience should almost always take precedence.
+**The most elegant codebase in the world means nothing if users abandon your
+product due to poor experience.**
+
+This outcome-driven mindset helps teams maintain perspective when prioritizing
+work. A "good enough" solution that resolves a buyer's pain point today creates
+more value than a perfect solution delivered months later. Technical debt can be
+managed and improved over time through careful refactoring and incremental
+improvements, but lost users and damaged trust are much harder to recover.
+
+## Putting Users First
 
 The ideal approach often lies somewhere in the middle. A desired state can serve
 as a guiding north star, providing clarity and direction for the team. However,
