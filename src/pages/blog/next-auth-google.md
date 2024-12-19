@@ -9,12 +9,12 @@ tags:
   - Authentication
 ---
 
-1. [Update env file with environment variables](#update-env-file-with-environment-variables)
-1. [Create a custom Iron implementation](#create-a-custom-iron-implementation)
-1. [Handle sessions](#handle-sessions)
-1. [Create API routes for login redirects](#create-api-routes-for-login-redirects)
-1. [Create authentication helpers](#create-authentication-helpers)
-1. [Authenticate routes](#authenticate-routes)
+- [Update env file with environment variables](#update-env-file-with-environment-variables)
+  - [Create a custom Iron implementation](#create-a-custom-iron-implementation)
+  - [Handle sessions](#handle-sessions)
+  - [Create API routes for login redirects](#create-api-routes-for-login-redirects)
+  - [Create authentication helpers](#create-authentication-helpers)
+  - [Authenticate routes](#authenticate-routes)
 
 ---
 
@@ -166,7 +166,7 @@ export const setAuthCookie = (encrypted: string, expires: number) => {
 
 export function createSession(
   decoded: JwtPayload,
-  idToken: string
+  idToken: string,
   expires: number
 ): UserSession {
   const session: UserSession = {

@@ -1,4 +1,4 @@
---- 
+---
 templateKey: blog-post
 title: Deploying an Express / React app with Now
 description:
@@ -75,49 +75,49 @@ touch client/index.html
 touch client/index.css
 ```
 
-# Server-side
+## Server-side
 
 ```js
 // server/index.js
-const fs = require('fs')
-const path = require('path')
-const express = require('express')
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
 
-const app = express()
+const app = express();
 
 const entry = fs.readFileSync(
   path.resolve(__dirname, '..', 'dist/index.html'),
   'utf8',
-)
+);
 
 app.get('/api/healthcheck', (req, res) => {
-  return res.send('Healthy!')
-})
+  return res.send('Healthy!');
+});
 
-app.use('/', (req, res) => res.send(entry))
+app.use('/', (req, res) => res.send(entry));
 
-module.exports = app
+module.exports = app;
 ```
 
 ```js
 // dev-server.js
-const path = require('path')
-const Bundler = require('parcel-bundler')
-const app = require('.')
+const path = require('path');
+const Bundler = require('parcel-bundler');
+const app = require('.');
 
-const entry = path.resolve('src/index.html')
-const bundle = new Bundler(entry)
+const entry = path.resolve('src/index.html');
+const bundle = new Bundler(entry);
 
-app.use(bundle.middleware())
+app.use(bundle.middleware());
 
-app.listen(process.env.NODE_ENV, err => {
-  if (err) throw err
+app.listen(process.env.NODE_ENV, (err) => {
+  if (err) throw err;
 
-  console.log(`Listening at http://localhost:${process.env.PORT}`)
-})
+  console.log(`Listening at http://localhost:${process.env.PORT}`);
+});
 ```
 
-# Client-side
+## Client-side
 
 `client/index.html`
 
@@ -136,18 +136,18 @@ app.listen(process.env.NODE_ENV, err => {
 `client/index.js`
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import './index.css'
+import './index.css';
 
 const App = () => (
   <div className="app">
     <h1>Express / React / Parcel / Now</h1>
   </div>
-)
+);
 
-ReactDOM.render(<App />, document.querySelector('#root'))
+ReactDOM.render(<App />, document.querySelector('#root'));
 ```
 
 `client/index.css`
@@ -216,7 +216,7 @@ requests.
 
 ## Deploy your app
 
-We're going to be using [Now]() (2.0) by [Zeit]() to deploy.
+We're going to be using Now (2.0) by Vercel to deploy.
 
 Create a `now.json` file at the root of your project and add the following:
 

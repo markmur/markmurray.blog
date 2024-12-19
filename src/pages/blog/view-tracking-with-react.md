@@ -28,7 +28,7 @@ const App = () => (
   >
     <MyComponent />
   </Tracker>
-)
+);
 ```
 
 ## What's the difference between a _View_ and an _Impression_?
@@ -68,10 +68,10 @@ const options = {
   root: null,
   rootMargin: '0px',
   threshold: 1.0,
-}
+};
 
 const callback = (elements, instance) => {
-  elements.forEach(element => {
+  elements.forEach((element) => {
     //   element.boundingClientRect
     //   element.intersectionRatio
     //   element.intersectionRect
@@ -79,10 +79,10 @@ const callback = (elements, instance) => {
     //   element.rootBounds
     //   element.target
     //   element.time
-  })
-}
+  });
+};
 
-const observer = new IntersectionObserver(callback, options)
+const observer = new IntersectionObserver(callback, options);
 ```
 
 ## What we want to build
@@ -142,7 +142,7 @@ switches between tabs or applications.
 ```js
 // ViewObserver uses IntersectionObserver API which requires polyfill
 // see https://caniuse.com/#search=IntersectionObserver
-if (typeof window !== 'undefined') require('intersection-observer')
+if (typeof window !== 'undefined') require('intersection-observer');
 
 /**
  * Build an array of threshold values ranging from 0 to 1
@@ -150,11 +150,11 @@ if (typeof window !== 'undefined') require('intersection-observer')
  * @returns {Number[]} returns array of floats
  */
 const buildThreshold = (steps = THRESHOLD_STEPS) => {
-  const threshold = Array.from({ length: steps }, (x, i) => i / steps)
+  const threshold = Array.from({ length: steps }, (x, i) => i / steps);
 
   // Returns an array like [0, ...n, 1]
-  return [...threshold, 1]
-}
+  return [...threshold, 1];
+};
 
 export const DEFAULT_OPTIONS = {
   // If an element height is similar to the container height,
@@ -177,9 +177,9 @@ export const DEFAULT_OPTIONS = {
     rootMargin: '0px',
     threshold: buildThreshold(100),
   },
-}
+};
 
-let instance = null
+let instance = null;
 
 export default class ViewObserver {
   /**
@@ -191,40 +191,43 @@ export default class ViewObserver {
   static get(options = {}) {
     // If an instance of the observer already exists, return the singleton
     // otherwise instantiate a new one
-    if (instance && instance instanceof ViewObserver) return instance
+    if (instance && instance instanceof ViewObserver) return instance;
 
-    instance = new ViewObserver(options)
-    return instance
+    instance = new ViewObserver(options);
+    return instance;
   }
 
   constructor(options = {}) {
-    this.options = Object.assign({}, DEFAULT_OPTIONS, options)
+    this.options = Object.assign({}, DEFAULT_OPTIONS, options);
 
     if (isNaN(this.options.minTimeVisible) || this.options.minTimeVisible < 0) {
-      this.options.minTimeVisible = DEFAULT_OPTIONS.minTimeVisible
+      this.options.minTimeVisible = DEFAULT_OPTIONS.minTimeVisible;
     }
 
-    this.elements = new Map()
-    this.timeouts = new Map()
+    this.elements = new Map();
+    this.timeouts = new Map();
 
     this.observer = new IntersectionObserver(
       this.watchElements,
       this.options.config,
-    )
+    );
 
     // Handle browser tab changes
-    window.addEventListener('focus', this.reportVisibilityStates)
+    window.addEventListener('focus', this.reportVisibilityStates);
 
     // Handle device orientation changes
-    window.addEventListener('orientationchange', this.reportVisibilityStates)
+    window.addEventListener('orientationchange', this.reportVisibilityStates);
   }
 
   /**
    * Remove window event listeners to avoid memory leaks
    */
   removeEventListeners() {
-    window.removeEventListener('focus', this.reportVisibilityStates)
-    window.removeEventListener('orientationchange', this.reportVisibilityStates)
+    window.removeEventListener('focus', this.reportVisibilityStates);
+    window.removeEventListener(
+      'orientationchange',
+      this.reportVisibilityStates,
+    );
   }
 
   /**
@@ -233,22 +236,22 @@ export default class ViewObserver {
    */
   destroy() {
     // Clear all elements
-    this.elements.clear()
+    this.elements.clear();
 
     // Clear all lingering timeouts
-    this.timeouts.clear()
+    this.timeouts.clear();
 
     // Disconnect the observer, if available
     if (this.observer && typeof this.observer.disconnect === 'function') {
-      this.observer.disconnect()
+      this.observer.disconnect();
     }
 
     // Remove all event listeners
-    this.removeEventListeners()
+    this.removeEventListeners();
 
-    instance = null
+    instance = null;
 
-    return instance
+    return instance;
   }
 
   /**
@@ -256,32 +259,32 @@ export default class ViewObserver {
    */
   reportVisibilityStates = () => {
     this.elements.forEach(({ visible }, element) => {
-      if (visible) this.onVisibilityChange(element, visible)
-    })
-  }
+      if (visible) this.onVisibilityChange(element, visible);
+    });
+  };
 
   /**
    * Loop through all of the observed elements and check if visible
    * @param  {Array} [entries=this.elements] array of [IntersectionObserverEntry],
    * defaults to this.elements Map
    */
-  watchElements = (entries = this.elements) => {
+  watchElements = (entries = []) => {
     // If rootBounds does not exist, it will default to the height and width
     // of the viewport
     const containerHeight =
-      window.innerHeight || document.documentElement.clientHeight
+      window.innerHeight || document.documentElement.clientHeight;
 
     entries
-      .filter(entry => entry.isIntersecting)
-      .forEach(entry => {
-        const node = entry.target || entry.entry
-        const element = this.elements.get(node)
+      .filter((entry) => entry.isIntersecting)
+      .forEach((entry) => {
+        const node = entry.target || entry.entry;
+        const element = this.elements.get(node);
 
         // We wrap the child in a container, so we need to ensure we're looking at
         // the bounds of the child and not the wrapper
-        const bounds = entry.boundingClientRect || node.getBoundingClientRect()
+        const bounds = entry.boundingClientRect || node.getBoundingClientRect();
 
-        const elementHeight = bounds.height
+        const elementHeight = bounds.height;
 
         // If the element height is within x% (this.options.percentCompensation)
         // of the container height, use the errorMargin option (this.options.errorMargin).
@@ -292,45 +295,45 @@ export default class ViewObserver {
           containerHeight,
         )
           ? this.options.errorMargin
-          : 0.025
+          : 0.025;
 
         const maxIntersectionRatio =
           containerHeight / elementHeight > 1
             ? 1 - errorMargin
-            : containerHeight / elementHeight - errorMargin
+            : containerHeight / elementHeight - errorMargin;
 
-        const isVisible = entry.intersectionRatio >= maxIntersectionRatio
+        const isVisible = entry.intersectionRatio >= maxIntersectionRatio;
 
         // Element is still visible since last check
         if (isVisible && element.timeoutSet) {
-          return
+          return;
         }
 
         // If the element is visible
         if (isVisible) {
           // Set the visibility state to true but wait until the timeout finishes
           // to fire the event
-          element.timeoutSet = true
+          element.timeoutSet = true;
 
           // Start timer
           this.timeouts.set(
             node,
             setTimeout(() => {
               // Fire the event
-              this.onVisibilityChange(node, true)
+              this.onVisibilityChange(node, true);
             }, this.options.minTimeVisible),
-          )
+          );
         } else {
-          const timeout = this.timeouts.get(node)
+          const timeout = this.timeouts.get(node);
           // Fire event
-          this.onVisibilityChange(node, false)
+          this.onVisibilityChange(node, false);
           // Element is no longer visible, delete timeout
-          clearTimeout(timeout)
-          this.timeouts.delete(node)
-          element.timeoutSet = false
+          clearTimeout(timeout);
+          this.timeouts.delete(node);
+          element.timeoutSet = false;
         }
-      })
-  }
+      });
+  };
 
   isElementHeightSimilarToContainer(elementHeight, containerHeight) {
     return (
@@ -338,7 +341,7 @@ export default class ViewObserver {
         containerHeight - containerHeight * this.options.percentCompensation &&
       elementHeight <=
         containerHeight + containerHeight * this.options.percentCompensation
-    )
+    );
   }
 
   /**
@@ -347,36 +350,36 @@ export default class ViewObserver {
    * @param  {Function} callback the element callback event
    */
   observe = (element, callback) => {
-    if (!element || !callback) return
+    if (!element || !callback) return;
 
     this.elements.set(element, {
       callback,
       visible: false,
       entry: element,
-    })
+    });
 
-    this.observer.observe(element)
-  }
+    this.observer.observe(element);
+  };
 
   /**
    * Unobserve an IntersectionObserver entry
    * @param  {HTMLElement} element the element to unobserve
    */
-  unobserve = element => {
-    if (!element) return
-    if (!this.elements.get(element)) return
+  unobserve = (element) => {
+    if (!element) return;
+    if (!this.elements.get(element)) return;
 
-    if (this.observer) this.observer.unobserve(element)
+    if (this.observer) this.observer.unobserve(element);
 
-    this.elements.delete(element)
+    this.elements.delete(element);
 
     // If we're not watching any elements, destroy the ViewObserver.
     // If more trackers are mounted, a new instance of the ViewObserver
     // will be created
     if (this.elements.size === 0) {
-      this.destroy()
+      this.destroy();
     }
-  }
+  };
 
   /**
    * Handle DOM element visibility state change
@@ -384,18 +387,18 @@ export default class ViewObserver {
    * @param  {Boolean} visible - the visibility state of the entry
    */
   onVisibilityChange(element, visible) {
-    if (!element) return
+    if (!element) return;
 
-    const entry = this.elements.get(element)
+    const entry = this.elements.get(element);
 
-    if (!entry) return
+    if (!entry) return;
 
     // Set the new visibility state
-    entry.visible = visible
+    entry.visible = visible;
 
-    const { callback } = entry
+    const { callback } = entry;
 
-    if (typeof callback === 'function') callback(visible)
+    if (typeof callback === 'function') callback(visible);
   }
 }
 ```
@@ -410,10 +413,10 @@ prop - which will indicate whether an element should be tracked strictly once,
 or every time it comes into view.
 
 ```js
-import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
-import PropTypes from 'prop-types'
-import ViewObserver from './view-observer'
+import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
+import ViewObserver from './view-observer';
 
 class ViewTracker extends Component {
   static defaultProps = {
@@ -423,59 +426,59 @@ class ViewTracker extends Component {
     onView() {},
     onHide() {},
     onChange() {},
-  }
+  };
 
   /**
    * Create the event listener on mount
    */
   componentDidMount() {
-    this.observer = ViewObserver.get(this.props.options)
+    this.observer = ViewObserver.get(this.props.options);
 
-    this.container = findDOMNode(this)
+    this.container = findDOMNode(this);
 
     if (typeof this.container !== 'undefined') {
       // Observe the container and track all child nodes
-      this.observer.observe(this.container, this.trackEvent)
+      this.observer.observe(this.container, this.trackEvent);
     }
   }
 
   unobserve() {
     if (typeof this.container !== 'undefined' && this.observer) {
       // Remove the observation listener
-      this.observer.unobserve(this.container)
+      this.observer.unobserve(this.container);
     }
 
-    this.observer = null
+    this.observer = null;
   }
 
   /**
    * Remove the observe listener on unmount
    */
   componentWillUnmount() {
-    this.unobserve()
+    this.unobserve();
   }
 
   /**
    * Send the tracking event callback
    * @param  {Boolean} visible - the visibility state of the element
    */
-  trackEvent = visible => {
-    this.props.onChange(visible)
+  trackEvent = (visible) => {
+    this.props.onChange(visible);
 
     if (visible) {
-      this.props.onView(visible)
+      this.props.onView(visible);
 
       // Unobserve the element after firing
-      if (this.props.once) this.unobserve()
+      if (this.props.once) this.unobserve();
     } else {
-      this.props.onHide(visible)
+      this.props.onHide(visible);
     }
-  }
+  };
 
   render() {
     // Use React.Children.only to indicate that their
     // should only be a single child component
-    return React.Children.only(this.props.children)
+    return React.Children.only(this.props.children);
   }
 }
 
@@ -489,9 +492,9 @@ ViewTracker.propTypes = {
   onChange: PropTypes.func,
   onHide: PropTypes.func,
   onView: PropTypes.func,
-}
+};
 
-export default ViewTracker
+export default ViewTracker;
 ```
 
 ## Usage
@@ -502,13 +505,13 @@ adding `onView` / `onHide` callback functions to _do something_ when the element
 (dis)appears - in this case we'll fire a tracking event.
 
 ```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import ViewTracker from './view-tracker'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ViewTracker from './view-tracker';
 
 const sendTrackingEvent = () => {
   // Send tracking event
-}
+};
 
 const App = () => (
   <div>
@@ -516,7 +519,7 @@ const App = () => (
       <SomeComponent />
     </ViewTracker>
   </div>
-)
+);
 
-ReactDOM.render(<App />, document.querySelector('#root'))
+ReactDOM.render(<App />, document.querySelector('#root'));
 ```

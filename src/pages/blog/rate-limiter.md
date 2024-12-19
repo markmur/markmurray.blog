@@ -26,7 +26,8 @@ However, this will cause problems for multiple users who share the same IP
 address. One bad actor can starve the others by sending too many requests.
 
 If a user is logged in, we could use their unique user ID to limit requests. If
-a user is NOT logged in,
+a user is NOT logged in, we could use their IP address or a combination of
+identifiers to limit requests.
 
 ### Algorithms: Fixed window
 
@@ -50,88 +51,88 @@ const defaults = {
 
   // Whether to send the response as JSON or not, true by default
   json: true,
-}
+};
 ```
 
 ```js
-const app = express()
+const app = express();
 
 /**
  * Get the epoch for when the connections map will be reset
  * This will be returned in the "X-RateLimit-Reset" response header
  */
 const getResetTime = (interval = 0) => {
-  const date = new Date()
+  const date = new Date();
 
-  return date.setMilliseconds(date.getMilliseconds() + interval)
-}
+  return date.setMilliseconds(date.getMilliseconds() + interval);
+};
 
 /**
  * Our rate limit middleware
  */
-const rateLimiter = options => {
+const rateLimiter = (options) => {
   const { interval, max, getUniqueKey, errorMessage, json } = Object.assign(
     {},
     defaults,
     options,
-  )
+  );
 
-  let connections = {}
-  let resetTime = getResetTime(interval)
+  let connections = {};
+  let resetTime = getResetTime(interval);
 
   // Increment the key if it exists, otherwise
-  const increment = key => {
-    const currentValue = connections[key] || 0
-    const nextValue = currentValue + 1
+  const increment = (key) => {
+    const currentValue = connections[key] || 0;
+    const nextValue = currentValue + 1;
 
-    connections[key] = nextValue
+    connections[key] = nextValue;
 
-    debug(`Increment connection (${key})`, nextValue)
+    debug(`Increment connection (${key})`, nextValue);
 
-    return nextValue
-  }
+    return nextValue;
+  };
 
   // Reset the connections
   const resetConnections = () => {
-    debug('Resetting connections')
-    connections = {}
-    resetTime = getResetTime(interval)
-  }
+    debug('Resetting connections');
+    connections = {};
+    resetTime = getResetTime(interval);
+  };
 
   // Reject the request, setting a 429 status code and returning our error message
-  const rejectRequest = res => {
-    res.status(429)
-    res.setHeader('X-RateLimit-Reset', Math.ceil(resetTime.getTime() / 1000))
+  const rejectRequest = (res) => {
+    res.status(429);
+    res.setHeader('X-RateLimit-Reset', Math.ceil(resetTime.getTime() / 1000));
 
     if (json) {
-      return res.json({ message: errorMessage })
+      return res.json({ message: errorMessage });
     }
 
-    return res.send(errorMessage)
-  }
+    return res.send(errorMessage);
+  };
 
   // Reset the connections map every second
-  setInterval(resetConnections, interval)
+  setInterval(resetConnections, interval);
 
   return (req, res, next) => {
-    const key = getUniqueKey(req, res)
+    const key = getUniqueKey(req, res);
 
-    const currentCount = connections[key] || 0
+    const currentCount = connections[key] || 0;
 
     if (currentCount >= max) {
-      res.setHeader('X-RateLimit-Limit', max)
-      res.setHeader('X-RateLimit-Remaining', 0)
-      return rejectRequest(res)
+      res.setHeader('X-RateLimit-Limit', max);
+      res.setHeader('X-RateLimit-Remaining', 0);
+      return rejectRequest(res);
     }
 
-    const count = increment(key)
+    const count = increment(key);
 
-    res.setHeader('X-RateLimit-Limit', max)
-    res.setHeader('X-RateLimit-Remaining', max - count)
+    res.setHeader('X-RateLimit-Limit', max);
+    res.setHeader('X-RateLimit-Remaining', max - count);
 
-    next()
-  }
-}
+    next();
+  };
+};
 ```
 
 Using our rate limiter on selected routes:
@@ -139,7 +140,7 @@ Using our rate limiter on selected routes:
 ```js
 app.use('/protected', rateLimiter(), (req, res) =>
   res.send('Request succeeded'),
-)
+);
 ```
 
 So now if we run our server and hit a couple of times we can see that the
@@ -155,7 +156,7 @@ curl http://localhost:8000/protected // 429
 ### Problems
 
 This solution works but there are several problems with it - the most important
-being that it will not scale passed a single server.
+being that it will not scale past a single server.
 
 Let's say our server is receiving a high number of requests per second. We may
 want to scale our service horizontally by adding more servers and putting a load
